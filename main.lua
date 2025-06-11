@@ -38,31 +38,6 @@ local presets = Presets():presets()
 local showingLoadPatchMenu = false
 local showingSavePatchMenu = false
 
-local menuGrid = playdate.ui.gridview.new(100 - 8, 100)
-local menuBackground = gfx.image.new(400, 240, gfx.kColorWhite)
-menuGrid.backgroundImage = menuBackground
-menuGrid:setNumberOfColumns(4)
-menuGrid:setNumberOfRows(4)
---menuGrid:setContentInset(1, 4, 1, 4)
-menuGrid:setCellPadding(4, 4, 4, 4)
-menuGrid.changeRowOnColumnWrap = false
-
-function menuGrid:drawCell(section, row, column, selected, x, y, width, height)
-	if selected then
-		gfx.fillRoundRect(x, y, width, height, 4)
-		gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
-	else
-		gfx.setImageDrawMode(gfx.kDrawModeCopy)
-	end
-	local entryIndex = (((row-1) * 4) + (column-1))
-	if(entryIndex < #presets) then
-		local preset = presets[entryIndex + 1]
-		gfx.drawTextInRect(preset.name, x, y+ (height/2), width, height, nil, "...", kTextAlignment.center)
-	else
-		gfx.drawTextInRect("--", x, y+ (height/2), width, height, nil, "...", kTextAlignment.center)
-	end
-end
-
 local activeNode = 0
 local activePlayerNode = 1
 
@@ -70,89 +45,6 @@ midi = Midi()
 
 --todo be a good citizen and maybe turn this on and off depending on selected waveform
 playdate.startAccelerometer()
-
-local loadPatchInputHandler = {
-	
-	AButtonDown = function()
-		showingLoadPatchMenu = false
-		playdate.inputHandlers.pop()
-		local section, row, column = menuGrid:getSelection()
-		local selectedIndex = (((row-1) * 4) + (column-1))
-		if(selectedIndex < #presets) then
-			local selectedPreset = presets[selectedIndex + 1]
-			print("Selected preset = " .. selectedPreset.name)
-			nodes[1]:setNote(selectedPreset.notes[1].midiNote)
-			nodes[1]:moveTo(selectedPreset.notes[1].x, selectedPreset.notes[1].y)
-			
-			nodes[2]:setNote(selectedPreset.notes[2].midiNote)
-			nodes[2]:moveTo(selectedPreset.notes[2].x, selectedPreset.notes[2].y)
-			
-			nodes[3]:setNote(selectedPreset.notes[3].midiNote)
-			nodes[3]:moveTo(selectedPreset.notes[3].x, selectedPreset.notes[3].y)
-			
-			nodes[4]:setNote(selectedPreset.notes[4].midiNote)
-			nodes[4]:moveTo(selectedPreset.notes[4].x, selectedPreset.notes[4].y)
-			
-			nodes[5]:setNote(selectedPreset.notes[5].midiNote)
-			nodes[5]:moveTo(selectedPreset.notes[5].x, selectedPreset.notes[5].y)
-			
-			nodes[6]:setNote(selectedPreset.notes[6].midiNote)
-			nodes[6]:moveTo(selectedPreset.notes[6].x, selectedPreset.notes[6].y)
-			
-			nodes[7]:setNote(selectedPreset.notes[7].midiNote)
-			nodes[7]:moveTo(selectedPreset.notes[7].x, selectedPreset.notes[7].y)
-			
-			nodes[8]:setNote(selectedPreset.notes[8].midiNote)
-			nodes[8]:moveTo(selectedPreset.notes[8].x, selectedPreset.notes[8].y)
-			
-			waveform = selectedPreset.waveform
-			waveformMenu:setValue(waveform)
-			for i = 1,8,1 do 
-				nodes[i]:setWaveform(waveform)
-			end
-			waveformIcon:setWaveform(waveform)
-			
-			playerNodes[1]:moveTo(selectedPreset.player1.x, selectedPreset.player1.y)
-			playerNodes[1]:setSize(selectedPreset.player1.size)
-			if selectedPreset.player1.orbitActive then
-				playerNodes[1]:setActiveOrbit(
-					selectedPreset.player1.orbitX, 
-					selectedPreset.player1.orbitY,
-					selectedPreset.player1.orbitVelocity,
-					selectedPreset.player1.orbitStartAngle
-				)
-			end
-			
-			playerNodes[2]:moveTo(selectedPreset.player2.x, selectedPreset.player2.y)
-			playerNodes[2]:setSize(selectedPreset.player2.size)
-			if selectedPreset.player2.orbitActive then
-				playerNodes[2]:setActiveOrbit(
-					selectedPreset.player2.orbitX, 
-					selectedPreset.player2.orbitY,
-					selectedPreset.player2.orbitVelocity,
-					selectedPreset.player2.orbitStartAngle
-				)
-			end
-		end
-		
-	end,
-	
-	leftButtonDown = function()
-		menuGrid:selectPreviousColumn()
-	end,
-	
-	rightButtonDown = function()
-		menuGrid:selectNextColumn()
-	end,
-	
-	upButtonDown = function()
-		menuGrid:selectPreviousRow()
-	end,
-	
-	downButtonDown = function()
-		menuGrid:selectNextRow()
-	end,
-}
 
 local mainInputHandler = {
 	
@@ -305,8 +197,64 @@ function setup()
 	
 	local presetSelectItem, error = menu:addMenuItem("Load patch", function()
 			showingLoadPatchMenu = true
-			playdate.inputHandlers.push(loadPatchInputHandler)
-			PatchLoadDialog:show()
+			PatchLoadDialog:show(function(selectedPreset) 
+				print("Load preset: " .. selectedPreset.name)
+			
+				nodes[1]:setNote(selectedPreset.notes[1].midiNote)
+				nodes[1]:moveTo(selectedPreset.notes[1].x, selectedPreset.notes[1].y)
+				
+				nodes[2]:setNote(selectedPreset.notes[2].midiNote)
+				nodes[2]:moveTo(selectedPreset.notes[2].x, selectedPreset.notes[2].y)
+				
+				nodes[3]:setNote(selectedPreset.notes[3].midiNote)
+				nodes[3]:moveTo(selectedPreset.notes[3].x, selectedPreset.notes[3].y)
+				
+				nodes[4]:setNote(selectedPreset.notes[4].midiNote)
+				nodes[4]:moveTo(selectedPreset.notes[4].x, selectedPreset.notes[4].y)
+				
+				nodes[5]:setNote(selectedPreset.notes[5].midiNote)
+				nodes[5]:moveTo(selectedPreset.notes[5].x, selectedPreset.notes[5].y)
+				
+				nodes[6]:setNote(selectedPreset.notes[6].midiNote)
+				nodes[6]:moveTo(selectedPreset.notes[6].x, selectedPreset.notes[6].y)
+				
+				nodes[7]:setNote(selectedPreset.notes[7].midiNote)
+				nodes[7]:moveTo(selectedPreset.notes[7].x, selectedPreset.notes[7].y)
+				
+				nodes[8]:setNote(selectedPreset.notes[8].midiNote)
+				nodes[8]:moveTo(selectedPreset.notes[8].x, selectedPreset.notes[8].y)
+				
+				waveform = selectedPreset.waveform
+				waveformMenu:setValue(waveform)
+				for i = 1,8,1 do 
+					nodes[i]:setWaveform(waveform)
+				end
+				waveformIcon:setWaveform(waveform)
+				
+				playerNodes[1]:moveTo(selectedPreset.player1.x, selectedPreset.player1.y)
+				playerNodes[1]:setSize(selectedPreset.player1.size)
+				if selectedPreset.player1.orbitActive then
+					playerNodes[1]:setActiveOrbit(
+						selectedPreset.player1.orbitX, 
+						selectedPreset.player1.orbitY,
+						selectedPreset.player1.orbitVelocity,
+						selectedPreset.player1.orbitStartAngle
+					)
+				end
+				
+				playerNodes[2]:moveTo(selectedPreset.player2.x, selectedPreset.player2.y)
+				playerNodes[2]:setSize(selectedPreset.player2.size)
+				if selectedPreset.player2.orbitActive then
+					playerNodes[2]:setActiveOrbit(
+						selectedPreset.player2.orbitX, 
+						selectedPreset.player2.orbitY,
+						selectedPreset.player2.orbitVelocity,
+						selectedPreset.player2.orbitStartAngle
+					)
+				end
+				
+				showingLoadPatchMenu = false
+			end)
 	end)
 	
 	local savePatchItem, error = menu:addMenuItem("Save patch", function()
@@ -356,8 +304,8 @@ function playdate.update()
 	gfx.sprite.update()
 	
 	if showingLoadPatchMenu then
-		menuGrid:drawInRect(0, 0, 400, 240)
-		--patchLoadDialog:draw()
+		--menuGrid:drawInRect(0, 0, 400, 240)
+		patchLoadDialog:draw()
 	end
 	
 	playdate.timer.updateTimers()

@@ -2,55 +2,84 @@ import "CoreLibs/sprites"
 import "CoreLibs/graphics"
 import "CoreLibs/ui"
 import "presets"
+import 'text_list'
 
 local gfx <const> = playdate.graphics
+local ppresets = Presets():presets()
 
 class('PatchLoadDialog').extends()
 
-local ppresets = Presets():presets()
-
 function PatchLoadDialog:init()
 		PatchLoadDialog.super.init(self)	
-		
-			
-		
-		self.menuGrid = playdate.ui.gridview.new(100 - 8, 100)
-		local menuBackground = gfx.image.new(400, 240, gfx.kColorWhite)
-		self.menuGrid.backgroundImage = menuBackground
-		self.menuGrid:setNumberOfColumns(4)
-		self.menuGrid:setNumberOfRows(4)
-		self.menuGrid:setCellPadding(4, 4, 4, 4)
-		self.menuGrid.changeRowOnColumnWrap = false
-
-		function self.menuGrid:drawCell(section, row, column, selected, x, y, width, height)
-			if selected then
-				gfx.fillRoundRect(x, y, width, height, 4)
-				gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
-			else
-				gfx.setImageDrawMode(gfx.kDrawModeCopy)
-			end
-			
-			local entryIndex = (((row-1) * 4) + (column-1))
-			
-			if(entryIndex < #ppresets) then
-				local preset = ppresets[entryIndex + 1]
-				gfx.drawTextInRect(preset.name, x, y+ (height/2), width, height, nil, "...", kTextAlignment.center)
-			else
-				gfx.drawTextInRect("--", x, y+ (height/2), width, height, nil, "...", kTextAlignment.center)
-			end
-		end
 end
 
-
-
-
-function PatchLoadDialog:show()
-	--todo load ing data here
-	--self.menuGrid:setNumberOfColumns(4)
-	--self.menuGrid:setNumberOfRows(4)
+function PatchLoadDialog:show(onLoad)
+	local background = gfx.image.new(400, 240, playdate.graphics.kColorWhite)
+	self.backgroundSprite = gfx.sprite.new(background)
+	self.backgroundSprite:moveTo(200, 120)
+	self.backgroundSprite:add()
+	local menuItems = {}
+	for p =1,#ppresets,1 do
+		local preset = ppresets[p]
+		menuItems[p] = {
+			label = preset.name
+		}
+	end
 	
+	--items, xx, yy, w, h, rH, onChange, onSelect, zIndex
+	self.patchList = TextList(menuItems, 5, 5, 400 - 10, 240  - 10, 20, nil, function(index, item)
+		local selectedPreset = ppresets[index]
+		if onLoad ~= nil then onLoad(selectedPreset) end
+		self:dismiss()
+	end, 29000)
+	
+	self.modulePopupInputHandler = {
+		
+		BButtonDown = function()
+			self:dismiss()
+		end,
+		
+		AButtonDown = function()
+			self.patchList:tapA()
+		end,
+		
+		leftButtonDown = function()
+	
+		end,
+		
+		rightButtonDown = function()
+	
+		end,
+		
+		upButtonDown = function()
+			self.patchList:goUp()
+		end,
+		
+		downButtonDown = function()
+			self.patchList:goDown()
+		end,
+		
+		cranked = function(change, acceleratedChange)
+			self.crankDelta += change
+			if self.crankDelta < -20 then
+				self.crankDelta = 0.0
+				self.patchList:goUp()
+			elseif self.crankDelta > 20 then
+				self.crankDelta = 0.0
+				self.patchList:goDown()
+			end
+		end,
+	}
+	playdate.inputHandlers.push(self.modulePopupInputHandler)
+end
+
+function PatchLoadDialog:dismiss()
+	print("ModulePopup:dismiss()")
+	playdate.inputHandlers.pop()
+	self.patchList:removeAll()
+	self.backgroundSprite:remove()
 end
 
 function PatchLoadDialog:draw()
-	self.menuGrid:drawInRect(0, 0, 400, 240)
+
 end
