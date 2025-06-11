@@ -72,8 +72,8 @@ function Presets:rhubarb()
 	
 	local n8 = {}
 	n8.midiNote = 57
-	n8.x = 120
-	n8.y = 61
+	n8.x = 113
+	n8.y = 73
 	notes[8] = n8
 	
 	preset.notes = notes
@@ -85,7 +85,8 @@ function Presets:rhubarb()
 	player1.orbitActive = true
 	player1.orbitX = 209
 	player1.orbitY = 110
-	player1.orbitVelocity = 80
+	player1.orbitVelocity = 95
+	player1.orbitStartAngle = 350
 	preset.player1 = player1
 	
 	local player2 = {}
@@ -96,6 +97,7 @@ function Presets:rhubarb()
 	player2.orbitX = 12
 	player2.orbitY = 12
 	player2.orbitVelocity = 12
+	player2.orbitStartAngle = 1
 	preset.player2 = player2
 	
 	return preset
@@ -125,6 +127,7 @@ function Presets:pentatonic1()
 	player1.orbitX = 0
 	player1.orbitY = 120
 	player1.orbitVelocity = 120
+	player1.orbitStartAngle = 1
 	preset.player1 = player1
 	
 	local player2 = {}
@@ -135,6 +138,7 @@ function Presets:pentatonic1()
 	player2.orbitX = 300
 	player2.orbitY = 120
 	player2.orbitVelocity = 80
+	player2.orbitStartAngle = 1
 	preset.player2 = player2
 	
 	return preset
@@ -165,6 +169,7 @@ function Presets:harmonic1()
 	player1.orbitX = 132
 	player1.orbitY = 120
 	player1.orbitVelocity = 120
+	player1.orbitStartAngle = 1
 	harmonicPreset.player1 = player1
 	
 	local player2 = {}
@@ -175,6 +180,7 @@ function Presets:harmonic1()
 	player2.orbitX = 300
 	player2.orbitY = 120
 	player2.orbitVelocity = 80
+	player2.orbitStartAngle = 1
 	harmonicPreset.player2 = player2
 	
 	return harmonicPreset
@@ -204,6 +210,7 @@ function Presets:dorian1()
 	player1.orbitX = 100
 	player1.orbitY = 120
 	player1.orbitVelocity = 120
+	player1.orbitStartAngle = 1
 	dorianPreset.player1 = player1
 	
 	local player2 = {}
@@ -214,6 +221,7 @@ function Presets:dorian1()
 	player2.orbitX = 300
 	player2.orbitY = 120
 	player2.orbitVelocity = 80
+	player2.orbitStartAngle = 1
 	dorianPreset.player2 = player2
 	
 	return dorianPreset
@@ -243,6 +251,7 @@ function Presets:mixolydian1()
 	player1.orbitX = 200
 	player1.orbitY = 120
 	player1.orbitVelocity = 120
+	player1.orbitStartAngle = 1
 	dorianPreset.player1 = player1
 	
 	local player2 = {}
@@ -253,6 +262,7 @@ function Presets:mixolydian1()
 	player2.orbitX = 200
 	player2.orbitY = 120
 	player2.orbitVelocity = 80
+	player2.orbitStartAngle = 1
 	dorianPreset.player2 = player2
 	
 	return dorianPreset

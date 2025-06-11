@@ -121,7 +121,8 @@ local loadPatchInputHandler = {
 				playerNodes[1]:setActiveOrbit(
 					selectedPreset.player1.orbitX, 
 					selectedPreset.player1.orbitY,
-					selectedPreset.player1.orbitVelocity
+					selectedPreset.player1.orbitVelocity,
+					selectedPreset.player1.orbitStartAngle
 				)
 			end
 			
@@ -131,7 +132,8 @@ local loadPatchInputHandler = {
 				playerNodes[2]:setActiveOrbit(
 					selectedPreset.player2.orbitX, 
 					selectedPreset.player2.orbitY,
-					selectedPreset.player2.orbitVelocity
+					selectedPreset.player2.orbitVelocity,
+					selectedPreset.player2.orbitStartAngle
 				)
 			end
 		end

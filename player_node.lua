@@ -70,10 +70,11 @@ function PlayerNode:init(p, size, orbitOrigin, orbitVelocity)
 		end
 end
 
-function PlayerNode:setActiveOrbit(x, y, velocity)
+function PlayerNode:setActiveOrbit(x, y, velocity, angle)
 	self.orbitPoint.x = x
 	self.orbitPoint.y = y
 	self.orbitVelocity = velocity
+	self.orbitDegree = angle
 	self.orbitOrbitSprite:moveTo(self.orbitPoint.x, self.orbitPoint.y)
 	self.orbitOrbitSprite:add()
 	self:moveOrigin(0,0)
