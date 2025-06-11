@@ -8,6 +8,7 @@ import "audio"
 import "node"
 import "midi"
 import "patch_save_dialog"
+import "patch_load_dialog"
 import "player_node"
 import "presets"
 import "waveform_icon"
@@ -69,10 +70,6 @@ midi = Midi()
 
 --todo be a good citizen and maybe turn this on and off depending on selected waveform
 playdate.startAccelerometer()
-
-local savePatchInputHandler = {
-	
-}
 
 local loadPatchInputHandler = {
 	
@@ -174,7 +171,6 @@ local mainInputHandler = {
 			playerNodes[activePlayerNode]:setOriginMode(false)
 		else
 			if(activeNode > 0) then
-				--setLabelsVisible(false)
 				activeNode = 0
 				for i = 1,8,1 do nodes[i]:deselect() end
 			else
@@ -188,7 +184,6 @@ local mainInputHandler = {
 	end,
 	
 	BButtonDown = function()
-		--setLabelsVisible(true)
 		for i = 1,8,1 do nodes[i]:deselect() end
 		activeNode += 1
 		if(activeNode == 9) then
@@ -252,6 +247,35 @@ function setLabelsVisible(visible)
 	end
 end
 
+function savePatch(patchName)
+	local filename = playdate.epochFromTime(playdate.getTime()) .. ".res"
+	local patch = {}
+	
+	patch.name = string.lower(patchName)
+	
+	local nodeStates = {}
+	for i = 1,8,1 do 
+		local nodeState = nodes[i]:getState()
+		nodeStates[i] = nodeState
+	end
+	
+	patch.nodes = nodeStates
+	
+	local playerStates = {}
+	for i = 1,2,1 do 
+		local playerNodeState = playerNodes[i]:getState()
+		playerStates[i] = playerNodeState
+	end
+	
+	patch.players = playerStates
+	
+	local patchJson = json.encodePretty(patch)
+	print(patchJson)
+	playdate.datastore.write(patch, filename, true)
+end
+
+local patchLoadDialog = PatchLoadDialog()
+
 function setup()
 	local backgroundImage = gfx.image.new( "images/background" )
 	assert( backgroundImage )
@@ -282,6 +306,7 @@ function setup()
 	local presetSelectItem, error = menu:addMenuItem("Load patch", function()
 			showingLoadPatchMenu = true
 			playdate.inputHandlers.push(loadPatchInputHandler)
+			PatchLoadDialog:show()
 	end)
 	
 	local savePatchItem, error = menu:addMenuItem("Save patch", function()
@@ -294,7 +319,7 @@ function setup()
 				print("Keyboard dismissed, patch name: " .. savePatchName)
 				saveDialog:hide()
 				showingSavePatchMenu = false
-				--todo save patch
+				savePatch(savePatchName)
 			end
 	end)
 	
@@ -332,6 +357,7 @@ function playdate.update()
 	
 	if showingLoadPatchMenu then
 		menuGrid:drawInRect(0, 0, 400, 240)
+		--patchLoadDialog:draw()
 	end
 	
 	playdate.timer.updateTimers()

@@ -145,3 +145,12 @@ function Node:move(x, y)
 	self.sprite:moveTo(self.p.x, self.p.y)
 	self.label:moveTo(self.p.x + selectedDiam + self.label.width/2, self.p.y)
 end
+
+function Node:getState()
+	local saveState = {}
+	saveState.x = self.p.x
+	saveState.y = self.p.y
+	saveState.midiNote = self.midiNote
+	
+	return saveState
+end

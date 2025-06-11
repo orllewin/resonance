@@ -200,6 +200,14 @@ function PlayerNode:map(value, start1, stop1, start2, stop2)
 	return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1))
 end
 
-function PlayerNode:draw()
-	
+function PlayerNode:getState()
+	local saveState = {}
+	saveState.x = self.p.x
+	saveState.y = self.p.y
+	saveState.size = self.size
+	saveState.isOrbiting = self.isOrbiting
+	saveState.orbitVelocity = self.orbitVelocity
+	saveState.orbitX = self.orbitPoint.x
+	saveState.orbitY = self.orbitPoint.y
+	return saveState
 end
