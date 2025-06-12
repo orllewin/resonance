@@ -84,11 +84,14 @@ function Node:map(value, start1, stop1, start2, stop2)
 end
 
 function Node:crank(change)
-	if(change> 0) then
+	if(change == 0) then
+		--do nothing
+	elseif(change > 0) then
 		self.midiNote = math.max (1, self.midiNote - 1)
 	elseif(change < 0) then
 		self.midiNote = math.min (127, self.midiNote + 1)
 	end
+	print("kjsdbfjkhsdbvcjhsdbvchjdbc: " .. self.midiNote)
 	local image = gfx.imageWithText(midi:label(self.midiNote), 1000, 1000)
 	self.label:setImage(image)
 	self.label:moveTo(self.p.x + selectedDiam + image.width/2, self.p.y)
@@ -98,6 +101,8 @@ end
 function Node:setNote(midiNote)
 	self.midiNote = midiNote
 	self.synth:playMIDINote(self.midiNote)
+	self:deselect()
+	self:crank(0)
 end
 
 function Node:select()

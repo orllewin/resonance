@@ -18,6 +18,7 @@ function UserPatches:patches()
 		if endswith(file, ".res.json") then
 			print("found user patch: " .. file)
 			local userPatch = playdate.datastore.read(replace(file, ".json", ""))
+			userPatch.file = file
 			userPatches[count] = userPatch
 			count += 1
 		end

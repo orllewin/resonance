@@ -29,7 +29,7 @@ A0    C1                   C2                   C3                   C4
 
 --]]
 
---note midi starts at 0 - so array is ZERO INDEXED
+-- note midi starts at 0 - so array is ZERO INDEXED
 -- https://www.inspiredacoustics.com/en/MIDI_note_numbers_and_center_frequencies
 local noteLabels = {
 	"C-1",		--0
@@ -186,8 +186,9 @@ function Midi:getScales()
 	return SCALES
 end
 
+--not label is zero indexed...
 function Midi:label(midiNote)
-	return noteLabels[midiNote]
+	return noteLabels[midiNote + 1]
 end
 
 function Midi:noteNumberToLabel(number)
@@ -224,8 +225,6 @@ function Midi:generateScale(startMidiNote, scaleName)
 	for i=1,#growingScale do
 		growingScale[i] = growingScale[i] + startMidiNote - 12
 	end
-	--self:printScale(scaleName, growingScale)
-	--print("XXXXXXXX")
 	self:growKey(growingScale)
 	--self:printScale(scaleName, growingScale)
 	return growingScale

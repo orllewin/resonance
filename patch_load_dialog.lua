@@ -4,9 +4,9 @@ import "CoreLibs/ui"
 import "presets"
 import "user_patches"
 import 'text_list'
+import 'string_utils'
 
 local gfx <const> = playdate.graphics
-
 
 class('PatchLoadDialog').extends()
 
@@ -14,9 +14,25 @@ function PatchLoadDialog:init()
 		PatchLoadDialog.super.init(self)	
 end
 
-function PatchLoadDialog:show(onDismiss, onLoadUserPatch, onLoadPreset)
+function PatchLoadDialog:show(showPatches, showPresets, isDelete, onDismiss, onLoadPatch, onDeletePatch)
 	self.onDismiss = onDismiss
-	local background = gfx.image.new(200, 240, playdate.graphics.kColorWhite)
+	local background = gfx.image.new(200, 240, gfx.kColorWhite)
+	gfx.pushContext(background)
+	gfx.setColor(gfx.kColorBlack)
+	gfx.drawRoundRect(0, 0, 200, 240, 12) 
+	
+	if isDelete then
+		gfx.drawText("Delete patch", 10, 10)
+	elseif showPatches then
+		gfx.drawText("User patches", 10, 10)
+	elseif showPresets then
+		gfx.drawText("Presets", 10, 10)
+	end
+	
+	gfx.drawLine(5, 24, 200 - 10, 24)
+	
+	gfx.popContext()
+	
 	self.backgroundSprite = gfx.sprite.new(background)
 	self.backgroundSprite:moveTo(200, 120)
 	self.backgroundSprite:add()
@@ -25,45 +41,62 @@ function PatchLoadDialog:show(onDismiss, onLoadUserPatch, onLoadPreset)
 	local menuItems = {}
 	local menuIndex = 1
 	
+	local userPatchesRepository = UserPatches()
+	
 	local userPatchMenuItems = {}
-	local userPatches = UserPatches():patches()
-	for u = 1, #userPatches, 1 do
-		local userPatch = userPatches[u]
-		userPatchMenuItems[u] = {
-			label = userPatch.name
-		}
-		menuItems[menuIndex] = userPatchMenuItems[u]
-		menuIndex += 1
+	local userPatches = userPatchesRepository:patches()
+	if showPatches then
+		print("loading user patches")
+		
+		for u = 1, #userPatches, 1 do
+			local userPatch = userPatches[u]
+			userPatchMenuItems[u] = {
+				label = userPatch.name
+			}
+			menuItems[menuIndex] = userPatchMenuItems[u]
+			menuIndex += 1
+		end
 	end
 	
-	
-	local presets = Presets():presets()
 	local presetMenuItems = {}
-	for p = 1, #presets, 1 do
-		local preset = presets[p]
-		presetMenuItems[p] = {
-			label = preset.name
-		}
-		menuItems[menuIndex] = presetMenuItems[p]
-		menuIndex += 1
+	local presets = Presets():presets()
+	if showPresets then
+		for p = 1, #presets, 1 do
+			local preset = presets[p]
+			presetMenuItems[p] = {
+				label = preset.name
+			}
+			menuItems[menuIndex] = presetMenuItems[p]
+			menuIndex += 1
+		end
 	end
 
-	
-	--items, xx, yy, w, h, rH, onChange, onSelect, zIndex
-	self.patchList = TextList(menuItems, 105, 5, 200 - 10, 240  - 10, 20, nil, function(index, item)
-		if index <= #userPatches then
+	self.patchList = TextList(menuItems, 110, 34, 200 - 20, 240 - 44, 20, nil, function(index, item)
+		if index <= #userPatchMenuItems then
 			print("returning user patch at index " .. index)
 			local selectedUserPatch = userPatches[index]
-			onLoadUserPatch(selectedUserPatch)
+			if isDelete then
+				local file = replace(selectedUserPatch.file, ".json", "")
+				playdate.datastore.delete(file)
+				playdate.inputHandlers.pop()
+				self.patchList:removeAll()
+				self.backgroundSprite:remove()
+				self:show(showPatches, showPresets, isDelete, onDismiss, onLoadPatch, onDeletePatch)
+			else
+				onLoadPatch(selectedUserPatch)
+				self:dismiss()
+			end
+			
 		else
-			local selectedPreset = presets[index - #userPatches]
-			if onLoadPreset ~= nil then onLoadPreset(selectedPreset) end
+			local selectedPreset = presets[index - #userPatchMenuItems]
+			onLoadPatch(selectedPreset)
+			self:dismiss()
 		end
 		
-		self:dismiss()
+		
 	end, 29000)
 	
-	self.modulePopupInputHandler = {
+	self.patchLoadInputHandler = {
 		
 		BButtonDown = function()
 			self:dismiss()
@@ -100,11 +133,11 @@ function PatchLoadDialog:show(onDismiss, onLoadUserPatch, onLoadPreset)
 			end
 		end,
 	}
-	playdate.inputHandlers.push(self.modulePopupInputHandler)
+	
+	playdate.inputHandlers.push(self.patchLoadInputHandler)
 end
 
 function PatchLoadDialog:dismiss()
-	print("ModulePopup:dismiss()")
 	playdate.inputHandlers.pop()
 	self.patchList:removeAll()
 	self.backgroundSprite:remove()

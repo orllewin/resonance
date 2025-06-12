@@ -202,7 +202,7 @@ end
 function TextList:tapA()
 	if self.onSelect then 
 		local item =  self.items[self.index]
-		if item.type then
+		if item ~= nil and item.type then
 			if item.type == "checkbox" then
 				self.items[self.index].checked = not self.items[self.index].checked
 				self:updateItemsNoReset(self.items)
