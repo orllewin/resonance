@@ -197,64 +197,129 @@ function setup()
 	
 	local presetSelectItem, error = menu:addMenuItem("Load patch", function()
 			showingLoadPatchMenu = true
-			PatchLoadDialog:show(function(selectedPreset) 
-				print("Load preset: " .. selectedPreset.name)
+			PatchLoadDialog:show(
+				function() 
+					showingLoadPatchMenu = false 
+				end, 
+				function(userPatch)
+					--todo - load user patch
+					printTable(userPatch)
+					nodes[1]:setNote(userPatch.nodes[1].midiNote)
+					nodes[1]:moveTo(userPatch.nodes[1].x, userPatch.nodes[1].y)
+					
+					nodes[2]:setNote(userPatch.nodes[2].midiNote)
+					nodes[2]:moveTo(userPatch.nodes[2].x, userPatch.nodes[2].y)
+					
+					nodes[3]:setNote(userPatch.nodes[3].midiNote)
+					nodes[3]:moveTo(userPatch.nodes[3].x, userPatch.nodes[3].y)
+					
+					nodes[4]:setNote(userPatch.nodes[4].midiNote)
+					nodes[4]:moveTo(userPatch.nodes[4].x, userPatch.nodes[4].y)
+					
+					nodes[5]:setNote(userPatch.nodes[5].midiNote)
+					nodes[5]:moveTo(userPatch.nodes[5].x, userPatch.nodes[5].y)
+					
+					nodes[6]:setNote(userPatch.nodes[6].midiNote)
+					nodes[6]:moveTo(userPatch.nodes[6].x, userPatch.nodes[6].y)
+					
+					nodes[7]:setNote(userPatch.nodes[7].midiNote)
+					nodes[7]:moveTo(userPatch.nodes[7].x, userPatch.nodes[7].y)
+					
+					nodes[8]:setNote(userPatch.nodes[8].midiNote)
+					nodes[8]:moveTo(userPatch.nodes[8].x, userPatch.nodes[8].y)
+					
+					if userPatch.waveform ~= nil then
+						waveform = userPatch.waveform
+						waveformMenu:setValue(waveform)
+						for i = 1,8,1 do 
+							nodes[i]:setWaveform(waveform)
+						end
+						waveformIcon:setWaveform(waveform)
+					end
+					
+					playerNodes[1]:moveTo(userPatch.players[1].x, userPatch.players[1].y)
+					playerNodes[1]:setSize(userPatch.players[1].size)
+					if userPatch.players[1].isOrbiting then
+						playerNodes[1]:setActiveOrbit(
+							userPatch.players[1].orbitX, 
+							userPatch.players[1].orbitY,
+							userPatch.players[1].orbitVelocity,
+							1--todo angle
+						)
+					end
+					
+					playerNodes[2]:moveTo(userPatch.players[2].x, userPatch.players[2].y)
+					playerNodes[2]:setSize(userPatch.players[2].size)
+					if userPatch.players[2].isOrbiting then
+						playerNodes[2]:setActiveOrbit(
+							userPatch.players[2].orbitX, 
+							userPatch.players[2].orbitY,
+							userPatch.players[2].orbitVelocity,
+							1--todo angle
+						)
+					end
+					
+					
+				end,
+				function(selectedPreset) 
+					print("Load preset: " .. selectedPreset.name)
 			
-				nodes[1]:setNote(selectedPreset.notes[1].midiNote)
-				nodes[1]:moveTo(selectedPreset.notes[1].x, selectedPreset.notes[1].y)
-				
-				nodes[2]:setNote(selectedPreset.notes[2].midiNote)
-				nodes[2]:moveTo(selectedPreset.notes[2].x, selectedPreset.notes[2].y)
-				
-				nodes[3]:setNote(selectedPreset.notes[3].midiNote)
-				nodes[3]:moveTo(selectedPreset.notes[3].x, selectedPreset.notes[3].y)
-				
-				nodes[4]:setNote(selectedPreset.notes[4].midiNote)
-				nodes[4]:moveTo(selectedPreset.notes[4].x, selectedPreset.notes[4].y)
-				
-				nodes[5]:setNote(selectedPreset.notes[5].midiNote)
-				nodes[5]:moveTo(selectedPreset.notes[5].x, selectedPreset.notes[5].y)
-				
-				nodes[6]:setNote(selectedPreset.notes[6].midiNote)
-				nodes[6]:moveTo(selectedPreset.notes[6].x, selectedPreset.notes[6].y)
-				
-				nodes[7]:setNote(selectedPreset.notes[7].midiNote)
-				nodes[7]:moveTo(selectedPreset.notes[7].x, selectedPreset.notes[7].y)
-				
-				nodes[8]:setNote(selectedPreset.notes[8].midiNote)
-				nodes[8]:moveTo(selectedPreset.notes[8].x, selectedPreset.notes[8].y)
-				
-				waveform = selectedPreset.waveform
-				waveformMenu:setValue(waveform)
-				for i = 1,8,1 do 
-					nodes[i]:setWaveform(waveform)
+					nodes[1]:setNote(selectedPreset.notes[1].midiNote)
+					nodes[1]:moveTo(selectedPreset.notes[1].x, selectedPreset.notes[1].y)
+					
+					nodes[2]:setNote(selectedPreset.notes[2].midiNote)
+					nodes[2]:moveTo(selectedPreset.notes[2].x, selectedPreset.notes[2].y)
+					
+					nodes[3]:setNote(selectedPreset.notes[3].midiNote)
+					nodes[3]:moveTo(selectedPreset.notes[3].x, selectedPreset.notes[3].y)
+					
+					nodes[4]:setNote(selectedPreset.notes[4].midiNote)
+					nodes[4]:moveTo(selectedPreset.notes[4].x, selectedPreset.notes[4].y)
+					
+					nodes[5]:setNote(selectedPreset.notes[5].midiNote)
+					nodes[5]:moveTo(selectedPreset.notes[5].x, selectedPreset.notes[5].y)
+					
+					nodes[6]:setNote(selectedPreset.notes[6].midiNote)
+					nodes[6]:moveTo(selectedPreset.notes[6].x, selectedPreset.notes[6].y)
+					
+					nodes[7]:setNote(selectedPreset.notes[7].midiNote)
+					nodes[7]:moveTo(selectedPreset.notes[7].x, selectedPreset.notes[7].y)
+					
+					nodes[8]:setNote(selectedPreset.notes[8].midiNote)
+					nodes[8]:moveTo(selectedPreset.notes[8].x, selectedPreset.notes[8].y)
+					
+					waveform = selectedPreset.waveform
+					waveformMenu:setValue(waveform)
+					for i = 1,8,1 do 
+						nodes[i]:setWaveform(waveform)
+					end
+					waveformIcon:setWaveform(waveform)
+					
+					playerNodes[1]:moveTo(selectedPreset.player1.x, selectedPreset.player1.y)
+					playerNodes[1]:setSize(selectedPreset.player1.size)
+					if selectedPreset.player1.orbitActive then
+						playerNodes[1]:setActiveOrbit(
+							selectedPreset.player1.orbitX, 
+							selectedPreset.player1.orbitY,
+							selectedPreset.player1.orbitVelocity,
+							selectedPreset.player1.orbitStartAngle
+						)
+					end
+					
+					playerNodes[2]:moveTo(selectedPreset.player2.x, selectedPreset.player2.y)
+					playerNodes[2]:setSize(selectedPreset.player2.size)
+					if selectedPreset.player2.orbitActive then
+						playerNodes[2]:setActiveOrbit(
+							selectedPreset.player2.orbitX, 
+							selectedPreset.player2.orbitY,
+							selectedPreset.player2.orbitVelocity,
+							selectedPreset.player2.orbitStartAngle
+						)
+					end
+					
+					showingLoadPatchMenu = false
 				end
-				waveformIcon:setWaveform(waveform)
-				
-				playerNodes[1]:moveTo(selectedPreset.player1.x, selectedPreset.player1.y)
-				playerNodes[1]:setSize(selectedPreset.player1.size)
-				if selectedPreset.player1.orbitActive then
-					playerNodes[1]:setActiveOrbit(
-						selectedPreset.player1.orbitX, 
-						selectedPreset.player1.orbitY,
-						selectedPreset.player1.orbitVelocity,
-						selectedPreset.player1.orbitStartAngle
-					)
-				end
-				
-				playerNodes[2]:moveTo(selectedPreset.player2.x, selectedPreset.player2.y)
-				playerNodes[2]:setSize(selectedPreset.player2.size)
-				if selectedPreset.player2.orbitActive then
-					playerNodes[2]:setActiveOrbit(
-						selectedPreset.player2.orbitX, 
-						selectedPreset.player2.orbitY,
-						selectedPreset.player2.orbitVelocity,
-						selectedPreset.player2.orbitStartAngle
-					)
-				end
-				
-				showingLoadPatchMenu = false
-			end)
+			)
 	end)
 	
 	local savePatchItem, error = menu:addMenuItem("Save patch", function()

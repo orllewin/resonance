@@ -224,10 +224,10 @@ function Midi:generateScale(startMidiNote, scaleName)
 	for i=1,#growingScale do
 		growingScale[i] = growingScale[i] + startMidiNote - 12
 	end
-	self:printScale(scaleName, growingScale)
-	print("XXXXXXXX")
+	--self:printScale(scaleName, growingScale)
+	--print("XXXXXXXX")
 	self:growKey(growingScale)
-	self:printScale(scaleName, growingScale)
+	--self:printScale(scaleName, growingScale)
 	return growingScale
 end
 
