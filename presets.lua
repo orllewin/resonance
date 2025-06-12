@@ -10,17 +10,86 @@ function Presets:init()
 end
 
 function Presets:presets()
-	
-	local presets = {}
-	presets[1] = self:new()
-	presets[2] = self:mixolydian1()
-	presets[3] = self:dorian1()
-	presets[4] = self:pentatonic1()
-	presets[5] = self:harmonic1()
-	presets[6] = self:rhubarb()
-	presets[7] = self:stopLookListen()
-	
-	return presets
+	return {
+		self:new(),
+		self:mixolydian1(),
+		self:cMaj(),
+		self:dorian1(),
+		self:pentatonic1(),
+		self:rhubarb(),
+		self:stopLookListen()
+	}
+end
+
+function Presets:cMaj()
+	return {
+		name = "C Major",
+		waveform = "Triangle",
+		nodes = {
+			{
+				midiNote = 60,
+				x = 45,
+				y = 160
+			},
+			{
+				midiNote = 64,
+				x = 74,
+				y = 77
+			},
+			{
+				midiNote = 52,
+				x = 118,
+				y = 188
+			},
+			{
+				midiNote = 57,
+				x = 163,
+				y = 82
+			},
+			{
+				midiNote = 60,
+				x = 248,
+				y = 156
+			},
+			{
+				midiNote = 57,
+				x = 272,
+				y = 48
+			},
+			{
+				midiNote = 69,
+				x = 340,
+				y = 137
+			},
+			{
+				midiNote = 67,
+				x = 348,
+				y = 72
+			}
+		},
+		players = {
+			{
+				x = 135,
+				y = 123,
+				size = 75,
+				isOrbiting = true,
+				orbitX = 116,
+				orbitY = 123,
+				orbitVelocity = 95,
+				orbitStartAngle = 210
+			},
+			{
+				x = 309,
+				y = 105,
+				size = 60,
+				isOrbiting = true,
+				orbitX = 292,
+				orbitY = 105,
+				orbitVelocity = 85,
+				orbitStartAngle = 1
+			}
+		}
+	}
 end
 
 function Presets:stopLookListen()
@@ -92,7 +161,6 @@ function Presets:stopLookListen()
 			}
 		}
 	}
-	
 end
 
 function Presets:new()
@@ -276,51 +344,6 @@ function Presets:pentatonic1()
 	player1.size = 125
 	player1.isOrbiting = true
 	player1.orbitX = 0
-	player1.orbitY = 120
-	player1.orbitVelocity = 120
-	player1.orbitStartAngle = 1
-	players[1] = player1
-	
-	local player2 = {}
-	player2.x = 250
-	player2.y = 120
-	player2.size = 75
-	player2.isOrbiting = true
-	player2.orbitX = 300
-	player2.orbitY = 120
-	player2.orbitVelocity = 80
-	player2.orbitStartAngle = 1
-	players[2] = player2
-	
-	preset.players = players
-	
-	return preset
-end
-
-
-function Presets:harmonic1()
-	local preset = {}
-	preset.name = "Harmonic"
-	preset.waveform = "Phase"
-	local scale = midi:generateScale(36, "Harmonic Major")
-	preset.nodes = {
-		self:noteTwoSquares(1, scale[27]), 
-		self:noteTwoSquares(2, scale[25]), 
-		self:noteTwoSquares(3, scale[22]), 
-		self:noteTwoSquares(4, scale[28]), 
-		self:noteTwoSquares(5, scale[16]), 
-		self:noteTwoSquares(6, scale[14]), 
-		self:noteTwoSquares(7, scale[18]), 
-		self:noteTwoSquares(8, scale[22])
-	}
-	
-	local players = {}
-	local player1 = {}
-	player1.x = 66
-	player1.y = 120
-	player1.size = 125
-	player1.isOrbiting = true
-	player1.orbitX = 132
 	player1.orbitY = 120
 	player1.orbitVelocity = 120
 	player1.orbitStartAngle = 1
