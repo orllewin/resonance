@@ -41,20 +41,27 @@ function PatchLoadDialog:show(showPatches, showPresets, isDelete, onDismiss, onL
 	local menuItems = {}
 	local menuIndex = 1
 	
+	local showList = true
+	
 	local userPatchesRepository = UserPatches()
 	
 	local userPatchMenuItems = {}
 	local userPatches = userPatchesRepository:patches()
 	if showPatches then
 		print("loading user patches")
+		if #userPatches == 0 then
+			showList = false
+			
+		else
 		
-		for u = 1, #userPatches, 1 do
-			local userPatch = userPatches[u]
-			userPatchMenuItems[u] = {
-				label = userPatch.name
-			}
-			menuItems[menuIndex] = userPatchMenuItems[u]
-			menuIndex += 1
+			for u = 1, #userPatches, 1 do
+				local userPatch = userPatches[u]
+				userPatchMenuItems[u] = {
+					label = userPatch.name
+				}
+				menuItems[menuIndex] = userPatchMenuItems[u]
+				menuIndex += 1
+			end
 		end
 	end
 	
@@ -71,30 +78,32 @@ function PatchLoadDialog:show(showPatches, showPresets, isDelete, onDismiss, onL
 		end
 	end
 
-	self.patchList = TextList(menuItems, 110, 34, 200 - 20, 240 - 44, 20, nil, function(index, item)
-		if index <= #userPatchMenuItems then
-			print("returning user patch at index " .. index)
-			local selectedUserPatch = userPatches[index]
-			if isDelete then
-				local file = replace(selectedUserPatch.file, ".json", "")
-				playdate.datastore.delete(file)
-				playdate.inputHandlers.pop()
-				self.patchList:removeAll()
-				self.backgroundSprite:remove()
-				self:show(showPatches, showPresets, isDelete, onDismiss, onLoadPatch, onDeletePatch)
+	if showList then
+		self.patchList = TextList(menuItems, 110, 34, 200 - 20, 240 - 44, 20, nil, function(index, item)
+			if index <= #userPatchMenuItems then
+				print("returning user patch at index " .. index)
+				local selectedUserPatch = userPatches[index]
+				if isDelete then
+					local file = replace(selectedUserPatch.file, ".json", "")
+					playdate.datastore.delete(file)
+					playdate.inputHandlers.pop()
+					self.patchList:removeAll()
+					self.backgroundSprite:remove()
+					self:show(showPatches, showPresets, isDelete, onDismiss, onLoadPatch, onDeletePatch)
+				else
+					onLoadPatch(selectedUserPatch)
+					self:dismiss()
+				end
+				
 			else
-				onLoadPatch(selectedUserPatch)
+				local selectedPreset = presets[index - #userPatchMenuItems]
+				onLoadPatch(selectedPreset)
 				self:dismiss()
 			end
 			
-		else
-			local selectedPreset = presets[index - #userPatchMenuItems]
-			onLoadPatch(selectedPreset)
-			self:dismiss()
-		end
-		
-		
-	end, 29000)
+			
+		end, 29000)
+	end
 	
 	self.patchLoadInputHandler = {
 		
@@ -103,7 +112,7 @@ function PatchLoadDialog:show(showPatches, showPresets, isDelete, onDismiss, onL
 		end,
 		
 		AButtonDown = function()
-			self.patchList:tapA()
+			if self.patchList ~= nil then self.patchList:tapA() end
 		end,
 		
 		leftButtonDown = function()
@@ -115,21 +124,23 @@ function PatchLoadDialog:show(showPatches, showPresets, isDelete, onDismiss, onL
 		end,
 		
 		upButtonDown = function()
-			self.patchList:goUp()
+			if self.patchList ~= nil then self.patchList:goUp() end
 		end,
 		
 		downButtonDown = function()
-			self.patchList:goDown()
+			if self.patchList ~= nil then self.patchList:goDown() end
 		end,
 		
 		cranked = function(change, acceleratedChange)
-			self.crankDelta += change
-			if self.crankDelta < -20 then
-				self.crankDelta = 0.0
-				self.patchList:goUp()
-			elseif self.crankDelta > 20 then
-				self.crankDelta = 0.0
-				self.patchList:goDown()
+			if self.patchList ~= nil then 
+				self.crankDelta += change
+				if self.crankDelta < -20 then
+					self.crankDelta = 0.0
+					self.patchList:goUp()
+				elseif self.crankDelta > 20 then
+					self.crankDelta = 0.0
+					self.patchList:goDown()
+				end
 			end
 		end,
 	}
@@ -139,7 +150,7 @@ end
 
 function PatchLoadDialog:dismiss()
 	playdate.inputHandlers.pop()
-	self.patchList:removeAll()
+	if self.patchList ~= nil then self.patchList:removeAll() end
 	self.backgroundSprite:remove()
 	self.onDismiss()
 end

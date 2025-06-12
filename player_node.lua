@@ -22,14 +22,8 @@ function PlayerNode:init(p, size, orbitOrigin, orbitVelocity)
 		
 		self.size = size
 		self.isOriginMode = false
-		
-		local image = gfx.image.new(diam, diam)
-		gfx.pushContext(image)
-		gfx.setColor(gfx.kColorBlack)
-		gfx.drawCircleAtPoint(diam/2, diam/2, diam/2)
-		gfx.popContext()
-		
-		self.sprite = gfx.sprite.new(image)
+				
+		self.sprite = gfx.sprite.new()
 		self.sprite:moveTo(self.p.x, self.p.y)
 		self.sprite:add()
 		
@@ -68,6 +62,11 @@ function PlayerNode:init(p, size, orbitOrigin, orbitVelocity)
 		else
 			self.isOrbiting = false
 		end
+end
+
+function PlayerNode:setActive(isActive)
+	self.isActive = isActive
+	self:crank(0)
 end
 
 function PlayerNode:setActiveOrbit(x, y, velocity, angle)
@@ -137,7 +136,13 @@ function PlayerNode:crank(change)
 	gfx.pushContext(image)
 	gfx.setColor(gfx.kColorBlack)
 	gfx.setLineWidth(1)
-	gfx.drawCircleAtPoint(self.size/2, self.size/2, diam/2)
+	
+	if(self.isActive) then
+		gfx.fillCircleAtPoint(self.size/2, self.size/2, diam/2)
+	else
+		gfx.drawCircleAtPoint(self.size/2, self.size/2, diam/2)
+	end
+	
 	
 	gfx.setLineWidth(3)
 	gfx.drawCircleAtPoint(self.size/2, self.size/2, self.size/2 - 3)

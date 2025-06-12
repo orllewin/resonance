@@ -68,8 +68,12 @@ local mainInputHandler = {
 			else
 				if(activePlayerNode == 1) then
 					activePlayerNode = 2
+					playerNodes[1]:setActive(false)
+					playerNodes[2]:setActive(true)
 				else
 					activePlayerNode = 1
+					playerNodes[1]:setActive(true)
+					playerNodes[2]:setActive(false)
 				end
 			end
 		end
@@ -212,7 +216,7 @@ function loadPatch(patch)
 			patch.players[1].orbitX, 
 			patch.players[1].orbitY,
 			patch.players[1].orbitVelocity,
-			1--todo angle
+			patch.players[1].orbitStartAngle
 		)
 	end
 	
@@ -223,7 +227,7 @@ function loadPatch(patch)
 			patch.players[2].orbitX, 
 			patch.players[2].orbitY,
 			patch.players[2].orbitVelocity,
-			1--todo angle
+			patch.players[2].orbitStartAngle
 		)
 	end
 end

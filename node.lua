@@ -91,7 +91,6 @@ function Node:crank(change)
 	elseif(change < 0) then
 		self.midiNote = math.min (127, self.midiNote + 1)
 	end
-	print("kjsdbfjkhsdbvcjhsdbvchjdbc: " .. self.midiNote)
 	local image = gfx.imageWithText(midi:label(self.midiNote), 1000, 1000)
 	self.label:setImage(image)
 	self.label:moveTo(self.p.x + selectedDiam + image.width/2, self.p.y)

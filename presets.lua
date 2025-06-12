@@ -18,8 +18,81 @@ function Presets:presets()
 	presets[4] = self:pentatonic1()
 	presets[5] = self:harmonic1()
 	presets[6] = self:rhubarb()
+	presets[7] = self:stopLookListen()
 	
 	return presets
+end
+
+function Presets:stopLookListen()
+	return {
+		name = "Stop, Look, Listen",
+		waveform = "Triangle",
+		nodes = {
+			{
+				midiNote = 76,
+				x = 280,
+				y = 109
+			},
+			{
+				midiNote = 74,
+				x = 268,
+				y = 145
+			},
+			{
+				midiNote = 73,
+				x = 240,
+				y = 169
+			},
+			{
+				midiNote = 69,
+				x = 196,
+				y = 179
+			},
+			{
+				midiNote = 74,
+				x = 128,
+				y = 103
+			},
+			{
+				midiNote = 72,
+				x = 144,
+				y = 61
+			},
+			{
+				midiNote = 71,
+				x = 178,
+				y = 35
+			},
+			{
+				midiNote = 67,
+				x = 218,
+				y = 31
+			}
+		},
+		players = {
+			{
+				x = 267,
+				y = 103,
+				size = 30,
+				isOrbiting = true,
+				orbitX = 206,
+				orbitY = 103,
+				orbitVelocity = 130,
+				orbitStartAngle = 210
+			},
+			{
+				x = 10,
+				y = 20,
+				size = 5,
+				isOrbiting = false,
+				orbitX = 10,
+				orbitY = 20,
+				orbitVelocity = 75,
+				orbitStartAngle = 1
+			}
+		}
+	}
+	
 end
 
 function Presets:new()
