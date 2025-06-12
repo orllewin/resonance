@@ -236,6 +236,9 @@ function setup()
 	local backgroundImage = gfx.image.new( "images/background" )
 	assert( backgroundImage )
 	
+	local menuImage = gfx.image.new( "images/elderwean" )
+	playdate.setMenuImage(menuImage, 100)
+	
 	gfx.sprite.setBackgroundDrawingCallback(
 			function( x, y, width, height )
 					backgroundImage:draw( 0, 0 )
@@ -279,7 +282,20 @@ function setup()
 	end
 )
 	
-	waveformMenu = menu:addOptionsMenuItem("Wave:", {"Sine", "Square", "Sawtooth", "Triangle", "Phase", "Digital", "Vosim"}, waveform, function(value)
+	waveformMenu = menu:addOptionsMenuItem(
+		"Wave:", 
+		{
+			"Sine", 
+			"Square", 
+			"Sawtooth", 
+			"Triangle", 
+			"Phase", 
+			"Digital", 
+			"Vosim", 
+			"Noise"
+		}, 
+		waveform, 
+		function(value)
 			waveform = value
 			print("Waveform changed to: ", waveform)
 			for i = 1,8,1 do 

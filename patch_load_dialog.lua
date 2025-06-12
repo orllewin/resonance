@@ -29,6 +29,8 @@ function PatchLoadDialog:show(showPatches, showPresets, isDelete, onDismiss, onL
 		gfx.drawText("Presets", 10, 10)
 	end
 	
+	self.crankDelta = 0
+	
 	gfx.drawLine(5, 24, 200 - 10, 24)
 	
 	gfx.popContext()

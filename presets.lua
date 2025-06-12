@@ -15,9 +15,81 @@ function Presets:presets()
 		self:mixolydian1(),
 		self:cMaj(),
 		self:dorian1(),
+		self:orlDrone(),
 		self:pentatonic1(),
 		self:rhubarb(),
 		self:stopLookListen()
+	}
+end
+
+function Presets:orlDrone()
+	return {
+		name = "Orl Drone",
+		waveform = "Triangle",
+		nodes = {
+			{
+				midiNote = 67,
+				x = 29,
+				y = 50
+			},
+			{
+				midiNote = 72,
+				x = 98,
+				y = 152
+			},
+			{
+				midiNote = 69,
+				x = 170,
+				y = 52
+			},
+			{
+				midiNote = 69,
+				x = 219,
+				y = 112
+			},
+			{
+				midiNote = 60,
+				x = 319,
+				y = 60
+			},
+			{
+				midiNote = 67,
+				x = 303,
+				y = 186
+			},
+			{
+				midiNote = 60,
+				x = 14,
+				y = 229
+			},
+			{
+				midiNote = 60,
+				x = 67,
+				y = 229
+			}
+		},
+		players = {
+			{
+				x = 128,
+				y = 80,
+				size = 75,
+				isOrbiting = true,
+				orbitX = 103,
+				orbitY = 80,
+				orbitVelocity = 95,
+				orbitStartAngle = 210
+			},
+			{
+				x = 316,
+				y = 117,
+				size = 75,
+				isOrbiting = true,
+				orbitX = 296,
+				orbitY = 117,
+				orbitVelocity = 135,
+				orbitStartAngle = 1
+			}
+		}
 	}
 end
 

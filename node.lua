@@ -55,7 +55,9 @@ function Node:setWaveform(waveform)
 	elseif waveform == "Digital" then
 		self.synth:setWaveform(playdate.sound.kWavePODigital)			
 	elseif waveform == "Vosim" then
-		self.synth:setWaveform(playdate.sound.kWavePOVosim)			
+		self.synth:setWaveform(playdate.sound.kWavePOVosim)
+	elseif waveform == "Noise" then
+		self.synth:setWaveform(playdate.sound.kWaveNoise)				
 	end	
 end
 

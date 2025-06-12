@@ -19,6 +19,7 @@ class('PatchDialog').extends()
 
 function PatchDialog:init()
 		PatchDialog.super.init(self)	
+		self.crankDelta = 0
 end
 
 local dialogHeight = 120
@@ -26,6 +27,7 @@ local dialogHeight = 120
 function PatchDialog:show(onDismiss, onLoadPatch, onSavePatch, onDeletePatch)
 	
 	self.onDismiss = onDismiss
+
 	
 	local background = gfx.image.new(200, dialogHeight, playdate.graphics.kColorWhite)
 	gfx.pushContext(background)
@@ -44,10 +46,10 @@ function PatchDialog:show(onDismiss, onLoadPatch, onSavePatch, onDeletePatch)
 			label = "Save"
 		},
 		{
-			label = "Load patch"
+			label = "Open"
 		},
 		{
-			label = "Load preset"
+			label = "Presets"
 		},
 		{
 			label = "Delete"
@@ -61,9 +63,9 @@ function PatchDialog:show(onDismiss, onLoadPatch, onSavePatch, onDeletePatch)
 		elseif(item.label == "Save") then
 			self:dismissNoCallback()
 			self:showSaveDialog(onSavePatch)
-		elseif(item.label == "Load patch") then
+		elseif(item.label == "Open") then
 			self:showPatchMenu(true, false, false, onDismiss, onLoadPatch, nil)
-		elseif(item.label == "Load preset") then
+		elseif(item.label == "Presets") then
 			self:showPatchMenu(false, true, false, onDismiss, onLoadPatch, nil)
 		elseif(item.label == "Delete") then
 			self:showPatchMenu(true, false, true, onDismiss, onLoadPatch, onDeletePatch)
