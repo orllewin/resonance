@@ -17,6 +17,6 @@ function ActiveNodeLabel:updateNode(node)
 end
 
 function ActiveNodeLabel:updatePlayer(player)
-	self.text = player
+	self.text = "" .. math.floor(player.p.x) .. "." .. math.floor(player.p.y)
 end
 		
