@@ -56,16 +56,6 @@ function Presets:orlDrone()
 				midiNote = 67,
 				x = 303,
 				y = 186
-			},
-			{
-				midiNote = 60,
-				x = 14,
-				y = 229
-			},
-			{
-				midiNote = 60,
-				x = 67,
-				y = 229
 			}
 		},
 		players = {
@@ -218,7 +208,7 @@ function Presets:stopLookListen()
 				isOrbiting = true,
 				orbitX = 206,
 				orbitY = 103,
-				orbitVelocity = 130,
+				orbitVelocity = 30,
 				orbitStartAngle = 210
 			},
 			{
@@ -228,7 +218,7 @@ function Presets:stopLookListen()
 				isOrbiting = false,
 				orbitX = 10,
 				orbitY = 20,
-				orbitVelocity = 75,
+				orbitVelocity = 1,
 				orbitStartAngle = 1
 			}
 		}

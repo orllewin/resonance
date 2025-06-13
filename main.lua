@@ -81,7 +81,8 @@ local mainInputHandler = {
 	end,
 	
 	BButtonDown = function()
-		for i = 1,8,1 do nodes[i]:deselect() end
+		local nodeCount = #nodes
+		for i = 1,nodeCount,1 do nodes[i]:deselect() end
 		activeNode += 1
 		if(activeNode == 9) then
 			activeNode = 1
@@ -133,7 +134,7 @@ local mainInputHandler = {
 }
 
 function setLabelsVisible(visible)
-	for i = 1,8,1 do 
+	for i = 1,#nodes,1 do 
 		nodes[i]:labelVisible(visible)
 	end
 end
@@ -145,7 +146,8 @@ function savePatch(patchName)
 	patch.name = string.lower(patchName)
 	
 	local nodeStates = {}
-	for i = 1,8,1 do 
+	local nodeCount = #nodes
+	for i = 1,nodeCount,1 do 
 		local nodeState = nodes[i]:getState()
 		nodeStates[i] = nodeState
 	end
@@ -153,7 +155,8 @@ function savePatch(patchName)
 	patch.nodes = nodeStates
 	
 	local playerStates = {}
-	for i = 1,2,1 do 
+	local playerCount = #playerNodes
+	for i = 1,playerCount,1 do 
 		local playerNodeState = playerNodes[i]:getState()
 		playerStates[i] = playerNodeState
 	end
@@ -278,7 +281,8 @@ function setup()
 		function(value)
 			waveform = value
 			print("Waveform changed to: ", waveform)
-			for i = 1,8,1 do 
+			local nodeCount = #nodes
+			for i = 1,nodeCount,1 do 
 				nodes[i]:setWaveform(waveform)
 			end
 			waveformIcon:setWaveform(waveform)
@@ -300,8 +304,8 @@ function setup()
 	playerNodes[2] = PlayerNode(geom.point.new(333, 120), 65, geom.point.new(266, 120), 23, 1)
 	playerNodes[3] = PlayerNode(geom.point.new(200, 120), 45, geom.point.new(170, 120), 20, -1)
 	playerNodes[4] = PlayerNode(geom.point.new(260, 120), 45, geom.point.new(230, 120), 18, 1)
-	playerNodes[5] = PlayerNode(geom.point.new(33, 120), 45, geom.point.new(66, 120), 14, -1)
-	playerNodes[6] = PlayerNode(geom.point.new(366, 120), 45, geom.point.new(333, 120), 12, 1)
+	playerNodes[5] = PlayerNode(geom.point.new(33, 120), 45, geom.point.new(66, 120), 14, 1)
+	playerNodes[6] = PlayerNode(geom.point.new(366, 120), 45, geom.point.new(333, 120), 12, -1)
 	
 	setLabelsVisible(true)
 end
@@ -359,7 +363,8 @@ function playdate.update()
 end
 
 function updateNodes()
-		for i = 1,8,1 do 
+		local nodeCount = #nodes
+		for i = 1,nodeCount,1 do 
 			local node = nodes[i]
 			node:checkPlayers(playerNodes) 
 			for p = 1, #playerNodes, 1 do 
