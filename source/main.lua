@@ -3,12 +3,18 @@ import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "CoreLibs/ui"
+
 import "node"
+import "player_node"
+
 import "midi"
+
 import "dialogs/patch_dialog"
 import "dialogs/nodes_dialog"
 import "dialogs/node_dialog"
-import "player_node"
+
+import "sprites/active_node"
+
 import "presets"
 import "patch_name"
 
@@ -33,6 +39,7 @@ local showingLoadPatchMenu = false
 local showingSavePatchMenu = false
 local showingMenu = false
 
+local activeNodeLabel = ActiveNodeLabel()
 local activeNode = 0
 local activePlayerNode = 1
 
@@ -69,6 +76,7 @@ local mainInputHandler = {
 					local player = playerNodes[p]
 					if p == activePlayerNode then
 						player:setActive(true)
+						activeNodeLabel:updatePlayer(player)
 					else
 						player:setActive(false)
 					end
@@ -110,6 +118,7 @@ local mainInputHandler = {
 			end
 			
 			nodes[activeNode]:select()
+			activeNodeLabel:updateNode(nodes[activeNode])
 		end
 		
 		nodeDidHold = false
