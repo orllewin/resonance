@@ -159,6 +159,7 @@ local mainInputHandler = {
 	cranked = function(change, acceleratedChange)
 		if(activeNode > 0) then
 			nodes[activeNode]:crank(change)
+			activeNodeLabel:updateNode(nodes[activeNode])
 		else
 			playerNodes[activePlayerNode]:crank(change)
 			updateNodes()
@@ -371,6 +372,7 @@ function playdate.update()
 			playerNodes[activePlayerNode]:moveOrigin(-2, 0)
 		elseif(activeNode > 0) then
 			nodes[activeNode]:move(-2, 0)
+			activeNodeLabel:updateNode(nodes[activeNode])
 		else
 			playerNodes[activePlayerNode]:move(-2, 0)
 		end
@@ -380,6 +382,7 @@ function playdate.update()
 			playerNodes[activePlayerNode]:moveOrigin(2, 0)
 		elseif(activeNode > 0) then
 			nodes[activeNode]:move(2, 0)
+			activeNodeLabel:updateNode(nodes[activeNode])
 		else
 			playerNodes[activePlayerNode]:move(2, 0)
 		end
@@ -389,6 +392,7 @@ function playdate.update()
 			playerNodes[activePlayerNode]:changeOrbitVelocity(2)
 		elseif(activeNode > 0) then
 			nodes[activeNode]:move(0, -2)
+			activeNodeLabel:updateNode(nodes[activeNode])
 		else
 			playerNodes[activePlayerNode]:move(0, -2)
 		end
@@ -398,6 +402,7 @@ function playdate.update()
 			playerNodes[activePlayerNode]:changeOrbitVelocity(-2)
 		elseif(activeNode > 0) then
 			nodes[activeNode]:move(0, 2)
+			activeNodeLabel:updateNode(nodes[activeNode])
 		else
 			playerNodes[activePlayerNode]:move(0, 2)
 		end
@@ -406,6 +411,8 @@ function playdate.update()
 	--Only draw nodes if menu not displaying
 	if not showingMenu and not showingLoadPatchMenu and not showingSavePatchMenu then
 		updateNodes()
+		
+		gfx.drawText(activeNodeLabel.text, 5, 230)
 	end
 end
 
