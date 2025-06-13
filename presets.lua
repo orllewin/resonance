@@ -76,7 +76,7 @@ function Presets:orlDrone()
 				isOrbiting = true,
 				orbitX = 103,
 				orbitY = 80,
-				orbitVelocity = 95,
+				orbitVelocity = 20,
 				orbitStartAngle = 210
 			},
 			{
@@ -86,7 +86,7 @@ function Presets:orlDrone()
 				isOrbiting = true,
 				orbitX = 296,
 				orbitY = 117,
-				orbitVelocity = 135,
+				orbitVelocity = 18,
 				orbitStartAngle = 1
 			}
 		}
@@ -147,7 +147,7 @@ function Presets:cMaj()
 				isOrbiting = true,
 				orbitX = 116,
 				orbitY = 123,
-				orbitVelocity = 95,
+				orbitVelocity = 25,
 				orbitStartAngle = 210
 			},
 			{
@@ -157,7 +157,7 @@ function Presets:cMaj()
 				isOrbiting = true,
 				orbitX = 292,
 				orbitY = 105,
-				orbitVelocity = 85,
+				orbitVelocity = 28,
 				orbitStartAngle = 1
 			}
 		}
@@ -375,7 +375,7 @@ function Presets:rhubarb()
 	player1.isOrbiting = true
 	player1.orbitX = 209
 	player1.orbitY = 110
-	player1.orbitVelocity = 95
+	player1.orbitVelocity = 12
 	player1.orbitStartAngle = 350
 	players[1] = player1
 	
@@ -385,8 +385,8 @@ function Presets:rhubarb()
 	player2.size = 12
 	player2.isOrbiting = false
 	player2.orbitX = 12
-	player2.orbitY = 12
-	player2.orbitVelocity = 12
+	player2.orbitY = 22
+	player2.orbitVelocity = 1
 	player2.orbitStartAngle = 1
 	players[2] = player2
 	preset.players = players
@@ -461,7 +461,7 @@ function Presets:dorian1()
 	player1.isOrbiting = true
 	player1.orbitX = 100
 	player1.orbitY = 120
-	player1.orbitVelocity = 120
+	player1.orbitVelocity = 20
 	player1.orbitStartAngle = 1
 	players[1] = player1
 	
@@ -472,7 +472,7 @@ function Presets:dorian1()
 	player2.isOrbiting = true
 	player2.orbitX = 300
 	player2.orbitY = 120
-	player2.orbitVelocity = 80
+	player2.orbitVelocity = 28
 	player2.orbitStartAngle = 1
 	players[2] = player2
 	
@@ -505,7 +505,7 @@ function Presets:mixolydian1()
 	player1.isOrbiting = true
 	player1.orbitX = 200
 	player1.orbitY = 120
-	player1.orbitVelocity = 120
+	player1.orbitVelocity = 20
 	player1.orbitStartAngle = 1
 	players[1] = player1
 	
@@ -516,7 +516,7 @@ function Presets:mixolydian1()
 	player2.isOrbiting = true
 	player2.orbitX = 200
 	player2.orbitY = 120
-	player2.orbitVelocity = 80
+	player2.orbitVelocity = 15
 	player2.orbitStartAngle = 1
 	players[2] = player2
 	preset.players = players

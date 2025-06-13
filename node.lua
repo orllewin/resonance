@@ -32,6 +32,13 @@ function Node:init(p, midiNote)
 		self.synth:setVolume(0)
 end
 
+function Node:stop()
+	self.sprite:remove()
+	self.label:remove()
+	self.synth:stop()
+	self.synth = nil
+end
+
 function Node:labelVisible(visible)
 	if(visible) then
 		self:select()

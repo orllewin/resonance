@@ -6,7 +6,7 @@ local diam = 16
 
 class('PlayerNode').extends()
 
-function PlayerNode:init(p, size, orbitOrigin, orbitVelocity)
+function PlayerNode:init(p, size, orbitOrigin, orbitVelocity, orbitDirection)
 		PlayerNode.super.init(self)
 		
 		self.p = p
@@ -17,6 +17,10 @@ function PlayerNode:init(p, size, orbitOrigin, orbitVelocity)
 		end
 
 		self.orbitVelocity = orbitVelocity
+		if self.orbitVelocity == nil then self.orbitVelocity = 3 end
+		
+		self.orbitDirection = orbitDirection
+		if self.orbitDirection == nil then self.orbitDirection = 1 end
 
 		self.orbitDegree = 320
 		
@@ -54,7 +58,7 @@ function PlayerNode:init(p, size, orbitOrigin, orbitVelocity)
 		
 		self:crank(0)
 		
-		if(orbitVelocity > 0 and orbitOrigin ~= nil) then
+		if(orbitVelocity ~= nil and orbitVelocity > 0 and orbitOrigin ~= nil) then
 			self.orbitOrbitSprite:moveTo(self.orbitPoint.x, self.orbitPoint.y)
 			self.orbitOrbitSprite:add()
 			self:moveOrigin(0,0)
@@ -62,6 +66,13 @@ function PlayerNode:init(p, size, orbitOrigin, orbitVelocity)
 		else
 			self.isOrbiting = false
 		end
+end
+
+function PlayerNode:stop()
+	self.sprite:remove()
+	self.orbitOriginSprite:remove()
+	self.orbitVelcitySprite:remove()
+	self.orbitOrbitSprite:remove()
 end
 
 function PlayerNode:setActive(isActive)
@@ -190,9 +201,17 @@ function PlayerNode:updateOrbit()
 		local origin = self.orbitPoint
 		local radius = self.orbitPoint:distanceToPoint(self.p)
 		local velocity = self.orbitVelocity
-		self.orbitDegree += 1
-		--if(self.orbitDegree > 360) then self.orbitDegree = 1 end
-		local angle = (self.orbitDegree*self:map(self.orbitVelocity, 1, 100, 0.01, 1.0)) * math.pi / 180
+
+		local angle = (self.orbitDegree * self:map(self.orbitVelocity, 1, 100, 0.01, 1.0)) * math.pi / 180
+
+		if(self.orbitDirection == 1) then
+			self.orbitDegree += 1
+			if angle > 6.283 then self.orbitDegree = 0 end
+		else
+			self.orbitDegree -= 1
+			if angle < -6.283 then self.orbitDegree = 0 end
+		end
+
 		local x = origin.x + radius * math.cos( angle )
 		local y = origin.y + radius * math.sin( angle )
 		self.p.x = x

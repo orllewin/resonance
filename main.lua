@@ -64,16 +64,17 @@ local mainInputHandler = {
 		else
 			if(activeNode > 0) then
 				activeNode = 0
-				for i = 1,8,1 do nodes[i]:deselect() end
+				for i = 1,#nodes,1 do nodes[i]:deselect() end
 			else
-				if(activePlayerNode == 1) then
-					activePlayerNode = 2
-					playerNodes[1]:setActive(false)
-					playerNodes[2]:setActive(true)
-				else
-					activePlayerNode = 1
-					playerNodes[1]:setActive(true)
-					playerNodes[2]:setActive(false)
+				activePlayerNode += 1
+				if activePlayerNode > #playerNodes then activePlayerNode = 1 end
+				for p = 1,#playerNodes,1 do
+					local player = playerNodes[p]
+					if p == activePlayerNode then
+						player:setActive(true)
+					else
+						player:setActive(false)
+					end
 				end
 			end
 		end
@@ -125,15 +126,9 @@ local mainInputHandler = {
 		if(activeNode > 0) then
 			nodes[activeNode]:crank(change)
 		else
-			if(activePlayerNode == 1) then
-				playerNodes[1]:crank(change)
-				updateNodes()
-			else
-				playerNodes[2]:crank(change)
-				updateNodes()
-			end
+			playerNodes[activePlayerNode]:crank(change)
+			updateNodes()
 		end
-		
 	end,
 }
 
@@ -176,60 +171,45 @@ local patchDialog = PatchDialog()
 function loadPatch(patch)
 	printTable(patch)
 	patchNameSprite:update(patch.name)
-	nodes[1]:setNote(patch.nodes[1].midiNote)
-	nodes[1]:moveTo(patch.nodes[1].x, patch.nodes[1].y)
 	
-	nodes[2]:setNote(patch.nodes[2].midiNote)
-	nodes[2]:moveTo(patch.nodes[2].x, patch.nodes[2].y)
+	--empty nodes table
+	for k, v in pairs(nodes) do 
+		v:stop()
+		nodes[k] = nil 
+	end
 	
-	nodes[3]:setNote(patch.nodes[3].midiNote)
-	nodes[3]:moveTo(patch.nodes[3].x, patch.nodes[3].y)
-	
-	nodes[4]:setNote(patch.nodes[4].midiNote)
-	nodes[4]:moveTo(patch.nodes[4].x, patch.nodes[4].y)
-	
-	nodes[5]:setNote(patch.nodes[5].midiNote)
-	nodes[5]:moveTo(patch.nodes[5].x, patch.nodes[5].y)
-	
-	nodes[6]:setNote(patch.nodes[6].midiNote)
-	nodes[6]:moveTo(patch.nodes[6].x, patch.nodes[6].y)
-	
-	nodes[7]:setNote(patch.nodes[7].midiNote)
-	nodes[7]:moveTo(patch.nodes[7].x, patch.nodes[7].y)
-	
-	nodes[8]:setNote(patch.nodes[8].midiNote)
-	nodes[8]:moveTo(patch.nodes[8].x, patch.nodes[8].y)
+	for k, v in pairs(patch.nodes) do
+		local node = Node(geom.point.new(v.x, v.y), v.midiNote)
+		table.insert(nodes, node)
+	end
 	
 	if patch.waveform ~= nil then
 		waveform = patch.waveform
 		waveformMenu:setValue(waveform)
-		for i = 1,8,1 do 
+		for i = 1,#nodes,1 do 
 			nodes[i]:setWaveform(waveform)
 		end
 		waveformIcon:setWaveform(waveform)
 	end
 	
-	playerNodes[1]:moveTo(patch.players[1].x, patch.players[1].y)
-	playerNodes[1]:setSize(patch.players[1].size)
-	if patch.players[1].isOrbiting then
-		playerNodes[1]:setActiveOrbit(
-			patch.players[1].orbitX, 
-			patch.players[1].orbitY,
-			patch.players[1].orbitVelocity,
-			patch.players[1].orbitStartAngle
-		)
+	--empty players table
+	for k, v in pairs(playerNodes) do 
+		v:stop()
+		playerNodes[k] = nil 
 	end
 	
-	playerNodes[2]:moveTo(patch.players[2].x, patch.players[2].y)
-	playerNodes[2]:setSize(patch.players[2].size)
-	if patch.players[2].isOrbiting then
-		playerNodes[2]:setActiveOrbit(
-			patch.players[2].orbitX, 
-			patch.players[2].orbitY,
-			patch.players[2].orbitVelocity,
-			patch.players[2].orbitStartAngle
-		)
+	for k, v in pairs(patch.players) do
+		local playerNode = PlayerNode(geom.point.new(v.x, v.y), v.size, nil, nil, 1)
+		 playerNode:setActiveOrbit(
+			 v.orbitX, 
+			 v.orbitY,
+			 v.orbitVelocity,
+			 v.orbitStartAngle
+		 )
+		 table.insert(playerNodes, playerNode)
 	end
+	
+	setLabelsVisible(true)
 end
 
 function setup()
@@ -316,8 +296,12 @@ function setup()
 	nodes[7] = Node(geom.point.new(333, 60), scale[21])
 	nodes[8] = Node(geom.point.new(333, 180), scale[24])
 	
-	playerNodes[1] = PlayerNode(geom.point.new(67, 120), 100, geom.point.new(133, 120), 35)
-	playerNodes[2] = PlayerNode(geom.point.new(333, 120), 75, geom.point.new(266, 120), 60)
+	playerNodes[1] = PlayerNode(geom.point.new(67, 120), 67, geom.point.new(133, 120), 27, -1)
+	playerNodes[2] = PlayerNode(geom.point.new(333, 120), 65, geom.point.new(266, 120), 23, 1)
+	playerNodes[3] = PlayerNode(geom.point.new(200, 120), 45, geom.point.new(170, 120), 20, -1)
+	playerNodes[4] = PlayerNode(geom.point.new(260, 120), 45, geom.point.new(230, 120), 18, 1)
+	playerNodes[5] = PlayerNode(geom.point.new(33, 120), 45, geom.point.new(66, 120), 14, -1)
+	playerNodes[6] = PlayerNode(geom.point.new(366, 120), 45, geom.point.new(333, 120), 12, 1)
 	
 	setLabelsVisible(true)
 end
@@ -378,16 +362,12 @@ function updateNodes()
 		for i = 1,8,1 do 
 			local node = nodes[i]
 			node:checkPlayers(playerNodes) 
-			if(node.p:distanceToPoint(playerNodes[1].p) < playerNodes[1].size) then
-				gfx.drawLine(node.p.x, node.p.y, playerNodes[1].p.x, playerNodes[1].p.y)
+			for p = 1, #playerNodes, 1 do 
+				local player = playerNodes[p]
+				player:updateOrbit()
+				if(node.p:distanceToPoint(player.p) < player.size) then
+					gfx.drawLine(node.p.x, node.p.y, player.p.x, player.p.y)
+				end
 			end
-			if(node.p:distanceToPoint(playerNodes[2].p) < playerNodes[2].size) then
-				gfx.drawLine(node.p.x, node.p.y, playerNodes[2].p.x, playerNodes[2].p.y)
-			end
-		end
-		
-		for p =1,2,1 do
-			local playerNode = playerNodes[p]
-			playerNode:updateOrbit()
 		end
 end
