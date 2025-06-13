@@ -26,8 +26,6 @@ local downDown = false
 
 local setOriginMode = false
 
-local waveformMenu
-waveform = "Triangle"
 local patchNameSprite = PatchName()
 local presets = Presets():presets()
 
@@ -214,9 +212,8 @@ function loadPatch(patch)
 	end
 	
 	if patch.waveform ~= nil then
-		waveform = patch.waveform
-		waveformMenu:setValue(waveform)
-		for i = 1,#nodes,1 do 
+		local nodeCount = #nodes
+		for i = 1,nodeCount,1 do 
 			nodes[i]:setWaveform(waveform)
 		end
 	end
@@ -333,29 +330,6 @@ function setup()
 			)
 		end
 	)
-	
-	waveformMenu = menu:addOptionsMenuItem(
-		"Wave:", 
-		{
-			"Sine", 
-			"Square", 
-			"Sawtooth", 
-			"Triangle", 
-			"Phase", 
-			"Digital", 
-			"Vosim", 
-			"Noise"
-		}, 
-		waveform, 
-		function(value)
-			waveform = value
-			print("Waveform changed to: ", waveform)
-			local nodeCount = #nodes
-			for i = 1,nodeCount,1 do 
-				nodes[i]:setWaveform(waveform)
-			end
-	end)
-	
 	
 	local scale = midi:generateScale(50, "Dorian")
 	
