@@ -1,6 +1,6 @@
-#!bin/bash
+#!/bin/bash
 
-randomCount=$(jot -r 1  3 15)
+randomCount=$(jot -r 1  3 20)
 M=$(yes "|" | tr -d '\n' | head -c "$randomCount")
 git add .
 git commit -m $M
