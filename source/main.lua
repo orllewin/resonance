@@ -3,10 +3,11 @@ import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "CoreLibs/ui"
-import "audio"
 import "node"
 import "midi"
 import "patch_dialog"
+import "nodes_dialog"
+import "node_dialog"
 import "player_node"
 import "presets"
 import "waveform_icon"
@@ -14,7 +15,6 @@ import "patch_name"
 
 local gfx <const> = playdate.graphics
 local geom <const> = playdate.geometry
-local audio = Audio()
 
 local nodes = {}
 local playerNodes = {}
@@ -40,6 +40,8 @@ local showingMenu = false
 
 local activeNode = 0
 local activePlayerNode = 1
+
+local nodeDidHold = false
 
 midi = Midi()
 
@@ -80,15 +82,37 @@ local mainInputHandler = {
 		end
 	end,
 	
-	BButtonDown = function()
-		local nodeCount = #nodes
-		for i = 1,nodeCount,1 do nodes[i]:deselect() end
-		activeNode += 1
-		if(activeNode == 9) then
-			activeNode = 1
+	BButtonHeld = function()
+		nodeDidHold = true
+		--showingMenu = true
+		
+		local nodeDialog = NodeDialog()
+		nodeDialog:show(
+			function ()
+				-- onDismiss
+				--showingMenu = false
+			end,
+			function (waveform)
+				--onWaveform
+				--showingMenu = false
+				nodes[activeNode]:setWaveform(waveform)
+			end
+		)
+	end,
+	
+	BButtonUp = function()
+		if not nodeDidHold then
+			local nodeCount = #nodes
+			for i = 1,nodeCount,1 do nodes[i]:deselect() end
+			activeNode += 1
+			if(activeNode == nodeCount + 1) then
+				activeNode = 1
+			end
+			
+			nodes[activeNode]:select()
 		end
 		
-		nodes[activeNode]:select()
+		nodeDidHold = false
 	end,
 	
 	leftButtonDown = function()
@@ -170,6 +194,7 @@ function savePatch(patchName)
 end
 
 local patchDialog = PatchDialog()
+local nodesDialog = NodesDialog()
 
 function loadPatch(patch)
 	printTable(patch)
@@ -238,32 +263,54 @@ function setup()
 	local menu = playdate.getSystemMenu()			
 		
 	
-	local patchMenuItem, error = menu:addMenuItem("Patch", function()
-		showingMenu = true
+	local patchMenuItem, error = menu:addMenuItem("Patches", 
+		function()
+			showingMenu = true
 		
-		--onDismiss, onLoadPatch, onSavePatch, onDeletePatch
-		patchDialog:show(
-			function()
-				--onDismiss
-				showingMenu = false 
-			end, 
-			function(patch)
-				--onLoadPatch
-				showingMenu = false 
-				loadPatch(patch)
-			end,
-			function(saveName)
-				--onSavePatch
-				showingMenu = false 
-				savePatch(saveName)
-			end,
-			function(patch)
-				--onDeletePatch
-				print("Delete patch:" .. patch.name)
-			end
-		)
-	end
-)
+			--onDismiss, onLoadPatch, onSavePatch, onDeletePatch
+			patchDialog:show(
+				function()
+					--onDismiss
+					showingMenu = false 
+				end, 
+				function(patch)
+					--onLoadPatch
+					showingMenu = false 
+					loadPatch(patch)
+				end,
+				function(saveName)
+					--onSavePatch
+					showingMenu = false 
+					savePatch(saveName)
+				end,
+				function(patch)
+					--onDeletePatch
+					print("Delete patch:" .. patch.name)
+				end
+			)
+		end
+	)
+	
+	local nodesMenuItem, error = menu:addMenuItem("Nodes", 
+		function()
+			showingMenu = true
+	
+			nodesDialog:show(
+				function()
+					--onDismiss
+					showingMenu = false 
+				end,
+				function()
+					--onRandomise
+					showingMenu = false 
+					local nodeCount = #nodes
+					for n = 1,nodeCount,1 do
+						nodes[n]:randomise()
+					end
+				end
+			)
+		end
+	)
 	
 	waveformMenu = menu:addOptionsMenuItem(
 		"Wave:", 

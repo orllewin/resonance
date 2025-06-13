@@ -32,6 +32,13 @@ function Node:init(p, midiNote)
 		self.synth:setVolume(0)
 end
 
+function Node:randomise()
+	self.p.x = math.random(10, 390)
+	self.p.y = math.random(10, 230)
+	self.size = math.random(10, 100)
+	self:moveTo(self.p.x, self.p.y)
+end
+
 function Node:stop()
 	self.sprite:remove()
 	self.label:remove()
@@ -42,6 +49,7 @@ end
 function Node:labelVisible(visible)
 	if(visible) then
 		self:select()
+		self:deselect()
 		self.label:add()
 	else
 		self.label:remove()
@@ -69,12 +77,26 @@ function Node:setWaveform(waveform)
 end
 
 function Node:checkPlayers(players)
-	local distanceA = self.p:distanceToPoint(players[1].p)
-	local distanceB = self.p:distanceToPoint(players[2].p)
-	if(distanceA > players[1].size and distanceB > players[2].size) then
+	local playerCount = #players
+	
+	local closestDistance = 600
+	local withinRange = false
+	for p = 1, playerCount, 1 do
+		local player = players[p]
+		local distance =  self.p:distanceToPoint(player.p)
+		if distance < player.size then
+			withinRange = true
+		end
+		
+		if distance < closestDistance then
+			closestDistance = distance
+		end
+	end
+
+	if(not withinRange) then
 		self.synth:noteOff()
 	else
-		self.synth:setVolume(self:map(math.min(distanceA, distanceB), 0, 100, 1.0, 0.0)/10.0)
+		self.synth:setVolume(self:map(closestDistance, 0, 100, 1.0, 0.0)/10.0)
 		if(not self.synth:isPlaying()) then
 			self.synth:playMIDINote(self.midiNote)
 		end

@@ -368,17 +368,7 @@ function Presets:rhubarb()
 	player1.orbitVelocity = 12
 	player1.orbitStartAngle = 350
 	players[1] = player1
-	
-	local player2 = {}
-	player2.x = 12
-	player2.y = 22
-	player2.size = 12
-	player2.isOrbiting = false
-	player2.orbitX = 12
-	player2.orbitY = 22
-	player2.orbitVelocity = 1
-	player2.orbitStartAngle = 1
-	players[2] = player2
+
 	preset.players = players
 	return preset
 end
