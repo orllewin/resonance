@@ -218,7 +218,8 @@ function PlayerNode:updateOrbit()
 		local origin = self.orbitPoint
 		local radius = self.orbitPoint:distanceToPoint(self.p)
 		local velocity = self.orbitVelocity
-
+		
+		if self.orbitDegree == nil then self.orbitDegree = 1 end
 		local angle = (self.orbitDegree * self:map(self.orbitVelocity, 1, 100, 0.01, 1.0)) * math.pi / 180
 
 		if(self.orbitDirection == 1) then

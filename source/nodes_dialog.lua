@@ -1,12 +1,9 @@
 import "CoreLibs/sprites"
 import "CoreLibs/graphics"
 import "CoreLibs/ui"
-import "presets"
-import "user_patches"
+
 import 'text_list'
-import "patch_load_dialog"
-import "patch_save_dialog"
-import "CoreLibs/keyboard"
+import "dialogs/waveform_dialog"
 
 local gfx <const> = playdate.graphics
 
@@ -17,22 +14,26 @@ local gfx <const> = playdate.graphics
 ]]
 class('NodesDialog').extends()
 
+local menuOptionSetWaveform = "Set waveform (all)"
+local menuOptionRndPositions = "Randomise positions"
+local menuOptionRndNotes = "Randomise notes"
+
+local dialogHeight = 120
+
 function NodesDialog:init()
 		NodesDialog.super.init(self)	
 		self.crankDelta = 0
 end
 
-local dialogHeight = 120
-
 function NodesDialog:show(
 	onDismiss, 
 	onRandomisePositions, 
-	onRandomiseNotes
+	onRandomiseNotes,
+	onWaveform
 )
 	
 	self.onDismiss = onDismiss
 
-	
 	local background = gfx.image.new(200, dialogHeight, playdate.graphics.kColorWhite)
 	gfx.pushContext(background)
 	gfx.setColor(gfx.kColorBlack)
@@ -44,18 +45,24 @@ function NodesDialog:show(
 	
 	local menuItems = {
 		{
-			label = "Randomise positions"
+			label = menuOptionSetWaveform
 		},
 		{
-			label = "Randomise notes"
+			label = menuOptionRndPositions
+		},
+		{
+			label = menuOptionRndNotes
 		},
 	}
 	
 	self.menuList = TextList(menuItems, 110, 120 - (dialogHeight/2) + 10, 200 - 20, 240  - 10, 20, nil, function(index, item)
-		if item.label == "Randomise positions" then
+		if item.label == menuOptionSetWaveform then
+			self:dismissNoCallback()
+			self:showWaveformDialog(onWaveform)
+		elseif item.label == menuOptionRndPositions then
 			self:dismissNoCallback()
 			onRandomisePositions()
-		elseif item.label == "Randomise notes" then
+		elseif item.label == menuOptionRndNotes then
 			self:dismissNoCallback()
 			onRandomiseNotes()
 		end
@@ -101,43 +108,15 @@ function NodesDialog:show(
 	playdate.inputHandlers.push(self.menuInputHandler)
 end
 
-function NodesDialog:showSaveDialog(onSavePatch)
-	self:dismissNoCallback()
-	local patchSaveDialog = PatchSaveDialog()
-	playdate.keyboard.keyboardDidShowCallback = function()
-		patchSaveDialog:show()
-	end
-	playdate.keyboard.textChangedCallback = function()
-		patchSaveDialog:setText(playdate.keyboard.text)
-	end
-	playdate.keyboard.keyboardWillHideCallback = function(doSave)
-		if(doSave) then
-			local saveName = playdate.keyboard.text
-			playdate.keyboard.text = ""--reset for next time
-			onSavePatch(saveName)
-		end
-		
-		patchSaveDialog:dismissNoCallback()
-	end
-	
-	playdate.keyboard.show("")
-	
-end
-
-function NodesDialog:showPatchMenu(showPatches, showPresets, isDelete, onDismiss, onLoadPatch, onDeletePatch)
-	self:dismissNoCallback()
-	PatchLoadDialog():show(
-		showPatches, 
-		showPresets,
-		isDelete,
-		function()
-			onDismiss()
-		end, 
-		function (patch)
-			onLoadPatch(patch)
+function NodesDialog:showWaveformDialog(onWaveform)
+	WaveformDialog():show(
+		"Select waveform:", 
+		function() 
+			
+			
 		end,
-		function (patch)
-			onDeletePatch(patch)
+		function(waveform)
+			onWaveform(waveform)
 		end
 	)
 end

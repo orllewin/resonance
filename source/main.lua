@@ -321,6 +321,14 @@ function setup()
 					for n = 1,nodeCount,1 do
 						nodes[n]:chooseRandomNote(scale)
 					end
+				end,
+				function(waveform)
+					--onWaveform
+					showingMenu = false 
+					local nodeCount = #nodes
+					for n = 1,nodeCount,1 do
+						nodes[n]:setWaveform(waveform)
+					end
 				end
 			)
 		end

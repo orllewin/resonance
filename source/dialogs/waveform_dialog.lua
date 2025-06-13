@@ -16,58 +16,58 @@ local gfx <const> = playdate.graphics
 	Mutate a node
 	
 ]]
-class('NodeDialog').extends()
+class('WaveformDialog').extends()
 
-function NodeDialog:init()
-		NodeDialog.super.init(self)	
-		self.crankDelta = 0
-end
+	local menuItems = {
+	{
+		label = "Sine"
+	}, 
+	{
+		label = "Square"
+	},
+	{
+		label = "Sawtooth"
+	}, 
+	{
+		label = "Triangle"
+	}, 
+	{
+		label = "Phase"
+	}, 
+	{
+		label = "Digital"
+	}, 
+	{
+		label = "Vosim"
+	}, 
+	{
+		label = "Noise"
+	}
+}
 
 local dialogHeight = 170
 local dialogWidth = 200
 
-function NodeDialog:show(node, onDismiss, onWaveform)
+function WaveformDialog:init()
+		WaveformDialog.super.init(self)	
+		self.crankDelta = 0
+end
+
+function WaveformDialog:show(title, onDismiss, onWaveform)
 	
 	self.onDismiss = onDismiss
 
-	local label = "" .. node.midiNote .. "/" .. midi:label(node.midiNote) .. " "
-	 .. node.waveform .. " " .. math.floor(node.p.x) .. "." .. math.floor(node.p.y)
 	local background = gfx.image.new(dialogWidth, dialogHeight, playdate.graphics.kColorWhite)
 	gfx.pushContext(background)
 	gfx.setColor(gfx.kColorBlack)
 	gfx.drawRoundRect(0, 0, 200, dialogHeight, 12) 
-	gfx.drawText(label, 10, 15)
+	gfx.drawText(title, 10, 15)
 	gfx.popContext()
 	self.backgroundSprite = gfx.sprite.new(background)
 	self.backgroundSprite:moveTo(200, 120)
 	self.backgroundSprite:add()
 	
-	local menuItems = {
-		{
-			label = "Sine"
-		}, 
-		{
-			label = "Square"
-		},
-		{
-			label = "Sawtooth"
-		}, 
-		{
-			label = "Triangle"
-		}, 
-		{
-			label = "Phase"
-		}, 
-		{
-			label = "Digital"
-		}, 
-		{
-			label = "Vosim"
-		}, 
-		{
-			label = "Noise"
-		}
-	}
+
 	--(items, xx, yy, w, h, rH, onChange, onSelect, zIndex)
 	local x = 110
 	local y = 120 - (dialogHeight/2) + 35
@@ -75,7 +75,7 @@ function NodeDialog:show(node, onDismiss, onWaveform)
 	local h = dialogHeight - 45
 	self.menuList = TextList(menuItems, x, y, w, h, 20, nil, function(index, item)
 		--if(item.label == "Randomise all") then
-			self:dismissNoCallback()
+			self:dismiss()
 			onWaveform(item.label)
 		--end
 	end, 29000)
@@ -120,15 +120,8 @@ function NodeDialog:show(node, onDismiss, onWaveform)
 	playdate.inputHandlers.push(self.menuInputHandler)
 end
 
-function NodeDialog:dismissNoCallback()
+function WaveformDialog:dismiss()
 	playdate.inputHandlers.pop()
 	self.menuList:removeAll()
 	self.backgroundSprite:remove()
-end
-
-function NodeDialog:dismiss()
-	playdate.inputHandlers.pop()
-	self.menuList:removeAll()
-	self.backgroundSprite:remove()
-	self.onDismiss()
 end
