@@ -4,8 +4,8 @@ import "CoreLibs/ui"
 import "presets"
 import "user_patches"
 import 'text_list'
-import "patch_load_dialog"
-import "patch_save_dialog"
+import "dialogs/patch_load_dialog"
+import "dialogs/patch_save_dialog"
 import "CoreLibs/keyboard"
 
 local gfx <const> = playdate.graphics

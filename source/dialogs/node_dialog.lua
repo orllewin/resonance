@@ -1,12 +1,8 @@
 import "CoreLibs/sprites"
 import "CoreLibs/graphics"
 import "CoreLibs/ui"
-import "presets"
-import "user_patches"
 import 'text_list'
 import 'midi'
-import "patch_load_dialog"
-import "patch_save_dialog"
 import "CoreLibs/keyboard"
 
 local gfx <const> = playdate.graphics
