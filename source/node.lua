@@ -27,6 +27,7 @@ function Node:init(p, midiNote)
 		self.label:moveTo(self.p.x + diam, self.p.y)
 		
 		self.synth = playdate.sound.synth.new(playdate.sound.kWaveTriangle)
+		self.waveform = "Triangle"
 		self.synth:setADSR(0.5, 0.5, 1.0, 2.0)
 		self.synth:playMIDINote(self.midiNote)
 		self.synth:setVolume(0)
@@ -57,6 +58,7 @@ function Node:labelVisible(visible)
 end
 
 function Node:setWaveform(waveform)
+	self.waveform = waveform
 	if waveform == "Sine" then
 		self.synth:setWaveform(playdate.sound.kWaveSine)
 	elseif waveform == "Square" then
@@ -102,7 +104,7 @@ function Node:checkPlayers(players)
 		end
 		
 		--Accelerometer
-		if waveform == "Vosim" or waveform == "Phase" or waveform == "Digital" then
+		if self.waveform == "Vosim" or self.waveform == "Phase" or self.waveform == "Digital" then
 			local x, y, _z = playdate.readAccelerometer()
 			self.synth:setParameter(1, self:map(x, -1.0, 1.0, 0.0, 1.0))
 			self.synth:setParameter(2, self:map(y, -1.0, 1.0, 0.0, 1.0))
@@ -126,6 +128,13 @@ function Node:crank(change)
 	self.label:setImage(image)
 	self.label:moveTo(self.p.x + selectedDiam + image.width/2, self.p.y)
 	self.synth:playMIDINote(self.midiNote)
+end
+
+function Node:chooseRandomNote(notes)
+	local randIndex = math.floor(math.random(1, 30))
+	local randNote = notes[randIndex]
+	print("randNote: " .. randNote)
+	self:setNote(randNote)
 end
 
 function Node:setNote(midiNote)

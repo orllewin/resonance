@@ -212,6 +212,14 @@ function Midi:getNotes2(startMidiNote, scaleLabel)
 	return notes
 end
 
+function Midi:generateRandomScale(startMidiNote)
+	local scaleIndex = math.floor(math.random(1, #SCALES))
+	print("scaleIndex:" .. scaleIndex)
+	local scaleName = SCALES[scaleIndex].name
+	print("scaleName: " .. scaleName)
+	return self:generateScale(startMidiNote, scaleName)
+end
+
 function Midi:generateScale(startMidiNote, scaleName)	
 	local scale = nil
 	for i=1, #SCALES do

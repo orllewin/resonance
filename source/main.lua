@@ -10,7 +10,6 @@ import "nodes_dialog"
 import "node_dialog"
 import "player_node"
 import "presets"
-import "waveform_icon"
 import "patch_name"
 
 local gfx <const> = playdate.graphics
@@ -29,8 +28,6 @@ local setOriginMode = false
 
 local waveformMenu
 waveform = "Triangle"
-local waveformIcon = WaveformIcon()
-waveformIcon:setWaveform(waveform)
 local patchNameSprite = PatchName()
 local presets = Presets():presets()
 
@@ -85,9 +82,13 @@ local mainInputHandler = {
 	BButtonHeld = function()
 		nodeDidHold = true
 		--showingMenu = true
-		
+		if activeNode == 0 then
+			print("Error: Active node is 0")
+			return
+		end
 		local nodeDialog = NodeDialog()
 		nodeDialog:show(
+			nodes[activeNode],
 			function ()
 				-- onDismiss
 				--showingMenu = false
@@ -96,6 +97,7 @@ local mainInputHandler = {
 				--onWaveform
 				--showingMenu = false
 				nodes[activeNode]:setWaveform(waveform)
+				nodes[activeNode]:select()
 			end
 		)
 	end,
@@ -217,7 +219,6 @@ function loadPatch(patch)
 		for i = 1,#nodes,1 do 
 			nodes[i]:setWaveform(waveform)
 		end
-		waveformIcon:setWaveform(waveform)
 	end
 	
 	--empty players table
@@ -307,6 +308,19 @@ function setup()
 					for n = 1,nodeCount,1 do
 						nodes[n]:randomise()
 					end
+					local playerCount = #playerNodes
+					for p = 1,playerCount,1 do
+						playerNodes[p]:randomise()
+					end
+				end,
+				function()
+					--onRandomiseNotes
+					showingMenu = false 
+					local scale = midi:generateRandomScale(40)
+					local nodeCount = #nodes
+					for n = 1,nodeCount,1 do
+						nodes[n]:chooseRandomNote(scale)
+					end
 				end
 			)
 		end
@@ -332,7 +346,6 @@ function setup()
 			for i = 1,nodeCount,1 do 
 				nodes[i]:setWaveform(waveform)
 			end
-			waveformIcon:setWaveform(waveform)
 	end)
 	
 	
@@ -349,10 +362,6 @@ function setup()
 	
 	playerNodes[1] = PlayerNode(geom.point.new(67, 120), 67, geom.point.new(133, 120), 27, -1)
 	playerNodes[2] = PlayerNode(geom.point.new(333, 120), 65, geom.point.new(266, 120), 23, 1)
-	playerNodes[3] = PlayerNode(geom.point.new(200, 120), 45, geom.point.new(170, 120), 20, -1)
-	playerNodes[4] = PlayerNode(geom.point.new(260, 120), 45, geom.point.new(230, 120), 18, 1)
-	playerNodes[5] = PlayerNode(geom.point.new(33, 120), 45, geom.point.new(66, 120), 14, 1)
-	playerNodes[6] = PlayerNode(geom.point.new(366, 120), 45, geom.point.new(333, 120), 12, -1)
 	
 	setLabelsVisible(true)
 end

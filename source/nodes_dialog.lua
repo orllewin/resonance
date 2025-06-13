@@ -24,7 +24,11 @@ end
 
 local dialogHeight = 120
 
-function NodesDialog:show(onDismiss, onRandomise)
+function NodesDialog:show(
+	onDismiss, 
+	onRandomisePositions, 
+	onRandomiseNotes
+)
 	
 	self.onDismiss = onDismiss
 
@@ -40,14 +44,20 @@ function NodesDialog:show(onDismiss, onRandomise)
 	
 	local menuItems = {
 		{
-			label = "Randomise all"
+			label = "Randomise positions"
+		},
+		{
+			label = "Randomise notes"
 		},
 	}
 	
 	self.menuList = TextList(menuItems, 110, 120 - (dialogHeight/2) + 10, 200 - 20, 240  - 10, 20, nil, function(index, item)
-		if(item.label == "Randomise all") then
+		if item.label == "Randomise positions" then
 			self:dismissNoCallback()
-			onRandomise()
+			onRandomisePositions()
+		elseif item.label == "Randomise notes" then
+			self:dismissNoCallback()
+			onRandomiseNotes()
 		end
 	end, 29000)
 	

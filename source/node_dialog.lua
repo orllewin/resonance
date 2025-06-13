@@ -4,6 +4,7 @@ import "CoreLibs/ui"
 import "presets"
 import "user_patches"
 import 'text_list'
+import 'midi'
 import "patch_load_dialog"
 import "patch_save_dialog"
 import "CoreLibs/keyboard"
@@ -22,17 +23,20 @@ function NodeDialog:init()
 		self.crankDelta = 0
 end
 
-local dialogHeight = 120
+local dialogHeight = 170
+local dialogWidth = 200
 
-function NodeDialog:show(onDismiss, onWaveform)
+function NodeDialog:show(node, onDismiss, onWaveform)
 	
 	self.onDismiss = onDismiss
 
-	
-	local background = gfx.image.new(200, dialogHeight, playdate.graphics.kColorWhite)
+	local label = "" .. node.midiNote .. "/" .. midi:label(node.midiNote) .. " "
+	 .. node.waveform .. " " .. math.floor(node.p.x) .. "." .. math.floor(node.p.y)
+	local background = gfx.image.new(dialogWidth, dialogHeight, playdate.graphics.kColorWhite)
 	gfx.pushContext(background)
 	gfx.setColor(gfx.kColorBlack)
 	gfx.drawRoundRect(0, 0, 200, dialogHeight, 12) 
+	gfx.drawText(label, 10, 15)
 	gfx.popContext()
 	self.backgroundSprite = gfx.sprite.new(background)
 	self.backgroundSprite:moveTo(200, 120)
@@ -64,8 +68,12 @@ function NodeDialog:show(onDismiss, onWaveform)
 			label = "Noise"
 		}
 	}
-	
-	self.menuList = TextList(menuItems, 110, 120 - (dialogHeight/2) + 10, 200 - 20, dialogHeight - 20, 20, nil, function(index, item)
+	--(items, xx, yy, w, h, rH, onChange, onSelect, zIndex)
+	local x = 110
+	local y = 120 - (dialogHeight/2) + 35
+	local w = 200 - 50
+	local h = dialogHeight - 45
+	self.menuList = TextList(menuItems, x, y, w, h, 20, nil, function(index, item)
 		--if(item.label == "Randomise all") then
 			self:dismissNoCallback()
 			onWaveform(item.label)

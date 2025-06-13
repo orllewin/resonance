@@ -68,6 +68,23 @@ function PlayerNode:init(p, size, orbitOrigin, orbitVelocity, orbitDirection)
 		end
 end
 
+function PlayerNode:randomise()
+	self.p.x = math.random(10, 390)
+	self.p.y = math.random(10, 230)
+	self:move(0, 0)
+	
+	self.size = math.random(10, 100)
+	self:crank(0)
+	
+	local oX = self.p.x + math.random(-100, 100)
+	local direction = 1
+	if math.random(100) < 50 then
+		direction = -1
+	end
+	
+	self:setActiveOrbit(oX, self.p.y, math.random(5, 30), math.random(1, 360))
+end
+
 function PlayerNode:stop()
 	self.sprite:remove()
 	self.orbitOriginSprite:remove()
