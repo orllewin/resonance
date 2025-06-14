@@ -569,7 +569,7 @@ end
 function Presets:noteTwoSquares(index, midiNote, waveform)
 	local note = {}
 	note.midiNote = midiNote
-	note.waveform = waveform
+	note.waveform = waveform 
 	if index == 1 then
 		note.x = 58
 		note.y = 74
