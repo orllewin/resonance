@@ -14,11 +14,13 @@ class('PlayerDialog').extends()
 
 local menuOptionSetOrbit = "Set orbit"
 local menuOptionSetOscillator = "Set oscillator"
+local menuOptionSetVelocity = "Set velocity"
 local menuOptionReset = "Reset"
 
 local menuItems = {
 	{label = menuOptionSetOrbit}, 
 	{label = menuOptionSetOscillator},
+	{label = menuOptionSetVelocity},
 	{label = menuOptionReset},
 }
 
@@ -30,7 +32,15 @@ end
 local dialogHeight = 170
 local dialogWidth = 200
 
-function PlayerDialog:show(player, playerIndex, onDismiss, onSetOrbit, onSetOscillator, onReset)
+function PlayerDialog:show(
+	player, 
+	playerIndex, 
+	onDismiss, 
+	onSetOrbit, 
+	onSetOscillator, 
+	onSetVelocity,
+	onReset
+)
 	
 	self.onDismiss = onDismiss
 	
@@ -58,6 +68,9 @@ function PlayerDialog:show(player, playerIndex, onDismiss, onSetOrbit, onSetOsci
 		elseif item.label == menuOptionSetOscillator then
 			self:dismissNoCallback()
 			onSetOscillator()
+		elseif item.label == menuOptionSetVelocity then
+			self:dismissNoCallback()
+			onSetVelocity()
 		elseif item.label == menuOptionReset then
 			self:dismissNoCallback()
 			onReset()

@@ -1,48 +1,24 @@
 import "CoreLibs/sprites"
 import "CoreLibs/graphics"
 import "CoreLibs/ui"
-import "presets"
-import "user_patches"
 import 'text_list'
-import 'midi'
-import "patch_load_dialog"
-import "patch_save_dialog"
-import "CoreLibs/keyboard"
 
 local gfx <const> = playdate.graphics
 
 --[[
-	
-	Mutate a node
-	
+	Choose a waveform
 ]]
 class('WaveformDialog').extends()
 
-	local menuItems = {
-	{
-		label = "Sine"
-	}, 
-	{
-		label = "Square"
-	},
-	{
-		label = "Sawtooth"
-	}, 
-	{
-		label = "Triangle"
-	}, 
-	{
-		label = "Phase"
-	}, 
-	{
-		label = "Digital"
-	}, 
-	{
-		label = "Vosim"
-	}, 
-	{
-		label = "Noise"
-	}
+local menuItems = {
+	{label = "Sine"}, 
+	{label = "Square"},
+	{label = "Sawtooth"}, 
+	{label = "Triangle"}, 
+	{label = "Phase"}, 
+	{label = "Digital"}, 
+	{label = "Vosim"}, 
+	{label = "Noise"}
 }
 
 local dialogHeight = 170

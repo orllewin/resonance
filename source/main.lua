@@ -14,6 +14,7 @@ import "dialogs/patch_dialog"
 import "dialogs/nodes_dialog"
 import "dialogs/node_dialog"
 import "dialogs/player_dialog"
+import "dialogs/velocity_dialog"
 
 import "sprites/active_node"
 
@@ -116,12 +117,25 @@ local mainInputHandler = {
 			end,
 			function()
 				--onSetOscillator
-				--setOriginMode = true
-				--playerNodes[activePlayerNode]:setOriginMode(true)
+				--todo - copy orbit logic
 				playdate.inputHandlers.push(oscillatorInputHandler)
 			end,
 			function()
+				--onSetVelocity
+				VelocityDialog():show(
+					playerNodes[activePlayerNode],
+					function()
+						--onDismiss
+					end,
+					function(velocity)
+						--onSetVelocity
+						playerNodes[activePlayerNode]:setOrbitVelocity(velocity)
+					end
+				)
+			end,
+			function()
 				--onReset
+				playerNodes[activePlayerNode]:move(0, 0)
 			end
 		)
 	end,

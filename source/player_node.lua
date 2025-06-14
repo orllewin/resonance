@@ -137,6 +137,11 @@ function PlayerNode:moveOrigin(x, y)
 	self:changeOrbitVelocity(0)
 end
 
+function PlayerNode:setOrbitVelocity(velocity)
+	self.orbitVelocity = velocity
+	self:changeOrbitVelocity(0)
+end
+
 function PlayerNode:changeOrbitVelocity(change)
 	self.orbitVelocity = math.max(1, self.orbitVelocity + change)
 	local orbitVelocityImage = gfx.image.new(2, self.orbitVelocity)
