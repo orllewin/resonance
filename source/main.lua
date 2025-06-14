@@ -12,6 +12,7 @@ import "midi"
 import "dialogs/patch_dialog"
 import "dialogs/nodes_dialog"
 import "dialogs/node_dialog"
+import "dialogs/player_dialog"
 
 import "sprites/active_node"
 
@@ -50,15 +51,93 @@ midi = Midi()
 --todo be a good citizen and maybe turn this on and off depending on selected waveform
 playdate.startAccelerometer()
 
+local orbitInputHandler = {
+	AButtonDown = function()
+		playdate.inputHandlers.pop()
+	end,
+	
+	AButtonUp = function()
+	end,
+	
+	BButtonDown = function()
+		playdate.inputHandlers.pop()
+	end,
+	
+	BButtonUp = function()
+	end,
+	
+	leftButtonDown = function()
+		
+	end,
+	rightButtonDown = function()
+		
+	end,
+	upButtonUp = function()
+		
+	end,
+	downButtonUp = function()
+		
+	end
+}
+
+local oscillatorInputHandler = {
+	AButtonDown = function()
+	playdate.inputHandlers.pop()
+end,
+
+AButtonUp = function()
+end,
+
+BButtonDown = function()
+	playdate.inputHandlers.pop()
+end,
+
+BButtonUp = function()
+end,
+
+leftButtonDown = function()
+	
+end,
+rightButtonDown = function()
+	
+end,
+upButtonUp = function()
+	
+end,
+downButtonUp = function()
+	
+end
+}
+
 local mainInputHandler = {
 	
 	AButtonDown = function()
 		
 	end,
 	
-	AButtonHeld = function()
-		setOriginMode = true
-		playerNodes[activePlayerNode]:setOriginMode(true)
+	AButtonHeld = function()	
+		PlayerDialog():show(
+			playerNodes[activePlayerNode],
+			activePlayerNode,
+			function()
+				--onDismiss
+			end,
+			function()
+				--onSetOrbit
+				--setOriginMode = true
+				--playerNodes[activePlayerNode]:setOriginMode(true)
+				playdate.inputHandlers.push(orbitInputHandler)
+			end,
+			function()
+				--onSetOscillator
+				--setOriginMode = true
+				--playerNodes[activePlayerNode]:setOriginMode(true)
+				playdate.inputHandlers.push(oscillatorInputHandler)
+			end,
+			function()
+				--onReset
+			end
+		)
 	end,
 	
 	AButtonUp = function()
@@ -66,22 +145,25 @@ local mainInputHandler = {
 			setOriginMode = false
 			playerNodes[activePlayerNode]:setOriginMode(false)
 		else
-			if(activeNode > 0) then
-				activeNode = 0
-				for i = 1,#nodes,1 do nodes[i]:deselect() end
-			else
-				activePlayerNode += 1
-				if activePlayerNode > #playerNodes then activePlayerNode = 1 end
-				for p = 1,#playerNodes,1 do
-					local player = playerNodes[p]
-					if p == activePlayerNode then
-						player:setActive(true)
-						activeNodeLabel:updatePlayer(player)
+			if not nodeDidHold then
+				if(activeNode > 0) then
+					activeNode = 0
+					for i = 1,#nodes,1 do nodes[i]:deselect() end
 					else
-						player:setActive(false)
+					activePlayerNode += 1
+					if activePlayerNode > #playerNodes then activePlayerNode = 1 end
+						for p = 1,#playerNodes,1 do
+							local player = playerNodes[p]
+							if p == activePlayerNode then
+								player:setActive(true)
+								activeNodeLabel:updatePlayer(player)
+							else
+								player:setActive(false)
+							end
+						end
 					end
 				end
-			end
+				nodeDidHold = false
 		end
 	end,
 	
@@ -98,18 +180,22 @@ local mainInputHandler = {
 			function ()
 				-- onDismiss
 				--showingMenu = false
+				nodeDidHold = true
 			end,
 			function (waveform)
 				--onWaveform
 				--showingMenu = false
+				nodeDidHold = true
 				nodes[activeNode]:setWaveform(waveform)
 				nodes[activeNode]:select()
+				activeNodeLabel:updateNode(nodes[activeNode])
 			end
 		)
 	end,
 	
 	BButtonUp = function()
 		if not nodeDidHold then
+			print("selecting next node")
 			local nodeCount = #nodes
 			for i = 1,nodeCount,1 do nodes[i]:deselect() end
 			activeNode += 1
@@ -119,6 +205,7 @@ local mainInputHandler = {
 			
 			nodes[activeNode]:select()
 			activeNodeLabel:updateNode(nodes[activeNode])
+			
 		end
 		
 		nodeDidHold = false
@@ -412,7 +499,18 @@ function playdate.update()
 	if not showingMenu and not showingLoadPatchMenu and not showingSavePatchMenu then
 		updateNodes()
 		
-		gfx.drawText(activeNodeLabel.text, 5, 230)
+		if(activeNodeLabel.isPlayer) then
+			activeNodeLabel:updatePlayer(playerNodes[activePlayerNode])
+			gfx.drawText(activeNodeLabel.text, 5, 230)
+		else 
+			if activeNodeLabel.supportsAccelerometer then
+				gfx.drawText(activeNodeLabel.text, 27, 230)
+			else
+				gfx.drawText(activeNodeLabel.text, 5, 230)
+			end
+		end
+		
+		
 	end
 end
 
