@@ -26,6 +26,9 @@ function Node:init(p, midiNote)
 		self.label = gfx.sprite.spriteWithText(midi:label(self.midiNote), 1000, 1000)
 		self.label:moveTo(self.p.x + diam, self.p.y)
 		
+		local arrowImage = gfx.image.new("images/focus_indicator")
+		self.activeSprite = gfx.sprite.new(arrowImage)
+		
 		self.synth = playdate.sound.synth.new(playdate.sound.kWaveTriangle)
 		self.waveform = "Triangle"
 		self.synth:setADSR(0.5, 0.5, 1.0, 2.0)
@@ -153,6 +156,9 @@ function Node:select()
 	gfx.popContext()
 	self.sprite:setImage(image)
 	self.label:moveTo(self.p.x + selectedDiam + image.width/2, self.p.y)
+	
+	self.activeSprite:moveTo(self.p.x, self.p.y - 16)
+	self.activeSprite:add()
 end
 
 function Node:deselect()
@@ -162,6 +168,7 @@ function Node:deselect()
 	gfx.fillCircleAtPoint(diam/2, diam/2, diam/2)
 	gfx.popContext()
 	self.sprite:setImage(image)
+	self.activeSprite:remove()
 end
 
 function Node:moveTo(x, y)
@@ -188,6 +195,7 @@ function Node:move(x, y)
 	end
 	self.sprite:moveTo(self.p.x, self.p.y)
 	self.label:moveTo(self.p.x + selectedDiam + self.label.width/2, self.p.y)
+	self.activeSprite:moveTo(self.p.x, self.p.y - 16)
 end
 
 function Node:getState()

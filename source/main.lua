@@ -209,7 +209,10 @@ local mainInputHandler = {
 	
 	BButtonUp = function()
 		if not nodeDidHold then
-			print("selecting next node")
+
+			--deselect active player
+			playerNodes[activePlayerNode]:setActive(false)
+			
 			local nodeCount = #nodes
 			for i = 1,nodeCount,1 do nodes[i]:deselect() end
 			activeNode += 1
