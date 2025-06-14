@@ -1,3 +1,4 @@
+-- 
 function startswith(str, start)
 	 return str:sub(1, #start) == start
 end
