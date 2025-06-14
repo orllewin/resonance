@@ -25,37 +25,42 @@ end
 function Presets:orlDrone()
 	return {
 		name = "Orl Drone",
-		waveform = "Triangle",
 		nodes = {
 			{
 				midiNote = 67,
 				x = 29,
-				y = 50
+				y = 50,
+				waveform = "Triangle"
 			},
 			{
 				midiNote = 72,
 				x = 98,
-				y = 152
+				y = 152,
+				waveform = "Triangle"
 			},
 			{
 				midiNote = 69,
 				x = 170,
-				y = 52
+				y = 52,
+				waveform = "Triangle"
 			},
 			{
 				midiNote = 69,
 				x = 219,
-				y = 112
+				y = 112,
+				waveform = "Triangle"
 			},
 			{
 				midiNote = 60,
 				x = 319,
-				y = 60
+				y = 60,
+				waveform = "Triangle"
 			},
 			{
 				midiNote = 67,
 				x = 303,
-				y = 186
+				y = 186,
+				waveform = "Triangle"
 			}
 		},
 		players = {
@@ -86,47 +91,54 @@ end
 function Presets:cMaj()
 	return {
 		name = "C Major",
-		waveform = "Triangle",
 		nodes = {
 			{
 				midiNote = 60,
 				x = 45,
-				y = 160
+				y = 160,
+				waveform = "Triangle"
 			},
 			{
 				midiNote = 64,
 				x = 74,
-				y = 77
+				y = 77,
+				waveform = "Triangle"
 			},
 			{
 				midiNote = 52,
 				x = 118,
-				y = 188
+				y = 188,
+				waveform = "Triangle"
 			},
 			{
 				midiNote = 57,
 				x = 163,
-				y = 82
+				y = 82,
+				waveform = "Triangle"
 			},
 			{
 				midiNote = 60,
 				x = 248,
-				y = 156
+				y = 156,
+				waveform = "Triangle"
 			},
 			{
 				midiNote = 57,
 				x = 272,
-				y = 48
+				y = 48,
+				waveform = "Triangle"
 			},
 			{
 				midiNote = 69,
 				x = 340,
-				y = 137
+				y = 137,
+				waveform = "Triangle"
 			},
 			{
 				midiNote = 67,
 				x = 348,
-				y = 72
+				y = 72,
+				waveform = "Triangle"
 			}
 		},
 		players = {
@@ -157,47 +169,54 @@ end
 function Presets:stopLookListen()
 	return {
 		name = "Stop, Look, Listen",
-		waveform = "Triangle",
 		nodes = {
 			{
 				midiNote = 76,
 				x = 280,
-				y = 109
+				y = 109,
+				waveform = "Triangle"
 			},
 			{
 				midiNote = 74,
 				x = 268,
-				y = 145
+				y = 145,
+				waveform = "Triangle"
 			},
 			{
 				midiNote = 73,
 				x = 240,
-				y = 169
+				y = 169,
+				waveform = "Triangle"
 			},
 			{
 				midiNote = 69,
 				x = 196,
-				y = 179
+				y = 179,
+				waveform = "Triangle"
 			},
 			{
 				midiNote = 74,
 				x = 128,
-				y = 103
+				y = 103,
+				waveform = "Triangle"
 			},
 			{
 				midiNote = 72,
 				x = 144,
-				y = 61
+				y = 61,
+				waveform = "Triangle"
 			},
 			{
 				midiNote = 71,
 				x = 178,
-				y = 35
+				y = 35,
+				waveform = "Triangle"
 			},
 			{
 				midiNote = 67,
 				x = 218,
-				y = 31
+				y = 31,
+				waveform = "Triangle"
 			}
 		},
 		players = {
@@ -228,47 +247,54 @@ end
 function Presets:new()
 	local preset = {}
 	preset.name = "--"
-	preset.waveform = "Sine"
 	local nodes = {}
 	nodes[1] = {
 				midiNote = 60,
 				x = 22,
-				y = 22
+				y = 22,
+				waveform = "Sine"
 			}
 	nodes[2] = {
 				midiNote = 60,
 				x = 22,
-				y = 50
+				y = 50,
+				waveform = "Sine"
 			}
 	nodes[3] = {
 				midiNote = 60,
 				x = 22,
-				y = 78
+				y = 78,
+				waveform = "Sine"
 			}
 	nodes[4] = {
 				midiNote = 60,
 				x = 22,
-				y = 106
+				y = 106,
+				waveform = "Sine"
 			}
 	nodes[5] = {
 				midiNote = 60,
 				x = 22,
-				y = 134
+				y = 134,
+				waveform = "Sine"
 			}
 	nodes[6] = {
 				midiNote = 60,
 				x = 22,
-				y = 162
+				y = 162,
+				waveform = "Sine"
 			}
 	nodes[7] = {
 				midiNote = 60,
 				x = 22,
-				y = 190
+				y = 190,
+				waveform = "Sine"
 			}
 	nodes[8] = {
 				midiNote = 60,
 				x = 22,
-				y = 218
+				y = 218,
+				waveform = "Sine"
 			}
 		
 	preset.nodes = nodes
@@ -304,55 +330,62 @@ end
 function Presets:rhubarb()
 	local preset = {}
 	preset.name = "Rhubarb"
-	preset.waveform = "Vosim"
 	local nodes = {}
 	
 	local n1 = {}
 	n1.midiNote = 66
 	n1.x = 314
 	n1.y = 62
+	n1.waveform = "Vosim"
 	nodes[1] = n1
 	
 	local n2 = {}
 	n2.midiNote = 50
 	n2.x = 270
 	n2.y = 96
+	n2.waveform = "Vosim"
 	nodes[2] = n2
 	
 	local n3 = {}
 	n3.midiNote = 54
 	n3.x = 256
 	n3.y = 150
+	n3.waveform = "Vosim"
 	nodes[3] = n3
 	
 	local n4 = {}
 	n4.midiNote = 61
 	n4.x = 312
 	n4.y = 178
+	n4.waveform = "Vosim"
 	nodes[4] = n4
 	
 	local n5 = {}
 	n5.midiNote = 64
 	n5.x = 171
 	n5.y = 210
+	n5.waveform = "Vosim"
 	nodes[5] = n5
 	
 	local n6 = {}
 	n6.midiNote = 59
 	n6.x = 92
 	n6.y = 158
+	n6.waveform = "Vosim"
 	nodes[6] = n6
 	
 	local n7 = {}
 	n7.midiNote = 52
 	n7.x = 145
 	n7.y = 128
+	n7.waveform = "Vosim"
 	nodes[7] = n7
 	
 	local n8 = {}
 	n8.midiNote = 57
 	n8.x = 113
 	n8.y = 73
+	n8.waveform = "Vosim"
 	nodes[8] = n8
 	
 	preset.nodes = nodes
@@ -376,17 +409,16 @@ end
 function Presets:pentatonic1()
 	local preset = {}
 	preset.name = "Pentatonic"
-	preset.waveform = "Sawtooth"
 	local scale = midi:generateScale(24, "Pentatonic Major")
 	preset.nodes = {
-		self:nodespecialSequence(1, scale[27]), 
-		self:nodespecialSequence(2, scale[25]), 
-		self:nodespecialSequence(3, scale[22]), 
-		self:nodespecialSequence(4, scale[28]), 
-		self:nodespecialSequence(5, scale[16]), 
-		self:nodespecialSequence(6, scale[14]), 
-		self:nodespecialSequence(7, scale[18]), 
-		self:nodespecialSequence(8, scale[22])
+		self:nodespecialSequence(1, scale[27], "Sawtooth"), 
+		self:nodespecialSequence(2, scale[25], "Sawtooth"), 
+		self:nodespecialSequence(3, scale[22], "Sawtooth"), 
+		self:nodespecialSequence(4, scale[28], "Sawtooth"), 
+		self:nodespecialSequence(5, scale[16], "Sawtooth"), 
+		self:nodespecialSequence(6, scale[14], "Sawtooth"), 
+		self:nodespecialSequence(7, scale[18], "Sawtooth"), 
+		self:nodespecialSequence(8, scale[22], "Sawtooth")
 	}
 	
 	local players = {}
@@ -420,17 +452,16 @@ end
 function Presets:dorian1()
 	local preset = {}
 	preset.name = "Dorian"
-	preset.waveform = "Triangle"
 	local scale = midi:generateScale(36, "Dorian")
 	preset.nodes = {
-		self:noteTwoSquares(1, scale[27]), 
-		self:noteTwoSquares(2, scale[25]), 
-		self:noteTwoSquares(3, scale[13]), 
-		self:noteTwoSquares(4, scale[13]), 
-		self:noteTwoSquares(5, scale[16]), 
-		self:noteTwoSquares(6, scale[22]), 
-		self:noteTwoSquares(7, scale[24]), 
-		self:noteTwoSquares(8, scale[26])
+		self:noteTwoSquares(1, scale[27], "Triangle"), 
+		self:noteTwoSquares(2, scale[25], "Triangle"), 
+		self:noteTwoSquares(3, scale[13], "Triangle"), 
+		self:noteTwoSquares(4, scale[13], "Triangle"), 
+		self:noteTwoSquares(5, scale[16], "Triangle"), 
+		self:noteTwoSquares(6, scale[22], "Triangle"), 
+		self:noteTwoSquares(7, scale[24], "Triangle"), 
+		self:noteTwoSquares(8, scale[26], "Triangle")
 	}
 	
 	local players = {}
@@ -464,17 +495,16 @@ end
 function Presets:mixolydian1()
 	local preset = {}
 	preset.name = "Mixolydian"
-	preset.waveform = "Vosim"
 	local scale = midi:generateScale(36, "Mixolydian")
 	preset.nodes = {
-		self:noteDefaultPoint(1, scale[27]), 
-		self:noteDefaultPoint(2, scale[25]), 
-		self:noteDefaultPoint(3, scale[13]), 
-		self:noteDefaultPoint(4, scale[13]), 
-		self:noteDefaultPoint(5, scale[16]), 
-		self:noteDefaultPoint(6, scale[22]), 
-		self:noteDefaultPoint(7, scale[24]), 
-		self:noteDefaultPoint(8, scale[26])
+		self:noteDefaultPoint(1, scale[27], "Vosim"), 
+		self:noteDefaultPoint(2, scale[25], "Vosim"), 
+		self:noteDefaultPoint(3, scale[13], "Vosim"), 
+		self:noteDefaultPoint(4, scale[13], "Vosim"), 
+		self:noteDefaultPoint(5, scale[16], "Vosim"), 
+		self:noteDefaultPoint(6, scale[22], "Vosim"), 
+		self:noteDefaultPoint(7, scale[24], "Vosim"), 
+		self:noteDefaultPoint(8, scale[26], "Vosim")
 	}
 	
 	local players = {}
@@ -503,9 +533,10 @@ function Presets:mixolydian1()
 	return preset
 end
 
-function Presets:noteDefaultPoint(index, midiNote)
+function Presets:noteDefaultPoint(index, midiNote, waveform)
 	local note = {}
 	note.midiNote = midiNote
+	note.waveform = waveform
 	if index == 1 then
 		note.x = 66
 		note.y = 60
@@ -535,9 +566,10 @@ function Presets:noteDefaultPoint(index, midiNote)
 	return note
 end
 
-function Presets:noteTwoSquares(index, midiNote)
+function Presets:noteTwoSquares(index, midiNote, waveform)
 	local note = {}
 	note.midiNote = midiNote
+	note.waveform = waveform
 	if index == 1 then
 		note.x = 58
 		note.y = 74
@@ -567,8 +599,9 @@ function Presets:noteTwoSquares(index, midiNote)
 	return note
 end
 
-function Presets:nodespecialSequence(index, midiNote)
+function Presets:nodespecialSequence(index, midiNote, waveform)
 	local note = {}
+	note.waveform = waveform
 	note.midiNote = midiNote
 	if index == 1 then
 		note.x = 63
