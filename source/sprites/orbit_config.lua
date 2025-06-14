@@ -49,8 +49,8 @@ function OrbitConfig:init()
 		self.orbitTopBound = orbitSpriteHeight/2 - 16
 		self.orbitBottomBound = 240 - 16
 		
-		self.orbitCircleSprite = gfx.sprite.new()
-		self.orbitCircleSprite:moveTo(200, 120)
+		self.circleSprite = gfx.sprite.new()
+		self.circleSprite:moveTo(200, 120)
 		
 		
 		self.showing = false
@@ -83,13 +83,9 @@ function OrbitConfig:show(onCancel, onSetOrbit)
 				self.orbitSprite:moveTo(self.originSprite.x + (self.originSprite.width/2) + 25, self.originSprite.y)
 				self.orbitSprite:add()
 				self:redrawOrbitCircle()
-				self.orbitCircleSprite:add()
-			elseif not self.isOrbitSet then
-				self.orbitX = self.orbitSprite.x + 8
-				self.orbitY = self.orbitSprite.y + 8
-				self:redrawOrbitCircle()
-				self.isOrbitSet = true
-				
+				self.circleSprite:add()
+			elseif not self.isOrbitSet then				
+				self:dismiss()
 				onSetOrbit(self.originX, self.originY, self.orbitX, self.orbitY)
 			end
 		end,
@@ -154,8 +150,8 @@ function OrbitConfig:redrawOrbitCircle()
 		gfx.drawCircleAtPoint(radius +2, radius + 2, radius)
 	gfx.popContext()
 	
-	self.orbitCircleSprite:setImage(circleImage)
-	self.orbitCircleSprite:moveTo(self.originX, self.originY)
+	self.circleSprite:setImage(circleImage)
+	self.circleSprite:moveTo(self.originX, self.originY)
 end
 
 function OrbitConfig:moveBy(x, y)
@@ -193,6 +189,9 @@ end
 
 function OrbitConfig:dismiss()
 	self.originSprite:remove()
+	self.orbitSprite:remove()
+	self.circleSprite:remove()
+	self.showing = false
 	playdate.inputHandlers.pop()
 end
 

@@ -93,7 +93,8 @@ local mainInputHandler = {
 	end,
 	
 	AButtonHeld = function()	
-		PlayerDialog():show(
+		local playerDialog = PlayerDialog()
+		playerDialog:show(
 			playerNodes[activePlayerNode],
 			activePlayerNode,
 			function()
@@ -105,6 +106,11 @@ local mainInputHandler = {
 				orbitConfig:show(
 					function()
 						--onDismiss
+					end,
+					function(oX, oY, pX, pY)
+						--onSetOrbit
+						playerNodes[activePlayerNode]:moveTo(pX, pY)
+						playerNodes[activePlayerNode]:setActiveOrbit(oX, oY, 50, 1)
 					end
 				)
 			end,
