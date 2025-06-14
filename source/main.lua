@@ -6,6 +6,7 @@ import "CoreLibs/ui"
 
 import "node"
 import "player_node"
+import "sprites/orbit_config"
 
 import "midi"
 
@@ -21,6 +22,9 @@ import "patch_name"
 
 local gfx <const> = playdate.graphics
 local geom <const> = playdate.geometry
+
+	resFont = gfx.font.new("parodius_ext")
+gfx.setFont(resFont)
 
 local nodes = {}
 local playerNodes = {}
@@ -48,37 +52,10 @@ local nodeDidHold = false
 
 midi = Midi()
 
+local orbitConfig = OrbitConfig()
+
 --todo be a good citizen and maybe turn this on and off depending on selected waveform
 playdate.startAccelerometer()
-
-local orbitInputHandler = {
-	AButtonDown = function()
-		playdate.inputHandlers.pop()
-	end,
-	
-	AButtonUp = function()
-	end,
-	
-	BButtonDown = function()
-		playdate.inputHandlers.pop()
-	end,
-	
-	BButtonUp = function()
-	end,
-	
-	leftButtonDown = function()
-		
-	end,
-	rightButtonDown = function()
-		
-	end,
-	upButtonUp = function()
-		
-	end,
-	downButtonUp = function()
-		
-	end
-}
 
 local oscillatorInputHandler = {
 	AButtonDown = function()
@@ -126,7 +103,10 @@ local mainInputHandler = {
 				--onSetOrbit
 				--setOriginMode = true
 				--playerNodes[activePlayerNode]:setOriginMode(true)
-				playdate.inputHandlers.push(orbitInputHandler)
+				
+				--todo - remove current orbit or oscillator
+				
+				orbitConfig:show()
 			end,
 			function()
 				--onSetOscillator
@@ -348,8 +328,6 @@ function setup()
 			end
 	)
 	
-	local font = playdate.graphics.font.new("parodius_ext")
-	gfx.setFont(font)
 	playdate.setCrankSoundsDisabled(true)
 	playdate.display.setInverted(true)
 	playdate.inputHandlers.push(mainInputHandler)
@@ -454,44 +432,48 @@ function playdate.update()
 	
 	--These will only fire with the main input handler 
 	--since it's the only one that needs key repeat:
-	if(leftDown) then
-		if setOriginMode then
-			playerNodes[activePlayerNode]:moveOrigin(-2, 0)
-		elseif(activeNode > 0) then
-			nodes[activeNode]:move(-2, 0)
-			activeNodeLabel:updateNode(nodes[activeNode])
-		else
-			playerNodes[activePlayerNode]:move(-2, 0)
+	if orbitConfig.showing then
+		orbitConfig:checkKeys()
+	else
+		if(leftDown) then
+			if setOriginMode then
+				playerNodes[activePlayerNode]:moveOrigin(-2, 0)
+			elseif(activeNode > 0) then
+				nodes[activeNode]:move(-2, 0)
+				activeNodeLabel:updateNode(nodes[activeNode])
+			else
+				playerNodes[activePlayerNode]:move(-2, 0)
+			end
 		end
-	end
-	if(rightDown) then
-		if setOriginMode then
-			playerNodes[activePlayerNode]:moveOrigin(2, 0)
-		elseif(activeNode > 0) then
-			nodes[activeNode]:move(2, 0)
-			activeNodeLabel:updateNode(nodes[activeNode])
-		else
-			playerNodes[activePlayerNode]:move(2, 0)
+		if(rightDown) then
+			if setOriginMode then
+				playerNodes[activePlayerNode]:moveOrigin(2, 0)
+			elseif(activeNode > 0) then
+				nodes[activeNode]:move(2, 0)
+				activeNodeLabel:updateNode(nodes[activeNode])
+			else
+				playerNodes[activePlayerNode]:move(2, 0)
+			end
 		end
-	end
-	if(upDown) then
-		if setOriginMode then
-			playerNodes[activePlayerNode]:changeOrbitVelocity(2)
-		elseif(activeNode > 0) then
-			nodes[activeNode]:move(0, -2)
-			activeNodeLabel:updateNode(nodes[activeNode])
-		else
-			playerNodes[activePlayerNode]:move(0, -2)
+		if(upDown) then
+			if setOriginMode then
+				playerNodes[activePlayerNode]:changeOrbitVelocity(2)
+			elseif(activeNode > 0) then
+				nodes[activeNode]:move(0, -2)
+				activeNodeLabel:updateNode(nodes[activeNode])
+			else
+				playerNodes[activePlayerNode]:move(0, -2)
+			end
 		end
-	end
-	if(downDown) then
-		if setOriginMode then
-			playerNodes[activePlayerNode]:changeOrbitVelocity(-2)
-		elseif(activeNode > 0) then
-			nodes[activeNode]:move(0, 2)
-			activeNodeLabel:updateNode(nodes[activeNode])
-		else
-			playerNodes[activePlayerNode]:move(0, 2)
+		if(downDown) then
+			if setOriginMode then
+				playerNodes[activePlayerNode]:changeOrbitVelocity(-2)
+			elseif(activeNode > 0) then
+				nodes[activeNode]:move(0, 2)
+				activeNodeLabel:updateNode(nodes[activeNode])
+			else
+				playerNodes[activePlayerNode]:move(0, 2)
+			end
 		end
 	end
 	

@@ -53,14 +53,14 @@ function PlayerDialog:show(player, playerIndex, onDismiss, onSetOrbit, onSetOsci
 	local h = dialogHeight - 45
 	self.menuList = TextList(menuItems, x, y, w, h, 20, nil, function(index, item)
 		if(item.label == menuOptionSetOrbit) then
+			self:dismissNoCallback()
 			onSetOrbit()
-			self:dismissNoCallback()
 		elseif item.label == menuOptionSetOscillator then
+			self:dismissNoCallback()
 			onSetOscillator()
-			self:dismissNoCallback()
 		elseif item.label == menuOptionReset then
-			onReset()
 			self:dismissNoCallback()
+			onReset()
 		end
 	end, 29000)
 	
