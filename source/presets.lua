@@ -246,7 +246,7 @@ end
 
 function Presets:new()
 	local preset = {}
-	preset.name = "--"
+	preset.name = "8 nodes 1 inducer"
 	local nodes = {}
 	nodes[1] = {
 				midiNote = 60,
@@ -305,23 +305,12 @@ function Presets:new()
 	player1.y = 120
 	player1.size = 100
 	player1.isOrbiting = false
-	player1.orbitX = 133
+	player1.orbitX = 200
 	player1.orbitY = 120
-	player1.orbitVelocity = 75
+	player1.orbitVelocity = 25
 	player1.orbitStartAngle = 1
 	players[1] = player1
 
-	local player2 = {}
-	player2.x = 266
-	player2.y = 120
-	player2.size = 100
-	player2.isOrbiting = false
-	player2.orbitX = 266
-	player2.orbitY = 120
-	player2.orbitVelocity = 75
-	player2.orbitStartAngle = 350
-	players[2] = player2
-	
 	preset.players = players
 
 	return preset

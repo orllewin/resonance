@@ -7,6 +7,7 @@ import "CoreLibs/ui"
 import "node"
 import "player_node"
 import "sprites/orbit_config"
+import "sprites/oscillator_config"
 
 import "midi"
 
@@ -54,6 +55,7 @@ local nodeDidHold = false
 midi = Midi()
 
 local orbitConfig = OrbitConfig()
+local oscillatorConfig = OscillatorConfig()
 
 --todo be a good citizen and maybe turn this on and off depending on selected waveform
 playdate.startAccelerometer()
@@ -452,7 +454,11 @@ function setup()
 				function()
 					--onAddNew
 					showingMenu = false 
-					nodes[#nodes + 1] = Node(geom.point.new(200, 120), 60)
+					local newIndex = #nodes + 1
+					nodes[newIndex] = Node(geom.point.new(200, 120), 60)
+					setLabelsVisible(true)
+					
+					--todo-- set the new node as active - some weirdness stopping it being simple
 				end
 			)
 		end
