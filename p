@@ -8,5 +8,6 @@ git push origin main
 
 echo
 echo https://github.com/orllewin/resonance
-echo "(command-double-click to open)"
+echo
+echo "(⌘-double-click to open)"
 echo
