@@ -34,6 +34,7 @@ function ActiveNodeLabel:updateNode(node)
 end
 
 function ActiveNodeLabel:updatePlayer(player)
+	if player == nil then return end
 	self.accelerometerSprite:remove()
 	self.isPlayer = true
 	self.supportsAccelerometer = false

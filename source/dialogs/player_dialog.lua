@@ -13,15 +13,19 @@ local gfx <const> = playdate.graphics
 class('PlayerDialog').extends()
 
 local menuOptionSetOrbit = "Set orbit"
+local menuOptionToggleDirection = "Flip orbit"
 local menuOptionSetOscillator = "Set oscillator"
 local menuOptionSetVelocity = "Set velocity"
 local menuOptionReset = "Reset"
+local menuOptionRemove = "Remove"
 
 local menuItems = {
 	{label = menuOptionSetOrbit}, 
+	{label = menuOptionToggleDirection},
 	{label = menuOptionSetOscillator},
 	{label = menuOptionSetVelocity},
 	{label = menuOptionReset},
+	{label = menuOptionRemove}
 }
 
 function PlayerDialog:init()
@@ -37,9 +41,11 @@ function PlayerDialog:show(
 	playerIndex, 
 	onDismiss, 
 	onSetOrbit, 
+	onToggleDirection,
 	onSetOscillator, 
 	onSetVelocity,
-	onReset
+	onReset,
+	onRemove
 )
 	
 	self.onDismiss = onDismiss
@@ -63,17 +69,23 @@ function PlayerDialog:show(
 	local h = dialogHeight - 45
 	self.menuList = TextList(menuItems, x, y, w, h, 20, nil, function(index, item)
 		if(item.label == menuOptionSetOrbit) then
-			self:dismissNoCallback()
+			self:dismiss()
 			onSetOrbit()
+		elseif item.label == menuOptionToggleDirection then
+			self:dismiss()
+			onToggleDirection()
 		elseif item.label == menuOptionSetOscillator then
-			self:dismissNoCallback()
+			self:dismiss()
 			onSetOscillator()
 		elseif item.label == menuOptionSetVelocity then
-			self:dismissNoCallback()
+			self:dismiss()
 			onSetVelocity()
 		elseif item.label == menuOptionReset then
-			self:dismissNoCallback()
+			self:dismiss()
 			onReset()
+		elseif item.label == menuOptionRemove then
+			self:dismiss()
+			onRemove()
 		end
 	end, 29000)
 	
@@ -123,7 +135,7 @@ function PlayerDialog:show(
 	playdate.inputHandlers.push(self.menuInputHandler)
 end
 
-function PlayerDialog:dismissNoCallback()
+function PlayerDialog:dismiss()
 	playdate.inputHandlers.pop()
 	self.menuList:removeAll()
 	self.backgroundSprite:remove()

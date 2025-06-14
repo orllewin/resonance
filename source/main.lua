@@ -116,6 +116,10 @@ local mainInputHandler = {
 				)
 			end,
 			function()
+				--onToggleDirection
+				playerNodes[activePlayerNode]:toggleDirection()
+			end,
+			function()
 				--onSetOscillator
 				--todo - copy orbit logic
 				playdate.inputHandlers.push(oscillatorInputHandler)
@@ -136,6 +140,16 @@ local mainInputHandler = {
 			function()
 				--onReset
 				playerNodes[activePlayerNode]:move(0, 0)
+			end,
+			function()
+				--onRemove
+				--todo confirmation dialog?
+				if #playerNodes > 1 then
+					playerNodes[activePlayerNode]:stop()
+					table.remove(playerNodes, activePlayerNode)
+					activePlayerNode = 1
+					playerNodes[activePlayerNode]:setActive(true)
+				end
 			end
 		)
 	end,

@@ -14,13 +14,24 @@ local gfx <const> = playdate.graphics
 ]]
 class('NodeDialog').extends()
 
+local dialogHeight = 170
+local dialogWidth = 200
+
+local menuItems = {
+	{label = "Sine"}, 
+	{label = "Square"},
+	{label = "Sawtooth"}, 
+	{label = "Triangle"}, 
+	{label = "Phase"}, 
+	{label = "Digital"}, 
+	{label = "Vosim"}, 
+	{label = "Noise"}
+}
+
 function NodeDialog:init()
 		NodeDialog.super.init(self)	
 		self.crankDelta = 0
 end
-
-local dialogHeight = 170
-local dialogWidth = 200
 
 function NodeDialog:show(node, onDismiss, onWaveform)
 	
@@ -38,32 +49,6 @@ function NodeDialog:show(node, onDismiss, onWaveform)
 	self.backgroundSprite:moveTo(200, 120)
 	self.backgroundSprite:add()
 	
-	local menuItems = {
-		{
-			label = "Sine"
-		}, 
-		{
-			label = "Square"
-		},
-		{
-			label = "Sawtooth"
-		}, 
-		{
-			label = "Triangle"
-		}, 
-		{
-			label = "Phase"
-		}, 
-		{
-			label = "Digital"
-		}, 
-		{
-			label = "Vosim"
-		}, 
-		{
-			label = "Noise"
-		}
-	}
 	--(items, xx, yy, w, h, rH, onChange, onSelect, zIndex)
 	local x = 110
 	local y = 120 - (dialogHeight/2) + 35

@@ -56,6 +56,9 @@ function PlayerNode:init(p, size, orbitOrigin, orbitVelocity, orbitDirection)
 		self.orbitOrbitSprite = gfx.sprite.new(orbitOrbitImage)
 		self.orbitOrbitSprite:moveTo(self.orbitPoint.x, self.orbitPoint.y)
 		
+		local arrowImage = gfx.image.new("images/focus_indicator")
+		self.activeSprite = gfx.sprite.new(arrowImage)
+		
 		self:crank(0)
 		
 		if(orbitVelocity ~= nil and orbitVelocity > 0 and orbitOrigin ~= nil) then
@@ -85,15 +88,29 @@ function PlayerNode:randomise()
 	self:setActiveOrbit(oX, self.p.y, math.random(5, 30), math.random(1, 360))
 end
 
+function PlayerNode:toggleDirection()
+	if self.orbitDirection == 1 then
+		self.orbitDirection = -1
+	elseif self.orbitDirection == -1 then
+		self.orbitDirection = 1
+	end
+end
+
 function PlayerNode:stop()
 	self.sprite:remove()
 	self.orbitOriginSprite:remove()
 	self.orbitVelcitySprite:remove()
 	self.orbitOrbitSprite:remove()
+	self.activeSprite:remove()
 end
 
 function PlayerNode:setActive(isActive)
 	self.isActive = isActive
+	if isActive then
+		self.activeSprite:add()
+	else
+		self.activeSprite:remove()
+	end
 	self:crank(0)
 end
 
@@ -216,6 +233,10 @@ function PlayerNode:move(x, y)
 		self.p.y = 240
 	end
 	self.sprite:moveTo(self.p.x, self.p.y)
+	
+	if self.isActive then
+		self.activeSprite:moveTo(self.p.x, self.p.y - 16)
+	end
 end
 
 function PlayerNode:updateOrbit()
@@ -240,6 +261,10 @@ function PlayerNode:updateOrbit()
 		self.p.x = x
 		self.p.y = y
 		self.sprite:moveTo(self.p.x, self.p.y)
+		
+		if self.isActive then
+			self.activeSprite:moveTo(self.p.x, self.p.y - 16)
+		end
 	end
 end
 
