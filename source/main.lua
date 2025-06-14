@@ -203,6 +203,16 @@ local mainInputHandler = {
 				nodes[activeNode]:setWaveform(waveform)
 				nodes[activeNode]:select()
 				activeNodeLabel:updateNode(nodes[activeNode])
+			end,
+			function()
+				--onRemove
+				if #nodes > 1 then
+					nodes[activeNode]:stop()
+					table.remove(nodes, activeNode)
+					activeNode = 1
+					nodes[activeNode]:select()
+					activeNodeLabel:updateNode(nodes[activeNode])
+				end
 			end
 		)
 	end,

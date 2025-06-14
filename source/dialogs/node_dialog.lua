@@ -35,7 +35,7 @@ function NodeDialog:init()
 		self.crankDelta = 0
 end
 
-function NodeDialog:show(node, onDismiss, onWaveform)
+function NodeDialog:show(node, onDismiss, onWaveform, onRemove)
 	
 	self.onDismiss = onDismiss
 
@@ -57,10 +57,13 @@ function NodeDialog:show(node, onDismiss, onWaveform)
 	local w = 200 - 50
 	local h = dialogHeight - 45
 	self.menuList = TextList(menuItems, x, y, w, h, 20, nil, function(index, item)
-		--if(item.label == "Randomise all") then
-			self:dismissNoCallback()
+		if(item.label == "Remove") then
+			self:dismiss()
+			onRemove()
+		else
+			self:dismiss()
 			onWaveform(item.label)
-		--end
+		end
 	end, 29000)
 	
 	self.menuInputHandler = {
@@ -103,7 +106,7 @@ function NodeDialog:show(node, onDismiss, onWaveform)
 	playdate.inputHandlers.push(self.menuInputHandler)
 end
 
-function NodeDialog:dismissNoCallback()
+function NodeDialog:dismiss()
 	playdate.inputHandlers.pop()
 	self.menuList:removeAll()
 	self.backgroundSprite:remove()

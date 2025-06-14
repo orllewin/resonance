@@ -46,6 +46,7 @@ end
 function Node:stop()
 	self.sprite:remove()
 	self.label:remove()
+	self.activeSprite:remove()
 	self.synth:stop()
 	self.synth = nil
 end
