@@ -23,7 +23,7 @@ import "patch_name"
 local gfx <const> = playdate.graphics
 local geom <const> = playdate.geometry
 
-	resFont = gfx.font.new("parodius_ext")
+resFont = gfx.font.new("parodius_ext")
 gfx.setFont(resFont)
 
 local nodes = {}
