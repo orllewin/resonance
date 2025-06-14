@@ -25,7 +25,9 @@ local menuItems = {
 	{label = "Phase"}, 
 	{label = "Digital"}, 
 	{label = "Vosim"}, 
-	{label = "Noise"}
+	{label = "Noise"},
+	{label = "", type = "divider"},
+	{label = "Remove"}
 }
 
 function NodeDialog:init()

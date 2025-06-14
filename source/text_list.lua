@@ -88,18 +88,17 @@ function TextList:drawRows()
 			local item = self.items[i + indexOffset]
 			local text = item.label
 			if text == nil then
-				text = self.items[i + indexOffset].category
-			end
-			if text == nil then
 				text = "Missing identifier"
 			end
-			text = replace(text, "_", " ")
-			if self:endsWith(text, ".pda") then  text = text:gsub(".pda", "") end
-			playdate.graphics.drawText(string.upper(text), 4, ((i - 1) * self.rowHeight + ((self.rowHeight/self.fontHeight)/2) + 4))
-			
+
 			if item.type ~= nil then
 				local type = item.type
-				if type == "checkbox" then
+				if type == "divider" then
+					local yy = ((i - 1) * self.rowHeight + (self.rowHeight/2))
+					playdate.graphics.drawLine(0, yy, self.w, yy)
+				elseif type == "checkbox" then
+					playdate.graphics.drawText(string.upper(text), 4, ((i - 1) * self.rowHeight + ((self.rowHeight/self.fontHeight)/2) + 4))
+					
 					local startX = self.w - 14
 					local startY = ((i - 1) * self.rowHeight + ((self.rowHeight/self.fontHeight)/2) + 2)
 					
@@ -109,6 +108,8 @@ function TextList:drawRows()
 						playdate.graphics.drawRect(startX, startY, 10, 10)
 					end
 				end
+			else
+				playdate.graphics.drawText(string.upper(text), 4, ((i - 1) * self.rowHeight + ((self.rowHeight/self.fontHeight)/2) + 4))
 			end
 		end
 	playdate.graphics.popContext()
@@ -164,6 +165,10 @@ function TextList:goUp()
 	if self.index > 1 then 
 		self.index -= 1 
 		if self.index > self.visibleRows - 1 then self.indexOffset -= 1 end
+		if self.items[self.index].type ~= nil and self.items[self.index].type == "divider" then
+			self:goUp()
+			return
+		end
 	else
 		self:setSelected(#self.items)
 	end
@@ -181,6 +186,10 @@ function TextList:goDown()
 	if self.index < #self.items then 
 		self.index += 1 
 		if self.index > self.visibleRows then self.indexOffset += 1 end
+		if self.items[self.index].type ~= nil and self.items[self.index].type == "divider" then
+			self:goDown()
+			return
+		end
 	else
 		self:setSelected(1)
 	end

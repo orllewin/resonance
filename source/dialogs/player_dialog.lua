@@ -25,6 +25,7 @@ local menuItems = {
 	{label = menuOptionSetOscillator},
 	{label = menuOptionSetVelocity},
 	{label = menuOptionReset},
+	{label = "", type = "divider"},
 	{label = menuOptionRemove}
 }
 
