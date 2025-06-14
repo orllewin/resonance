@@ -407,6 +407,11 @@ function setup()
 					for n = 1,nodeCount,1 do
 						nodes[n]:setWaveform(waveform)
 					end
+				end,
+				function()
+					--onAddNew
+					showingMenu = false 
+					nodes[#nodes + 1] = Node(geom.point.new(200, 120), 60)
 				end
 			)
 		end

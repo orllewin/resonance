@@ -15,8 +15,16 @@ local gfx <const> = playdate.graphics
 class('NodesDialog').extends()
 
 local menuOptionSetWaveform = "Set waveform (all)"
+local menuOptionAddNew = "Add new node"
 local menuOptionRndPositions = "Randomise positions"
 local menuOptionRndNotes = "Randomise notes"
+
+local menuItems = {
+	{label = menuOptionSetWaveform},
+	{label = menuOptionAddNew},
+	{label = menuOptionRndPositions},
+	{label = menuOptionRndNotes},
+}
 
 local dialogHeight = 120
 
@@ -29,7 +37,8 @@ function NodesDialog:show(
 	onDismiss, 
 	onRandomisePositions, 
 	onRandomiseNotes,
-	onWaveform
+	onWaveform,
+	onAddNew
 )
 	
 	self.onDismiss = onDismiss
@@ -43,22 +52,15 @@ function NodesDialog:show(
 	self.backgroundSprite:moveTo(200, 120)
 	self.backgroundSprite:add()
 	
-	local menuItems = {
-		{
-			label = menuOptionSetWaveform
-		},
-		{
-			label = menuOptionRndPositions
-		},
-		{
-			label = menuOptionRndNotes
-		},
-	}
+
 	
 	self.menuList = TextList(menuItems, 110, 120 - (dialogHeight/2) + 10, 200 - 20, 240  - 10, 20, nil, function(index, item)
 		if item.label == menuOptionSetWaveform then
 			self:dismissNoCallback()
 			self:showWaveformDialog(onWaveform)
+		elseif item.label == menuOptionAddNew then
+			self:dismissNoCallback()
+			onAddNew()
 		elseif item.label == menuOptionRndPositions then
 			self:dismissNoCallback()
 			onRandomisePositions()
