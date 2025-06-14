@@ -516,8 +516,6 @@ function playdate.update()
 				gfx.drawText(activeNodeLabel.text, 5, 230)
 			end
 		end
-		
-		
 	end
 end
 
