@@ -101,12 +101,12 @@ local mainInputHandler = {
 			end,
 			function()
 				--onSetOrbit
-				--setOriginMode = true
-				--playerNodes[activePlayerNode]:setOriginMode(true)
-				
-				--todo - remove current orbit or oscillator
-				
-				orbitConfig:show()
+				playerNodes[activePlayerNode]:move(0, 0)--removes orbit
+				orbitConfig:show(
+					function()
+						--onDismiss
+					end
+				)
 			end,
 			function()
 				--onSetOscillator
