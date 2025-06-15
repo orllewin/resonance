@@ -317,6 +317,7 @@ function loadPatch(patch)
 	
 	for k, v in pairs(patch.nodes) do
 		local node = Node(geom.point.new(v.x, v.y), v.midiNote)
+		if v.waveform ~= nil then node:setWaveform(v.waveform) end
 		table.insert(nodes, node)
 	end
 	

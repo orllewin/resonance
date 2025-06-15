@@ -13,12 +13,108 @@ function Presets:presets()
 	return {
 		self:new(),
 		self:mixolydian1(),
+		self:cropCircles(),
 		self:cMaj(),
 		self:dorian1(),
 		self:orlDrone(),
 		self:pentatonic1(),
 		self:rhubarb(),
-		self:stopLookListen()
+	}
+end
+
+function Presets:cropCircles()
+	local scale = midi:generateScale(60, "Mixolydian")
+	return {
+		name = "Crop Circles",
+		nodes = {
+			{
+				midiNote = 60,
+				x = 67,
+				y = 120,
+				waveform = "Vosim"
+			},
+			{
+				midiNote = 45,
+				x = 167,
+				y = 63,
+				waveform = "Vosim"
+			},
+			{
+				midiNote = 55,
+				x = 167,
+				y = 176,
+				waveform = "Vosim"
+			},
+			{
+				midiNote = 45,
+				x = 233,
+				y = 47,
+				waveform = "Vosim"
+			},
+			{
+				midiNote = 45,
+				x = 233,
+				y = 195,
+				waveform = "Vosim"
+			},
+			{
+				midiNote = 50,
+				x = 267,
+				y = 120,
+				waveform = "Vosim"
+			},
+			{
+				midiNote = 60,
+				x = 300,
+				y = 34,
+				waveform = "Vosim"
+			},
+			{
+				midiNote = 67,
+				x = 300,
+				y = 205,
+				waveform = "Vosim"
+			},
+			{
+				midiNote = 64,
+				x = 333,
+				y = 120,
+				waveform = "Vosim"
+			}
+		},
+		players = {
+			{
+				x = 66,
+				y = 120,
+				size = 66,
+				isOrbiting = true,
+				orbitX = 133,
+				orbitY = 120,
+				orbitVelocity = 9,
+				orbitStartAngle = 210
+			},
+			{
+				x = 66,
+				y = 120,
+				size = 66,
+				isOrbiting = true,
+				orbitX = 166,
+				orbitY = 120,
+				orbitVelocity = 12,
+				orbitStartAngle = 210
+			},
+			{
+				x = 66,
+				y = 120,
+				size = 132,
+				isOrbiting = true,
+				orbitX = 200,
+				orbitY = 120,
+				orbitVelocity = 15,
+				orbitStartAngle = 210
+			}
+		}
+		
 	}
 end
 
@@ -161,74 +257,6 @@ function Presets:cMaj()
 				orbitY = 105,
 				orbitVelocity = 28,
 				orbitStartAngle = 1
-			}
-		}
-	}
-end
-
-function Presets:stopLookListen()
-	return {
-		name = "Stop, Look, Listen",
-		nodes = {
-			{
-				midiNote = 76,
-				x = 280,
-				y = 109,
-				waveform = "Triangle"
-			},
-			{
-				midiNote = 74,
-				x = 268,
-				y = 145,
-				waveform = "Triangle"
-			},
-			{
-				midiNote = 73,
-				x = 240,
-				y = 169,
-				waveform = "Triangle"
-			},
-			{
-				midiNote = 69,
-				x = 196,
-				y = 179,
-				waveform = "Triangle"
-			},
-			{
-				midiNote = 74,
-				x = 128,
-				y = 103,
-				waveform = "Triangle"
-			},
-			{
-				midiNote = 72,
-				x = 144,
-				y = 61,
-				waveform = "Triangle"
-			},
-			{
-				midiNote = 71,
-				x = 178,
-				y = 35,
-				waveform = "Triangle"
-			},
-			{
-				midiNote = 67,
-				x = 218,
-				y = 31,
-				waveform = "Triangle"
-			}
-		},
-		players = {
-			{
-				x = 267,
-				y = 103,
-				size = 30,
-				isOrbiting = true,
-				orbitX = 206,
-				orbitY = 103,
-				orbitVelocity = 30,
-				orbitStartAngle = 210
 			}
 		}
 	}
