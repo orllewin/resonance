@@ -52,7 +52,7 @@ function PatchDialog:show(onDismiss, onLoadPatch, onSavePatch, onDeletePatch)
 	self.menuList = TextList(menuItems, 400 - (gDialogWidth - 10), 120 - (gDialogHeight/2) + 10, 200 - 20, 240  - 10, 20, nil, function(index, item)
 		if(item.label == "New") then
 			self:dismiss()
-			onLoadPatch(Presets():new())
+			onLoadPatch(Presets():newPatch())
 		elseif(item.label == "Save") then
 			self:dismiss()
 			self:showSaveDialog(onSavePatch)

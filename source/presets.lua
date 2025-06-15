@@ -33,6 +33,62 @@ function Presets:presets()
 	}
 end
 
+function Presets:newPatch()
+	return {
+		name = "--",
+		waveform = "Sine",
+		nodes = {
+			{
+				midiNote = 60,
+				x = 50,
+				y = 60
+			},
+			{
+				midiNote = 120,
+				x = 100,
+				y = 60
+			},
+			{
+				midiNote = 60,
+				x = 150,
+				y = 60
+			},
+			{
+				midiNote = 120,
+				x = 200,
+				y = 60
+			},
+			{
+				midiNote = 60,
+				x = 250,
+				y = 60
+			},
+			{
+				midiNote = 120,
+				x = 300,
+				y = 60
+			},
+			{
+				midiNote = 60,
+				x = 350,
+				y = 60
+			}
+		},
+		players = {
+			{
+				x = 200,
+				y = 180,
+				size = 66,
+				isOrbiting = false,
+				orbitX = 166,
+				orbitY = 120,
+				orbitVelocity = 12,
+				orbitStartAngle = 210
+			},
+		}
+	}
+end
+
 function Presets:chromaCircle1(title, isStartup)
 	local playerY = 180
 	if isStartup then

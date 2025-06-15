@@ -37,7 +37,7 @@ function PatchSaveDialog:setText(text)
 	self.textSprite:add()
 end
 
-function PatchSaveDialog:dismissNoCallback()
+function PatchSaveDialog:dismiss()
 	self.backgroundSprite:remove()
 	self.textSprite:remove()
 end

@@ -21,7 +21,7 @@ function UserPatchesDialog:show(onDismiss, onLoadPatch)
 	gfx.setColor(gfx.kColorBlack)
 	gfx.drawRoundRect(0, 0, gDialogWidth, gDialogHeight, 12) 
 	
-	gfx.drawText("XUser patches", 10, 10)
+	gfx.drawText("User patches", 10, 10)
 	
 	self.crankDelta = 0
 	
