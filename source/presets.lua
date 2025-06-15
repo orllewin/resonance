@@ -418,7 +418,7 @@ function Presets:pentatonic1()
 	player1.isOrbiting = true
 	player1.orbitX = 0
 	player1.orbitY = 120
-	player1.orbitVelocity = 120
+	player1.orbitVelocity = 25
 	player1.orbitStartAngle = 1
 	players[1] = player1
 	
@@ -429,7 +429,7 @@ function Presets:pentatonic1()
 	player2.isOrbiting = true
 	player2.orbitX = 300
 	player2.orbitY = 120
-	player2.orbitVelocity = 80
+	player2.orbitVelocity = 25
 	player2.orbitStartAngle = 1
 	players[2] = player2
 	

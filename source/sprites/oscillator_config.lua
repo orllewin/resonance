@@ -154,7 +154,7 @@ function OscillatorConfig:redrawLine()
 	gfx.pushContext(lineImage)
 		gfx.setLineWidth(4)
 		gfx.setLineCapStyle(gfx.kLineCapStyleRound)
-		gfx.drawLine(8, lineHeight/2, length - 8, lineHeight/2)
+		gfx.drawLine(10, lineHeight/2, length - 10, lineHeight/2)
 	gfx.popContext()
 	
 	self.lineSprite:setImage(lineImage)
