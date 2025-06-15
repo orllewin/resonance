@@ -123,8 +123,17 @@ local mainInputHandler = {
 			end,
 			function()
 				--onSetOscillator
-				--todo - copy orbit logic
-				playdate.inputHandlers.push(oscillatorInputHandler)
+				playerNodes[activePlayerNode]:move(0, 0)--removes orbit
+				oscillatorConfig:show(
+					function()
+						--onDismiss
+					end,
+					function(oX, oY, pX, pY)
+						--onSetOrbit
+						playerNodes[activePlayerNode]:moveTo(pX, pY)
+						playerNodes[activePlayerNode]:setActiveOrbit(oX, oY, 50, 1)
+					end
+				)
 			end,
 			function()
 				--onSetVelocity
@@ -492,6 +501,8 @@ function playdate.update()
 	--since it's the only one that needs key repeat:
 	if orbitConfig.showing then
 		orbitConfig:checkKeys()
+	elseif oscillatorConfig.showing then
+		oscillatorConfig:checkKeys()
 	else
 		if(leftDown) then
 			if setOriginMode then

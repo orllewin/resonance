@@ -9,7 +9,8 @@ class('OscillatorConfig').extends()
 function OscillatorConfig:init()
 		OscillatorConfig.super.init(self)	
 
-		local originLabelWidth,originLabelHeight = gfx.getTextSizeForMaxWidth("Origin", 200)
+		local label1 = "Point A"
+		local originLabelWidth,originLabelHeight = gfx.getTextSizeForMaxWidth(label1, 200)
 		local oOWidth = originLabelWidth + 6 + 16
 		local oOHeight = originLabelHeight + 6 + 6
 		local orbitOriginImage = gfx.image.new(oOWidth, oOHeight)
@@ -19,7 +20,7 @@ function OscillatorConfig:init()
 			
 			gfx.setImageDrawMode(playdate.graphics.kDrawModeFillWhite)
 			
-			gfx.drawText("Origin", 3, 4)
+			gfx.drawText(label1, 3, 4)
 			gfx.setImageDrawMode(playdate.graphics.kDrawModeFillBlack)
 			focusIndicator:draw(originLabelWidth + 6, 5)
 		gfx.popContext()
@@ -30,7 +31,8 @@ function OscillatorConfig:init()
 		self.orbitOriginTopBound = oOHeight/2 - 16
 		self.orbigOriginBottomBound = 240 - 16
 		
-		local orbitLabelWidth,orbitLabelHeight = gfx.getTextSizeForMaxWidth("Orbit", 200)
+		local label2 = "Point B"
+		local orbitLabelWidth,orbitLabelHeight = gfx.getTextSizeForMaxWidth(label2, 200)
 		local orbitSpriteWidth = orbitLabelWidth + 6 + 16
 		local orbitSpriteHeight = orbitLabelHeight + 6 + 6
 		local orbitImage = gfx.image.new(orbitSpriteWidth, orbitSpriteHeight)
@@ -40,7 +42,10 @@ function OscillatorConfig:init()
 			
 			gfx.setImageDrawMode(playdate.graphics.kDrawModeFillWhite)
 			
-			gfx.drawText("Orbit", 19, 4)
+			gfx.drawText(label2, 19, 4)
+			
+			gfx.setImageDrawMode(playdate.graphics.kDrawModeFillBlack)
+			focusIndicator:draw(0, 5)
 		gfx.popContext()
 		self.orbitSprite = gfx.sprite.new(orbitImage)
 		self.orbitSprite:moveTo(210, 120)
@@ -49,8 +54,8 @@ function OscillatorConfig:init()
 		self.orbitTopBound = orbitSpriteHeight/2 - 16
 		self.orbitBottomBound = 240 - 16
 		
-		self.circleSprite = gfx.sprite.new()
-		self.circleSprite:moveTo(200, 120)
+		self.lineSprite = gfx.sprite.new()
+		self.lineSprite:moveTo(200, 120)
 		
 		
 		self.showing = false
@@ -82,8 +87,8 @@ function OscillatorConfig:show(onCancel, onSetOrbit)
 				self.isOriginSet = true
 				self.orbitSprite:moveTo(self.originSprite.x + (self.originSprite.width/2) + 25, self.originSprite.y)
 				self.orbitSprite:add()
-				self:redrawOrbitCircle()
-				self.circleSprite:add()
+				self:redrawLine()
+				self.lineSprite:add()
 			elseif not self.isOrbitSet then				
 				self:dismiss()
 				onSetOrbit(self.originX, self.originY, self.orbitX, self.orbitY)
@@ -137,21 +142,23 @@ function OscillatorConfig:show(onCancel, onSetOrbit)
 	playdate.inputHandlers.push(inputHandler)
 end
 
-function OscillatorConfig:redrawOrbitCircle()	
+function OscillatorConfig:redrawLine()	
 	self.originX = self.originSprite.x + (self.originSprite.width/2) - 8
 	self.originY = self.originSprite.y + 9
 	self.orbitX = self.orbitSprite.x - (self.orbitSprite.width/2) + 8
 	self.orbitY = self.originY
-	local radius = math.abs(self.originX - self.orbitX)
-	local diam = radius * 2
-	local circleImage = gfx.image.new(diam + 4, diam + 4)
-	gfx.pushContext(circleImage)
+	
+	local length = math.abs(self.originX - self.orbitX)
+	local lineHeight = 7
+	local lineImage = gfx.image.new(length, lineHeight)
+	gfx.pushContext(lineImage)
 		gfx.setLineWidth(4)
-		gfx.drawCircleAtPoint(radius +2, radius + 2, radius)
+		gfx.setLineCapStyle(gfx.kLineCapStyleRound)
+		gfx.drawLine(8, lineHeight/2, length - 8, lineHeight/2)
 	gfx.popContext()
 	
-	self.circleSprite:setImage(circleImage)
-	self.circleSprite:moveTo(self.originX, self.originY)
+	self.lineSprite:setImage(lineImage)
+	self.lineSprite:moveTo((self.originX + self.orbitX)/2, self.originY)
 end
 
 function OscillatorConfig:moveBy(x, y)
@@ -183,14 +190,14 @@ function OscillatorConfig:moveBy(x, y)
 		elseif self.orbitSprite.y > self.orbitBottomBound then
 			self.orbitSprite:moveTo(self.orbitSprite.x, self.orbitBottomBound)
 		end
-		self:redrawOrbitCircle()
+		self:redrawLine()
 	end
 end
 
 function OscillatorConfig:dismiss()
 	self.originSprite:remove()
 	self.orbitSprite:remove()
-	self.circleSprite:remove()
+	self.lineSprite:remove()
 	self.showing = false
 	playdate.inputHandlers.pop()
 end
