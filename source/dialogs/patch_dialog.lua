@@ -5,6 +5,7 @@ import "presets"
 import "user_patches"
 import 'text_list'
 import "dialogs/patch_load_dialog"
+import "dialogs/user_patches_dialog"
 import "dialogs/patch_save_dialog"
 import "CoreLibs/keyboard"
 
@@ -17,54 +18,55 @@ local gfx <const> = playdate.graphics
 ]]
 class('PatchDialog').extends()
 
+local menuItems = {
+	{name = "User:",type = "category_title"},
+	{label = "New"},
+	{label = "Save"},
+	{label = "Open"},
+	{label = "Delete"},
+	{type = "divider"},
+	{name = "Presets:", type = "category_title"},
+	{label = "Synths"},
+	{label = "Sequencers"}
+}
+
 function PatchDialog:init()
 		PatchDialog.super.init(self)	
 		self.crankDelta = 0
 end
 
-local dialogHeight = 120
-
 function PatchDialog:show(onDismiss, onLoadPatch, onSavePatch, onDeletePatch)
 	
 	self.onDismiss = onDismiss
 
-	
-	local background = gfx.image.new(200, dialogHeight, playdate.graphics.kColorWhite)
+	local background = gfx.image.new(gDialogWidth, gDialogHeight, playdate.graphics.kColorWhite)
 	gfx.pushContext(background)
 	gfx.setColor(gfx.kColorBlack)
-	gfx.drawRoundRect(0, 0, 200, dialogHeight, 12) 
+	gfx.drawRoundRect(0, 0, gDialogWidth, gDialogHeight, 12) 
 	gfx.popContext()
 	self.backgroundSprite = gfx.sprite.new(background)
-	self.backgroundSprite:moveTo(200, 120)
+	self.backgroundSprite:moveTo(400 - (gDialogWidth/2), 120)
 	self.backgroundSprite:add()
 	
-	local menuItems = {
-		{
-			label = "New"
-		},
-		{
-			label = "Save"
-		},
-		{
-			label = "Open"
-		},
-		{
-			label = "Presets"
-		},
-		{
-			label = "Delete"
-		},
-	}
-	
-	self.menuList = TextList(menuItems, 110, 120 - (dialogHeight/2) + 10, 200 - 20, 240  - 10, 20, nil, function(index, item)
+	--(items, xx, yy, w, h, rH, onChange, onSelect, zIndex)
+	self.menuList = TextList(menuItems, 400 - (gDialogWidth - 10), 120 - (gDialogHeight/2) + 10, 200 - 20, 240  - 10, 20, nil, function(index, item)
 		if(item.label == "New") then
-			self:dismissNoCallback()
+			self:dismiss()
 			onLoadPatch(Presets():new())
 		elseif(item.label == "Save") then
-			self:dismissNoCallback()
+			self:dismiss()
 			self:showSaveDialog(onSavePatch)
 		elseif(item.label == "Open") then
-			self:showPatchMenu(true, false, false, onDismiss, onLoadPatch, nil)
+			self:dismiss()
+			UserPatchesDialog():show(
+				function()
+					--onDismiss
+				end,
+				function(patch)
+					--onLoadPatch
+					onLoadPatch(patch)
+				end
+			)
 		elseif(item.label == "Presets") then
 			self:showPatchMenu(false, true, false, onDismiss, onLoadPatch, nil)
 		elseif(item.label == "Delete") then
@@ -113,7 +115,7 @@ function PatchDialog:show(onDismiss, onLoadPatch, onSavePatch, onDeletePatch)
 end
 
 function PatchDialog:showSaveDialog(onSavePatch)
-	self:dismissNoCallback()
+	self:dismiss()
 	local patchSaveDialog = PatchSaveDialog()
 	playdate.keyboard.keyboardDidShowCallback = function()
 		patchSaveDialog:show()
@@ -128,7 +130,7 @@ function PatchDialog:showSaveDialog(onSavePatch)
 			onSavePatch(saveName)
 		end
 		
-		patchSaveDialog:dismissNoCallback()
+		patchSaveDialog:dismiss()
 	end
 	
 	playdate.keyboard.show("")
@@ -136,7 +138,7 @@ function PatchDialog:showSaveDialog(onSavePatch)
 end
 
 function PatchDialog:showPatchMenu(showPatches, showPresets, isDelete, onDismiss, onLoadPatch, onDeletePatch)
-	self:dismissNoCallback()
+	self:dismiss()
 	PatchLoadDialog():show(
 		showPatches, 
 		showPresets,
@@ -153,15 +155,8 @@ function PatchDialog:showPatchMenu(showPatches, showPresets, isDelete, onDismiss
 	)
 end
 
-function PatchDialog:dismissNoCallback()
-	playdate.inputHandlers.pop()
-	self.menuList:removeAll()
-	self.backgroundSprite:remove()
-end
-
 function PatchDialog:dismiss()
 	playdate.inputHandlers.pop()
 	self.menuList:removeAll()
 	self.backgroundSprite:remove()
-	self.onDismiss()
 end

@@ -9,9 +9,20 @@ function Presets:init()
 		
 end
 
+function Presets:synths()
+	return {
+		self:chromaCircle1("ChromaCircle", false)
+	}
+end
+
+function Presets:defaultPatch()
+	return self:chromaCircle1("--", true)
+end
+
 function Presets:presets()
 	return {
 		self:new(),
+		self:chromaCircle1("ChromaCircle", false),
 		self:mixolydian1(),
 		self:cropCircles(),
 		self:cMaj(),
@@ -22,8 +33,82 @@ function Presets:presets()
 	}
 end
 
+function Presets:chromaCircle1(title, isStartup)
+	local playerY = 180
+	if isStartup then
+		playerY = 60
+	end
+	return {
+		name = title,
+		waveform = "Vosim",
+		nodes = {
+			{
+				midiNote = 65,
+				x = 50,
+				y = 60
+			},
+			{
+				midiNote = 69,
+				x = 150,
+				y = 60
+			},
+			{
+				midiNote = 67,
+				x = 250,
+				y = 60
+			},
+			{
+				midiNote = 64,--E4
+				x = 250,
+				y = 60
+			},
+			{
+				midiNote = 74,--D5
+				x = 100,
+				y = 120
+			},
+			{
+				midiNote = 62,--D4
+				x = 200,
+				y = 120
+			},
+			{
+				midiNote = 72,--C5
+				x = 300,
+				y = 120
+			},
+			{
+				midiNote = 50,--D3 (bottom row)
+				x = 50,
+				y = 180
+			},
+			{
+				midiNote = 70,--A#4 (bottom row)
+				x = 150,
+				y = 180
+			},
+			{
+				midiNote = 69,--A4 (bottom row)
+				x = 250,
+				y = 180
+			},
+		},
+		players = {
+				{
+					x = 350,
+					y = playerY,
+					size = 66,
+					isOrbiting = false,
+					orbitX = 166,
+					orbitY = 120,
+					orbitVelocity = 12,
+					orbitStartAngle = 210
+				},
+		}
+	}
+end
+
 function Presets:cropCircles()
-	local scale = midi:generateScale(60, "Mixolydian")
 	return {
 		name = "Crop Circles",
 		nodes = {

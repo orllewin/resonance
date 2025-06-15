@@ -8,35 +8,29 @@ import 'string_utils'
 
 local gfx <const> = playdate.graphics
 
-class('PatchLoadDialog').extends()
+class('UserPatchesDialog').extends()
 
-function PatchLoadDialog:init()
-		PatchLoadDialog.super.init(self)	
+function UserPatchesDialog:init()
+		UserPatchesDialog.super.init(self)	
 end
 
-function PatchLoadDialog:show(showPatches, showPresets, isDelete, onDismiss, onLoadPatch, onDeletePatch)
+function UserPatchesDialog:show(onDismiss, onLoadPatch)
 	self.onDismiss = onDismiss
-	local background = gfx.image.new(200, 240, gfx.kColorWhite)
+	local background = gfx.image.new(gDialogWidth, gDialogHeight, gfx.kColorWhite)
 	gfx.pushContext(background)
 	gfx.setColor(gfx.kColorBlack)
-	gfx.drawRoundRect(0, 0, 200, 240, 12) 
+	gfx.drawRoundRect(0, 0, gDialogWidth, gDialogHeight, 12) 
 	
-	if isDelete then
-		gfx.drawText("Delete patch", 10, 10)
-	elseif showPatches then
-		gfx.drawText("User patches", 10, 10)
-	elseif showPresets then
-		gfx.drawText("Presets", 10, 10)
-	end
+	gfx.drawText("XUser patches", 10, 10)
 	
 	self.crankDelta = 0
 	
-	gfx.drawLine(5, 24, 200 - 10, 24)
+	gfx.drawLine(5, 24, gDialogWidth - 10, 24)
 	
 	gfx.popContext()
 	
 	self.backgroundSprite = gfx.sprite.new(background)
-	self.backgroundSprite:moveTo(200, 120)
+	self.backgroundSprite:moveTo(400 - (gDialogWidth/2), 120)
 	self.backgroundSprite:add()
 	
 	print("load patches")
@@ -49,18 +43,19 @@ function PatchLoadDialog:show(showPatches, showPresets, isDelete, onDismiss, onL
 	
 	local userPatchMenuItems = {}
 	local userPatches = userPatchesRepository:patches()
-	if showPatches then
+
 		print("loading user patches")
 		if #userPatches == 0 then
 			showList = true
+			--todo - improve this - just show a modal instead
 			menuItems[1] = {
-				label = "No patches saved",
-				type = "category_title"
+				label = "No patches saved"
 			}
 		else
 		
 			for u = 1, #userPatches, 1 do
 				local userPatch = userPatches[u]
+				print("Adding userpath: " .. userPatch.name)
 				userPatchMenuItems[u] = {
 					label = userPatch.name
 				}
@@ -68,23 +63,8 @@ function PatchLoadDialog:show(showPatches, showPresets, isDelete, onDismiss, onL
 				menuIndex += 1
 			end
 		end
-	end
 	
-	local presetMenuItems = {}
-	local presets = Presets():presets()
-	if showPresets then
-		for p = 1, #presets, 1 do
-			local preset = presets[p]
-			presetMenuItems[p] = {
-				label = preset.name
-			}
-			menuItems[menuIndex] = presetMenuItems[p]
-			menuIndex += 1
-		end
-	end
-
-	if showList then
-		self.patchList = TextList(menuItems, 110, 34, 200 - 20, 240 - 44, 20, nil, function(index, item)
+	self.patchList = TextList(menuItems, 400 - (gDialogWidth - 10), 120 - (gDialogHeight/2) + 30, 200 - 20, 240  - 10, 20, nil, function(index, item)
 			if index <= #userPatchMenuItems then
 				print("returning user patch at index " .. index)
 				local selectedUserPatch = userPatches[index]
@@ -108,7 +88,6 @@ function PatchLoadDialog:show(showPatches, showPresets, isDelete, onDismiss, onL
 			
 			
 		end, 29000)
-	end
 	
 	self.patchLoadInputHandler = {
 		
@@ -153,13 +132,13 @@ function PatchLoadDialog:show(showPatches, showPresets, isDelete, onDismiss, onL
 	playdate.inputHandlers.push(self.patchLoadInputHandler)
 end
 
-function PatchLoadDialog:dismiss()
+function UserPatchesDialog:dismiss()
 	playdate.inputHandlers.pop()
 	if self.patchList ~= nil then self.patchList:removeAll() end
 	self.backgroundSprite:remove()
 	self.onDismiss()
 end
 
-function PatchLoadDialog:draw()
+function UserPatchesDialog:draw()
 
 end

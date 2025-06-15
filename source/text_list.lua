@@ -1,5 +1,5 @@
 --[[
-	item objects must have a String field called label
+	item objects must have a String field called label or name
 	they can optionally have a type, with only current option being checkbox:
 	{
 		{
@@ -14,6 +14,9 @@
 import 'string_utils'
 
 class('TextList').extends(playdate.graphics.sprite)
+
+local type_divider = "divider"
+local type_category_title = "category_title"
 
 function TextList:init(items, xx, yy, w, h, rH, onChange, onSelect, zIndex)
 	TextList.super.init(self)
@@ -58,6 +61,13 @@ function TextList:init(items, xx, yy, w, h, rH, onChange, onSelect, zIndex)
 	
 	self:drawRows()
 	self:drawFocused()
+	
+	--todo - if any types used are focusable this will need to check the type too:
+	local itemSize = #items
+	if itemSize > 0 and self.items[1].type ~= nil and self.items[1].type == "category_title" then 
+		
+		self:goDown() 
+	end
 end
 
 function TextList:updateItems(items)
@@ -86,16 +96,23 @@ function TextList:drawRows()
 		for i=1,self.visibleRows do
 			local indexOffset = self.indexOffset
 			local item = self.items[i + indexOffset]
-			local text = item.label
-			if text == nil then
+			local text = ""
+			if item.label ~= nil then
+				text = item.label
+			elseif item.name ~= nil then
+				text = item.name
+			else
 				text = "Missing identifier"
 			end
 
 			if item.type ~= nil then
 				local type = item.type
-				if type == "divider" then
+				if type == type_divider then
 					local yy = ((i - 1) * self.rowHeight + (self.rowHeight/2))
 					playdate.graphics.drawLine(0, yy, self.w, yy)
+				elseif type == type_category_title then
+					--same as standard text, focus will just skip it
+					playdate.graphics.drawText(string.upper(text), 4, ((i - 1) * self.rowHeight + ((self.rowHeight/self.fontHeight)/2) + 4))
 				elseif type == "checkbox" then
 					playdate.graphics.drawText(string.upper(text), 4, ((i - 1) * self.rowHeight + ((self.rowHeight/self.fontHeight)/2) + 4))
 					
@@ -109,6 +126,7 @@ function TextList:drawRows()
 					end
 				end
 			else
+				--standard row
 				playdate.graphics.drawText(string.upper(text), 4, ((i - 1) * self.rowHeight + ((self.rowHeight/self.fontHeight)/2) + 4))
 			end
 		end
@@ -157,20 +175,21 @@ function TextList:setSelected(index)
 	end
 end
 
-function TextList:canGoUp()
-	return true
-end
-
 function TextList:goUp()
 	if self.index > 1 then 
+		if self.index == 2 and self.items[1].type ~= nil and self.items[1].type == type_category_title then
+			return
+		end
 		self.index -= 1 
 		if self.index > self.visibleRows - 1 then self.indexOffset -= 1 end
-		if self.items[self.index].type ~= nil and self.items[self.index].type == "divider" then
+		if self.items[self.index].type ~= nil and self.items[self.index].type == type_divider then
 			self:goUp()
 			return
 		end
-	else
-		self:setSelected(#self.items)
+		if self.items[self.index].type ~= nil and self.items[self.index].type == type_category_title then
+			self:goUp()
+			return
+		end
 	end
 	
 	self:drawRows()
@@ -178,20 +197,18 @@ function TextList:goUp()
 	if self.onChange then self.onChange(self.index, self.items[self.index]) end
 end
 
-function TextList:canGoDown()
-	return true
-end
-
 function TextList:goDown()
 	if self.index < #self.items then 
 		self.index += 1 
 		if self.index > self.visibleRows then self.indexOffset += 1 end
-		if self.items[self.index].type ~= nil and self.items[self.index].type == "divider" then
+		if self.items[self.index].type ~= nil and self.items[self.index].type == type_divider then
 			self:goDown()
 			return
 		end
-	else
-		self:setSelected(1)
+		if self.items[self.index].type ~= nil and self.items[self.index].type == type_category_title then
+			self:goDown()
+			return
+		end
 	end
 	
 	self:drawRows()

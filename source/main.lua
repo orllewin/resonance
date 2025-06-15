@@ -25,8 +25,14 @@ import "patch_name"
 local gfx <const> = playdate.graphics
 local geom <const> = playdate.geometry
 
+local stepSize = 4
+
+--globals
 resFont = gfx.font.new("parodius_ext")
 gfx.setFont(resFont)
+
+gDialogHeight = 240
+gDialogWidth = 200 
 
 local introLabelSprite = gfx.sprite.spriteWithText("Resonance", 400, 20)
 
@@ -42,7 +48,6 @@ local downDown = false
 local setOriginMode = false
 
 local patchNameSprite = PatchName()
-local presets = Presets():presets()
 
 local showingLoadPatchMenu = false
 local showingSavePatchMenu = false
@@ -299,6 +304,7 @@ function savePatch(patchName)
 	print(patchJson)
 	playdate.datastore.write(patch, filename, true)
 	patchNameSprite:update(patchName)
+	introLabelSprite:setScale(1)
 	introLabelSprite:moveTo(355, 10)
 end
 
@@ -317,15 +323,12 @@ function loadPatch(patch)
 	
 	for k, v in pairs(patch.nodes) do
 		local node = Node(geom.point.new(v.x, v.y), v.midiNote)
-		if v.waveform ~= nil then node:setWaveform(v.waveform) end
-		table.insert(nodes, node)
-	end
-	
-	if patch.waveform ~= nil then
-		local nodeCount = #nodes
-		for i = 1,nodeCount,1 do 
-			nodes[i]:setWaveform(waveform)
+		if v.waveform ~= nil then 
+			node:setWaveform(v.waveform) 
+		elseif patch.waveform ~= nil then
+			node:setWaveform(patch.waveform) 
 		end
+		table.insert(nodes, node)
 	end
 	
 	--empty players table
@@ -336,15 +339,18 @@ function loadPatch(patch)
 	
 	for k, v in pairs(patch.players) do
 		local playerNode = PlayerNode(geom.point.new(v.x, v.y), v.size, nil, nil, 1)
-		 playerNode:setActiveOrbit(
-			 v.orbitX, 
-			 v.orbitY,
-			 v.orbitVelocity,
-			 v.orbitStartAngle
-		 )
+		if v.isOrbiting then
+			playerNode:setActiveOrbit(
+				v.orbitX, 
+				v.orbitY,
+				v.orbitVelocity,
+				v.orbitStartAngle
+			)
+ 		end
 		 table.insert(playerNodes, playerNode)
 	end
 	
+	introLabelSprite:setScale(1)
 	introLabelSprite:moveTo(355, 10)
 	
 	setLabelsVisible(true)
@@ -466,21 +472,10 @@ function setup()
 		end
 	)
 	
-	local scale = midi:generateScale(50, "Dorian")
+	loadPatch(Presets():defaultPatch())
 	
-	table.insert(nodes, Node(geom.point.new(66, 60), scale[1]))
-	table.insert(nodes, Node(geom.point.new(66, 180), scale[4]))
-	table.insert(nodes, Node(geom.point.new(133, 120), scale[7]))
-	table.insert(nodes, Node(geom.point.new(200, 60), scale[10]))
-	table.insert(nodes, Node(geom.point.new(200, 180), scale[14]))
-	--table.insert(nodes, Node(geom.point.new(266, 120), scale[17]))
-	table.insert(nodes, Node(geom.point.new(333, 60), scale[21]))
-	table.insert(nodes, Node(geom.point.new(333, 180), scale[24]))
-	
-	playerNodes[1] = PlayerNode(geom.point.new(67, 120), 67, geom.point.new(133, 120), 27, -1)
-	playerNodes[2] = PlayerNode(geom.point.new(333, 120), 65, geom.point.new(266, 120), 23, 1)
-	
-	introLabelSprite:moveTo(268, 120)
+	introLabelSprite:moveTo(310, 220)
+	introLabelSprite:setScale(2)
 	introLabelSprite:add()
 	
 	setLabelsVisible(true)
@@ -502,42 +497,42 @@ function playdate.update()
 	else
 		if(leftDown) then
 			if setOriginMode then
-				playerNodes[activePlayerNode]:moveOrigin(-2, 0)
+				playerNodes[activePlayerNode]:moveOrigin(-stepSize, 0)
 			elseif(activeNode > 0) then
-				nodes[activeNode]:move(-2, 0)
+				nodes[activeNode]:move(-stepSize, 0)
 				activeNodeLabel:updateNode(nodes[activeNode])
 			else
-				playerNodes[activePlayerNode]:move(-2, 0)
+				playerNodes[activePlayerNode]:move(-stepSize, 0)
 			end
 		end
 		if(rightDown) then
 			if setOriginMode then
-				playerNodes[activePlayerNode]:moveOrigin(2, 0)
+				playerNodes[activePlayerNode]:moveOrigin(stepSize, 0)
 			elseif(activeNode > 0) then
-				nodes[activeNode]:move(2, 0)
+				nodes[activeNode]:move(stepSize, 0)
 				activeNodeLabel:updateNode(nodes[activeNode])
 			else
-				playerNodes[activePlayerNode]:move(2, 0)
+				playerNodes[activePlayerNode]:move(stepSize, 0)
 			end
 		end
 		if(upDown) then
 			if setOriginMode then
 				playerNodes[activePlayerNode]:changeOrbitVelocity(2)
 			elseif(activeNode > 0) then
-				nodes[activeNode]:move(0, -2)
+				nodes[activeNode]:move(0, -stepSize)
 				activeNodeLabel:updateNode(nodes[activeNode])
 			else
-				playerNodes[activePlayerNode]:move(0, -2)
+				playerNodes[activePlayerNode]:move(0, -stepSize)
 			end
 		end
 		if(downDown) then
 			if setOriginMode then
-				playerNodes[activePlayerNode]:changeOrbitVelocity(-2)
+				playerNodes[activePlayerNode]:changeOrbitVelocity(-stepSize)
 			elseif(activeNode > 0) then
-				nodes[activeNode]:move(0, 2)
+				nodes[activeNode]:move(0, stepSize)
 				activeNodeLabel:updateNode(nodes[activeNode])
 			else
-				playerNodes[activePlayerNode]:move(0, 2)
+				playerNodes[activePlayerNode]:move(0, stepSize)
 			end
 		end
 	end
