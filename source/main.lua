@@ -28,6 +28,8 @@ local geom <const> = playdate.geometry
 resFont = gfx.font.new("parodius_ext")
 gfx.setFont(resFont)
 
+local introLabelSprite = gfx.sprite.spriteWithText("Resonance", 400, 20)
+
 local nodes = {}
 local playerNodes = {}
 local synths = {}
@@ -59,35 +61,6 @@ local oscillatorConfig = OscillatorConfig()
 
 --todo be a good citizen and maybe turn this on and off depending on selected waveform
 playdate.startAccelerometer()
-
-local oscillatorInputHandler = {
-	AButtonDown = function()
-	playdate.inputHandlers.pop()
-end,
-
-AButtonUp = function()
-end,
-
-BButtonDown = function()
-	playdate.inputHandlers.pop()
-end,
-
-BButtonUp = function()
-end,
-
-leftButtonDown = function()
-	
-end,
-rightButtonDown = function()
-	
-end,
-upButtonUp = function()
-	
-end,
-downButtonUp = function()
-	
-end
-}
 
 local mainInputHandler = {
 	
@@ -326,6 +299,7 @@ function savePatch(patchName)
 	print(patchJson)
 	playdate.datastore.write(patch, filename, true)
 	patchNameSprite:update(patchName)
+	introLabelSprite:moveTo(355, 10)
 end
 
 local patchDialog = PatchDialog()
@@ -369,6 +343,8 @@ function loadPatch(patch)
 		 )
 		 table.insert(playerNodes, playerNode)
 	end
+	
+	introLabelSprite:moveTo(355, 10)
 	
 	setLabelsVisible(true)
 end
@@ -468,6 +444,22 @@ function setup()
 					setLabelsVisible(true)
 					
 					--todo-- set the new node as active - some weirdness stopping it being simple
+				end,
+				function()
+					--onOctaveUp
+					showingMenu = false 
+					local nodeCount = #nodes
+					for n = 1,nodeCount,1 do
+						nodes[n]:octaveUp()
+					end
+				end,
+				function()
+					--onOctaveDown
+					showingMenu = false 
+					local nodeCount = #nodes
+					for n = 1,nodeCount,1 do
+						nodes[n]:octaveDown()
+					end
 				end
 			)
 		end
@@ -475,17 +467,20 @@ function setup()
 	
 	local scale = midi:generateScale(50, "Dorian")
 	
-	nodes[1] = Node(geom.point.new(66, 60), scale[1])
-	nodes[2] = Node(geom.point.new(66, 180), scale[4])
-	nodes[3] = Node(geom.point.new(133, 120), scale[7])
-	nodes[4] = Node(geom.point.new(200, 60), scale[10])
-	nodes[5] = Node(geom.point.new(200, 180), scale[14])
-	nodes[6] = Node(geom.point.new(266, 120), scale[17])
-	nodes[7] = Node(geom.point.new(333, 60), scale[21])
-	nodes[8] = Node(geom.point.new(333, 180), scale[24])
+	table.insert(nodes, Node(geom.point.new(66, 60), scale[1]))
+	table.insert(nodes, Node(geom.point.new(66, 180), scale[4]))
+	table.insert(nodes, Node(geom.point.new(133, 120), scale[7]))
+	table.insert(nodes, Node(geom.point.new(200, 60), scale[10]))
+	table.insert(nodes, Node(geom.point.new(200, 180), scale[14]))
+	--table.insert(nodes, Node(geom.point.new(266, 120), scale[17]))
+	table.insert(nodes, Node(geom.point.new(333, 60), scale[21]))
+	table.insert(nodes, Node(geom.point.new(333, 180), scale[24]))
 	
 	playerNodes[1] = PlayerNode(geom.point.new(67, 120), 67, geom.point.new(133, 120), 27, -1)
 	playerNodes[2] = PlayerNode(geom.point.new(333, 120), 65, geom.point.new(266, 120), 23, 1)
+	
+	introLabelSprite:moveTo(268, 120)
+	introLabelSprite:add()
 	
 	setLabelsVisible(true)
 end

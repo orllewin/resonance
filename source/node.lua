@@ -36,6 +36,20 @@ function Node:init(p, midiNote)
 		self.synth:setVolume(0)
 end
 
+function Node:octaveUp()
+	if self.midiNote < 115 then
+		self.midiNote += 12
+	end
+	self:crank(0)
+end
+
+function Node:octaveDown()
+	if self.midiNote >= 12 then
+		self.midiNote -= 12
+	end
+	self:crank(0)
+end
+
 function Node:randomise()
 	self.p.x = math.random(10, 390)
 	self.p.y = math.random(10, 230)

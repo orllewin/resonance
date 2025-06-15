@@ -229,16 +229,6 @@ function Presets:stopLookListen()
 				orbitY = 103,
 				orbitVelocity = 30,
 				orbitStartAngle = 210
-			},
-			{
-				x = 10,
-				y = 20,
-				size = 5,
-				isOrbiting = false,
-				orbitX = 10,
-				orbitY = 20,
-				orbitVelocity = 1,
-				orbitStartAngle = 1
 			}
 		}
 	}
