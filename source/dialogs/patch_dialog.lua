@@ -4,10 +4,10 @@ import "CoreLibs/ui"
 import "presets"
 import "user_patches"
 import 'text_list'
-import "dialogs/patch_load_dialog"
 import "dialogs/user_patches_dialog"
 import "dialogs/delete_patch_dialog"
 import "dialogs/patch_save_dialog"
+import "dialogs/presets_dialog"
 import "CoreLibs/keyboard"
 
 local gfx <const> = playdate.graphics
@@ -19,16 +19,23 @@ local gfx <const> = playdate.graphics
 ]]
 class('PatchDialog').extends()
 
+local menuItemNew = "New"
+local menuItemSave = "Save"
+local menuItemOpen = "Open"
+local menuItemDelete = "Delete"
+local menuItemSynths = "Synths"
+local menuItemSequencers = "Sequencers"
+
 local menuItems = {
 	{name = "User:",type = "category_title"},
-	{label = "New"},
-	{label = "Save"},
-	{label = "Open"},
-	{label = "Delete"},
+	{label = menuItemNew},
+	{label = menuItemSave},
+	{label = menuItemOpen},
+	{label = menuItemDelete},
 	{type = "divider"},
 	{name = "Presets:", type = "category_title"},
-	{label = "Synths"},
-	{label = "Sequencers"}
+	{label = menuItemSynths},
+	{label = menuItemSequencers}
 }
 
 function PatchDialog:init()
@@ -51,13 +58,13 @@ function PatchDialog:show(onDismiss, onLoadPatch, onSavePatch)
 	
 	--(items, xx, yy, w, h, rH, onChange, onSelect, zIndex)
 	self.menuList = TextList(menuItems, 400 - (gDialogWidth - 10), 120 - (gDialogHeight/2) + 10, 200 - 20, 240  - 10, 20, nil, function(index, item)
-		if(item.label == "New") then
+		if(item.label == menuItemNew) then
 			self:dismiss()
 			onLoadPatch(Presets():newPatch())
-		elseif(item.label == "Save") then
+		elseif(item.label == menuItemSave) then
 			self:dismiss()
 			self:showSaveDialog(onSavePatch)
-		elseif(item.label == "Open") then
+		elseif(item.label == menuItemOpen) then
 			self:dismiss()
 			UserPatchesDialog():show(
 				function()
@@ -68,16 +75,37 @@ function PatchDialog:show(onDismiss, onLoadPatch, onSavePatch)
 					onLoadPatch(patch)
 				end
 			)
-		elseif(item.label == "Delete") then
+		elseif(item.label == menuItemDelete) then
 			self:dismiss()
 			DeletePatchDialog():show(
 				function()
 					--onDismiss
 				end
 			)
-		elseif(item.label == "Presets") then
-			self:showPatchMenu(false, true, false, onDismiss, onLoadPatch, nil)
-
+		elseif(item.label == menuItemSynths) then
+			self:dismiss()
+			PresetsDialog():show(
+				true,--isSynths
+				function()
+					--onDismiss
+				end,
+				function(patch)
+					--onLoadPatch
+					onLoadPatch(patch)
+				end
+			)
+		elseif(item.label == menuItemSynths) then
+			self:dismiss()
+			PresetsDialog():show(
+				false,--isSynths
+				function()
+					--onDismiss
+				end,
+				function(patch)
+					--onLoadPatch
+					onLoadPatch(patch)
+				end
+			)
 		end
 	end, 29000)
 	

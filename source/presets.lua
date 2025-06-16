@@ -15,6 +15,10 @@ function Presets:synths()
 	}
 end
 
+function Presets:sequencers()
+	return presets()--todo
+end
+
 function Presets:defaultPatch()
 	return self:chromaCircle1("--", true)
 end
