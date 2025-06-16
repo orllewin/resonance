@@ -36,7 +36,7 @@ function PatchDialog:init()
 		self.crankDelta = 0
 end
 
-function PatchDialog:show(onDismiss, onLoadPatch, onSavePatch, onDeletePatch)
+function PatchDialog:show(onDismiss, onLoadPatch, onSavePatch)
 	
 	self.onDismiss = onDismiss
 
@@ -85,6 +85,7 @@ function PatchDialog:show(onDismiss, onLoadPatch, onSavePatch, onDeletePatch)
 		
 		BButtonUp = function()
 			self:dismiss()
+			onDismiss()
 		end,
 		
 		BButtonDown = function()

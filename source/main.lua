@@ -379,7 +379,7 @@ function setup()
 	
 	local patchMenuItem, error = menu:addMenuItem("Patches", 
 		function()
-			showingMenu = false
+			showingMenu = true
 		
 			patchDialog:show(
 				function()
@@ -395,10 +395,6 @@ function setup()
 					--onSavePatch
 					showingMenu = false 
 					savePatch(saveName)
-				end,
-				function(patch)
-					--onDeletePatch
-					print("Delete patch:" .. patch.name)
 				end
 			)
 		end
@@ -537,7 +533,7 @@ function playdate.update()
 	end
 	
 	--Only draw nodes if menu not displaying
-	--if not showingMenu and not showingLoadPatchMenu and not showingSavePatchMenu then
+	if not showingMenu then
 		updateNodes()
 		
 		if(activeNodeLabel.isPlayer) then
@@ -550,7 +546,7 @@ function playdate.update()
 				gfx.drawText(activeNodeLabel.text, 5, 230)
 			end
 		end
-	--end
+	end
 end
 
 function updateNodes()
