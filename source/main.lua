@@ -370,6 +370,12 @@ function showNodesMenu()
 			--onDismiss
 			showingMenu = false 
 		end,
+		function ()
+			--onAddPlayerNode
+			showingMenu = false 
+			local playerNode = PlayerNode(geom.point.new(200, 120), 65, nil, nil, 1)
+		  table.insert(playerNodes, playerNode)
+		end,
 		function()
 			--onRandomise
 			showingMenu = false 

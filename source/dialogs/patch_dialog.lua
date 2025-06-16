@@ -27,13 +27,13 @@ local menuItemSynths = "Synths"
 local menuItemSequencers = "Sequencers"
 
 local menuItems = {
-	{name = "User:",type = "category_title"},
+	{name = "User:::",type = "category_title"},
 	{label = menuItemNew},
 	{label = menuItemSave},
 	{label = menuItemOpen},
 	{label = menuItemDelete},
 	{type = "divider"},
-	{name = "Presets:", type = "category_title"},
+	{name = "Presets:::", type = "category_title"},
 	{label = menuItemSynths},
 	{label = menuItemSequencers}
 }

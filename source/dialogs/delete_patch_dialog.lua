@@ -29,7 +29,7 @@ function DeletePatchDialog:show(onDismiss)
 	local userPatchesRepository = UserPatches()
 	local userPatches = userPatchesRepository:patchesMenu()
 	
-	self.textList = TextList(userPatches, 400 - (gDialogWidth - 10), 120 - (gDialogHeight/2) + 10, 200 - 20, 240  - 10, 20, nil, function(index, item)
+	self.textList = TextList(userPatches, 400 - (gDialogWidth - 10), 120 - (gDialogHeight/2) + 10, gDialogWidth - 20, gDialogHeight  - 10, 20, nil, function(index, item)
 		AlertDialog():show(
 			"Confirm",
 			"Are you sure you want to delete " .. item.name .. "?",

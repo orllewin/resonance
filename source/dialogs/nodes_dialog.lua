@@ -14,7 +14,8 @@ local gfx <const> = playdate.graphics
 ]]
 class('NodesDialog').extends()
 
-local menuOptionAddNew = "Add new node"
+local menuOptionAddNoteNode = "New note node"
+local menuOptionAddPlayerNode = "New player node"
 local menuOptionSetWaveform = "Set waveform"
 local menuOptionOctaveUp = "Octave up"
 local menuOptionOctaveDown = "Octave down"
@@ -23,7 +24,11 @@ local menuOptionRndPositions = "Randomise positions"
 local menuOptionRndNotes = "Randomise notes"
 
 local menuItems = {
-	{label = menuOptionAddNew},
+	{label = "Nodes:::", type = "category_title"},
+	{label = menuOptionAddNoteNode},
+	{label = menuOptionAddPlayerNode},
+	{type = "divider"},
+	{label = "Global:::", type = "category_title"},
 	{label = menuOptionSetWaveform},
 	{label = menuOptionOctaveUp},
 	{label = menuOptionOctaveDown},
@@ -31,54 +36,54 @@ local menuItems = {
 	{label = menuOptionRndNotes},
 }
 
-local dialogHeight = 120
-
 function NodesDialog:init()
 		NodesDialog.super.init(self)	
 		self.crankDelta = 0
 end
 
 function NodesDialog:show(
-	onDismiss, 
+	onDismiss,
+	onAddPlayerNode, 
 	onRandomisePositions, 
 	onRandomiseNotes,
 	onWaveform,
-	onAddNew,
+	onAddNoteNode,
 	onOctaveUp,
 	onOctaveDown
 )
 	
 	self.onDismiss = onDismiss
 
-	local background = gfx.image.new(200, dialogHeight, playdate.graphics.kColorWhite)
+	local background = gfx.image.new(gDialogWidth, gDialogHeight, playdate.graphics.kColorWhite)
 	gfx.pushContext(background)
 	gfx.setColor(gfx.kColorBlack)
-	gfx.drawRoundRect(0, 0, 200, dialogHeight, 12) 
+	gfx.drawRoundRect(0, 0, gDialogWidth, gDialogHeight, 12) 
 	gfx.popContext()
 	self.backgroundSprite = gfx.sprite.new(background)
-	self.backgroundSprite:moveTo(200, 120)
+	self.backgroundSprite:moveTo(400 - (gDialogWidth/2), 120)
 	self.backgroundSprite:add()
-	
 
-	
-	self.menuList = TextList(menuItems, 110, 120 - (dialogHeight/2) + 10, 200 - 20, 240  - 10, 20, nil, function(index, item)
-		if item.label == menuOptionSetWaveform then
-			self:dismissNoCallback()
+	self.menuList = TextList(menuItems, 400 - (gDialogWidth - 10), 120 - (gDialogHeight/2) + 10, gDialogWidth - 20, gDialogHeight  - 10, 20, nil, function(index, item)
+		if item.label == menuOptionAddPlayerNode then
+			self:dismiss()
+			onAddPlayerNode()
+		elseif item.label == menuOptionSetWaveform then
+			self:dismiss()
 			self:showWaveformDialog(onWaveform)
 		elseif item.label == menuOptionOctaveUp then
-			self:dismissNoCallback()
+			self:dismiss()
 			onOctaveUp()
 		elseif item.label == menuOptionOctaveDown then
-			self:dismissNoCallback()
+			self:dismiss()
 			onOctaveDown()
-		elseif item.label == menuOptionAddNew then
-			self:dismissNoCallback()
-			onAddNew()
+		elseif item.label == menuOptionAddNoteNode then
+			self:dismiss()
+			onAddNoteNode()
 		elseif item.label == menuOptionRndPositions then
-			self:dismissNoCallback()
+			self:dismiss()
 			onRandomisePositions()
 		elseif item.label == menuOptionRndNotes then
-			self:dismissNoCallback()
+			self:dismiss()
 			onRandomiseNotes()
 		end
 	end, 29000)
@@ -87,6 +92,7 @@ function NodesDialog:show(
 		
 		BButtonDown = function()
 			self:dismiss()
+			self.onDismiss()
 		end,
 		
 		AButtonDown = function()
@@ -125,7 +131,7 @@ end
 
 function NodesDialog:showWaveformDialog(onWaveform)
 	WaveformDialog():show(
-		"Select waveform:", 
+		"Select waveform:::", 
 		function() 
 			
 			
@@ -136,15 +142,8 @@ function NodesDialog:showWaveformDialog(onWaveform)
 	)
 end
 
-function NodesDialog:dismissNoCallback()
-	playdate.inputHandlers.pop()
-	self.menuList:removeAll()
-	self.backgroundSprite:remove()
-end
-
 function NodesDialog:dismiss()
 	playdate.inputHandlers.pop()
 	self.menuList:removeAll()
 	self.backgroundSprite:remove()
-	self.onDismiss()
 end
