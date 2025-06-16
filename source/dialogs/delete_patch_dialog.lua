@@ -20,36 +20,19 @@ function DeletePatchDialog:show(onDismiss)
 	gfx.pushContext(background)
 	gfx.setColor(gfx.kColorBlack)
 	gfx.drawRoundRect(0, 0, gDialogWidth, gDialogHeight, 12) 
-	
-	gfx.drawText("User patches", 10, 10)
-	
-	self.crankDelta = 0
-	
-	gfx.drawLine(5, 24, gDialogWidth - 10, 24)
-	
 	gfx.popContext()
 	
 	self.backgroundSprite = gfx.sprite.new(background)
 	self.backgroundSprite:moveTo(400 - (gDialogWidth/2), 120)
 	self.backgroundSprite:add()
-	
-	local menuItems = {}
-	local menuIndex = 1
-	
-	local showList = true
-	
+		
 	local userPatchesRepository = UserPatches()
+	local userPatches = userPatchesRepository:patchesMenu()
 	
-	local userPatchMenuItems = {}
-	local userPatches = userPatchesRepository:patches()
-	if #userPatches == 0 then
-	
-	end
-	
-	self.textList = TextList(userPatches, 400 - (gDialogWidth - 10), 120 - (gDialogHeight/2) + 30, 200 - 20, 240  - 10, 20, nil, function(index, item)
+	self.textList = TextList(userPatches, 400 - (gDialogWidth - 10), 120 - (gDialogHeight/2) + 10, 200 - 20, 240  - 10, 20, nil, function(index, item)
 		AlertDialog():show(
 			"Confirm",
-			"Are you sure you want to delete " .. userPatches[index].name .. "?",
+			"Are you sure you want to delete " .. item.name .. "?",
 			"Cancel",
 			"Delete",
 			function()  
@@ -57,8 +40,7 @@ function DeletePatchDialog:show(onDismiss)
 			end,
 			function()
 				--onConfirm
-				local selectedUserPatch = userPatches[index]
-				local file = replace(selectedUserPatch.file, ".json", "")
+				local file = replace(item.file, ".json", "")
 				playdate.datastore.delete(file)
 				playdate.inputHandlers.pop()
 				self.textList:removeAll()
