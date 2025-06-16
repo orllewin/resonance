@@ -9,7 +9,7 @@ local gfx <const> = playdate.graphics
 
 --[[
 	
-	Various code helpers
+	Various node helpers
 	
 ]]
 class('NodesDialog').extends()
@@ -133,10 +133,10 @@ function NodesDialog:showWaveformDialog(onWaveform)
 	WaveformDialog():show(
 		"Select waveform:::", 
 		function() 
-			
-			
+			--onDismiss
 		end,
 		function(waveform)
+			--onWaveform
 			onWaveform(waveform)
 		end
 	)

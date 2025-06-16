@@ -16,6 +16,7 @@ import "dialogs/nodes_dialog"
 import "dialogs/node_dialog"
 import "dialogs/player_dialog"
 import "dialogs/velocity_dialog"
+import "dialogs/help_dialog"
 
 import "sprites/active_node"
 
@@ -127,10 +128,6 @@ local mainInputHandler = {
 						playerNodes[activePlayerNode]:setOrbitVelocity(velocity)
 					end
 				)
-			end,
-			function()
-				--onReset
-				playerNodes[activePlayerNode]:move(0, 0)
 			end,
 			function()
 				--onRemove
@@ -477,10 +474,14 @@ function setup()
 			)
 		end
 	)
-	
-	local nodesMenuItem, error = menu:addMenuItem("Nodes", 
+		
+	local helpMenu, error = menu:addMenuItem("Help", 
 		function()
-			showNodesMenu()
+			showingMenu = true
+			HelpDialog():show(function()
+				showingMenu = false
+				end
+			)
 		end
 	)
 	

@@ -102,56 +102,15 @@ function Presets:chromaCircle1(title, isStartup)
 		name = title,
 		waveform = "Vosim",
 		nodes = {
-			{
-				midiNote = 65,
-				x = 50,
-				y = 60
-			},
-			{
-				midiNote = 69,
-				x = 150,
-				y = 60
-			},
-			{
-				midiNote = 67,
-				x = 250,
-				y = 60
-			},
-			{
-				midiNote = 64,--E4
-				x = 250,
-				y = 60
-			},
-			{
-				midiNote = 74,--D5
-				x = 100,
-				y = 120
-			},
-			{
-				midiNote = 62,--D4
-				x = 200,
-				y = 120
-			},
-			{
-				midiNote = 72,--C5
-				x = 300,
-				y = 120
-			},
-			{
-				midiNote = 50,--D3 (bottom row)
-				x = 50,
-				y = 180
-			},
-			{
-				midiNote = 70,--A#4 (bottom row)
-				x = 150,
-				y = 180
-			},
-			{
-				midiNote = 69,--A4 (bottom row)
-				x = 250,
-				y = 180
-			},
+			{ midiNote = 64, x = 50, y = 60 },
+			{ midiNote = 69, x = 150, y = 60 },
+			{ midiNote = 65, x = 250, y = 60 },
+			{ midiNote = 72, x = 100, y = 120 },
+			{ midiNote = 62, x = 200, y = 120 },
+			{ midiNote = 74, x = 300, y = 120 },
+			{ midiNote = 69, x = 50, y = 180 },
+			{ midiNote = 70, x = 150, y = 180 },
+			{ midiNote = 50, x = 250, y = 180 },
 		},
 		players = {
 				{
@@ -170,62 +129,18 @@ end
 
 function Presets:cropCircles()
 	return {
-		name = "Crop Circles",
+		name = "Crop Circle",
+		waveform = "Vosim",
 		nodes = {
-			{
-				midiNote = 60,
-				x = 67,
-				y = 120,
-				waveform = "Vosim"
-			},
-			{
-				midiNote = 45,
-				x = 167,
-				y = 63,
-				waveform = "Vosim"
-			},
-			{
-				midiNote = 55,
-				x = 167,
-				y = 176,
-				waveform = "Vosim"
-			},
-			{
-				midiNote = 45,
-				x = 233,
-				y = 47,
-				waveform = "Vosim"
-			},
-			{
-				midiNote = 45,
-				x = 233,
-				y = 195,
-				waveform = "Vosim"
-			},
-			{
-				midiNote = 50,
-				x = 267,
-				y = 120,
-				waveform = "Vosim"
-			},
-			{
-				midiNote = 60,
-				x = 300,
-				y = 34,
-				waveform = "Vosim"
-			},
-			{
-				midiNote = 67,
-				x = 300,
-				y = 205,
-				waveform = "Vosim"
-			},
-			{
-				midiNote = 64,
-				x = 333,
-				y = 120,
-				waveform = "Vosim"
-			}
+			{ midiNote = 60, x = 67, y = 120 },
+			{ midiNote = 45, x = 167, y = 63 },
+			{ midiNote = 55, x = 167, y = 176 },
+			{ midiNote = 45, x = 233, y = 47 },
+			{ midiNote = 45, x = 233, y = 195 },
+			{ midiNote = 50, x = 267, y = 120 },
+			{ midiNote = 60, x = 300, y = 34 },
+			{ midiNote = 67, x = 300, y = 205 },
+			{ midiNote = 64, x = 333, y = 120 }
 		},
 		players = {
 			{

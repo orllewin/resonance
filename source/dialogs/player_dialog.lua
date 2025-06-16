@@ -16,7 +16,6 @@ local menuOptionSetOrbit = "Set orbit"
 local menuOptionToggleDirection = "Flip orbit"
 local menuOptionSetOscillator = "Set oscillator"
 local menuOptionSetVelocity = "Set velocity"
-local menuOptionReset = "Reset"
 local menuOptionRemove = "Remove"
 
 local menuItems = {
@@ -24,7 +23,6 @@ local menuItems = {
 	{label = menuOptionToggleDirection},
 	{label = menuOptionSetOscillator},
 	{label = menuOptionSetVelocity},
-	{label = menuOptionReset},
 	{label = "", type = "divider"},
 	{label = menuOptionRemove}
 }
@@ -45,7 +43,6 @@ function PlayerDialog:show(
 	onToggleDirection,
 	onSetOscillator, 
 	onSetVelocity,
-	onReset,
 	onRemove
 )
 	
@@ -81,9 +78,6 @@ function PlayerDialog:show(
 		elseif item.label == menuOptionSetVelocity then
 			self:dismiss()
 			onSetVelocity()
-		elseif item.label == menuOptionReset then
-			self:dismiss()
-			onReset()
 		elseif item.label == menuOptionRemove then
 			self:dismiss()
 			onRemove()

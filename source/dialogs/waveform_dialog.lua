@@ -11,6 +11,7 @@ local gfx <const> = playdate.graphics
 class('WaveformDialog').extends()
 
 local menuItems = {
+	{label = "Waveform:::", type="category_title"},
 	{label = "Sine"}, 
 	{label = "Square"},
 	{label = "Sawtooth"}, 
@@ -21,9 +22,6 @@ local menuItems = {
 	{label = "Noise"}
 }
 
-local dialogHeight = 170
-local dialogWidth = 200
-
 function WaveformDialog:init()
 		WaveformDialog.super.init(self)	
 		self.crankDelta = 0
@@ -33,22 +31,21 @@ function WaveformDialog:show(title, onDismiss, onWaveform)
 	
 	self.onDismiss = onDismiss
 
-	local background = gfx.image.new(dialogWidth, dialogHeight, playdate.graphics.kColorWhite)
+	local background = gfx.image.new(gDialogWidth, gDialogHeight, playdate.graphics.kColorWhite)
 	gfx.pushContext(background)
 	gfx.setColor(gfx.kColorBlack)
-	gfx.drawRoundRect(0, 0, 200, dialogHeight, 12) 
-	gfx.drawText(title, 10, 15)
+	gfx.drawRoundRect(0, 0, gDialogWidth, gDialogHeight, 12) 
 	gfx.popContext()
 	self.backgroundSprite = gfx.sprite.new(background)
-	self.backgroundSprite:moveTo(200, 120)
+	self.backgroundSprite:moveTo(400 - (gDialogWidth/2), gDialogHeight/2)
 	self.backgroundSprite:add()
 	
 
 	--(items, xx, yy, w, h, rH, onChange, onSelect, zIndex)
-	local x = 110
-	local y = 120 - (dialogHeight/2) + 35
-	local w = 200 - 50
-	local h = dialogHeight - 45
+	local x = 400 - (gDialogWidth - 10)
+	local y = 120 - (gDialogHeight/2) + 10
+	local w = gDialogWidth - 20
+	local h = gDialogHeight - 10
 	self.menuList = TextList(menuItems, x, y, w, h, 20, nil, function(index, item)
 		--if(item.label == "Randomise all") then
 			self:dismiss()

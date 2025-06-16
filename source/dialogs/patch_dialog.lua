@@ -53,7 +53,7 @@ function PatchDialog:show(onDismiss, onLoadPatch, onSavePatch)
 	gfx.drawRoundRect(0, 0, gDialogWidth, gDialogHeight, 12) 
 	gfx.popContext()
 	self.backgroundSprite = gfx.sprite.new(background)
-	self.backgroundSprite:moveTo(400 - (gDialogWidth/2), 120)
+	self.backgroundSprite:moveTo(400 - (gDialogWidth/2), gDialogHeight/2)
 	self.backgroundSprite:add()
 	
 	--(items, xx, yy, w, h, rH, onChange, onSelect, zIndex)
