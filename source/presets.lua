@@ -42,41 +42,13 @@ function Presets:newPatch()
 		name = "--",
 		waveform = "Sine",
 		nodes = {
-			{
-				midiNote = 60,
-				x = 50,
-				y = 60
-			},
-			{
-				midiNote = 60,
-				x = 100,
-				y = 120
-			},
-			{
-				midiNote = 60,
-				x = 150,
-				y = 60
-			},
-			{
-				midiNote = 60,
-				x = 200,
-				y = 120
-			},
-			{
-				midiNote = 60,
-				x = 250,
-				y = 60
-			},
-			{
-				midiNote = 60,
-				x = 300,
-				y = 120
-			},
-			{
-				midiNote = 60,
-				x = 350,
-				y = 60
-			}
+			{ midiNote = 60, x = 50, y = 60 },
+			{ midiNote = 60, x = 100, y = 120 },
+			{ midiNote = 60, x = 150, y = 60 },
+			{ midiNote = 60, x = 200, y = 120 },
+			{ midiNote = 60, x = 250, y = 60 },
+			{ midiNote = 60, x = 300, y = 120 },
+			{ midiNote = 60, x = 350, y = 60 }
 		},
 		players = {
 			{
@@ -181,43 +153,14 @@ end
 function Presets:orlDrone()
 	return {
 		name = "Orl Drone",
+		waveform = "Triangle",
 		nodes = {
-			{
-				midiNote = 67,
-				x = 29,
-				y = 50,
-				waveform = "Triangle"
-			},
-			{
-				midiNote = 72,
-				x = 98,
-				y = 152,
-				waveform = "Triangle"
-			},
-			{
-				midiNote = 69,
-				x = 170,
-				y = 52,
-				waveform = "Triangle"
-			},
-			{
-				midiNote = 69,
-				x = 219,
-				y = 112,
-				waveform = "Triangle"
-			},
-			{
-				midiNote = 60,
-				x = 319,
-				y = 60,
-				waveform = "Triangle"
-			},
-			{
-				midiNote = 67,
-				x = 303,
-				y = 186,
-				waveform = "Triangle"
-			}
+			{ midiNote = 67, x = 29, y = 50, },
+			{ midiNote = 72, x = 98, y = 152 },
+			{ midiNote = 69, x = 170, y = 52 },
+			{ midiNote = 69, x = 219, y = 112 },
+			{ midiNote = 60, x = 319, y = 60 },
+			{ midiNote = 67, x = 303, y = 186 }
 		},
 		players = {
 			{
@@ -247,55 +190,16 @@ end
 function Presets:cMaj()
 	return {
 		name = "C Major",
+		waveform = "Triangle",
 		nodes = {
-			{
-				midiNote = 60,
-				x = 45,
-				y = 160,
-				waveform = "Triangle"
-			},
-			{
-				midiNote = 64,
-				x = 74,
-				y = 77,
-				waveform = "Triangle"
-			},
-			{
-				midiNote = 52,
-				x = 118,
-				y = 188,
-				waveform = "Triangle"
-			},
-			{
-				midiNote = 57,
-				x = 163,
-				y = 82,
-				waveform = "Triangle"
-			},
-			{
-				midiNote = 60,
-				x = 248,
-				y = 156,
-				waveform = "Triangle"
-			},
-			{
-				midiNote = 57,
-				x = 272,
-				y = 48,
-				waveform = "Triangle"
-			},
-			{
-				midiNote = 69,
-				x = 340,
-				y = 137,
-				waveform = "Triangle"
-			},
-			{
-				midiNote = 67,
-				x = 348,
-				y = 72,
-				waveform = "Triangle"
-			}
+			{ midiNote = 60, x = 45, y = 160 },
+			{ midiNote = 64, x = 74, y = 77 },
+			{ midiNote = 52, x = 118, y = 188 },
+			{ midiNote = 57, x = 163, y = 82 },
+			{ midiNote = 60, x = 248, y = 156 },
+			{ midiNote = 57, x = 272, y = 48 },
+			{ midiNote = 69, x = 340, y = 137},
+			{ midiNote = 67, x = 348, y = 72 }
 		},
 		players = {
 			{
