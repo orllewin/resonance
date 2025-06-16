@@ -57,7 +57,7 @@ function PatchDialog:show(onDismiss, onLoadPatch, onSavePatch)
 	self.backgroundSprite:add()
 	
 	--(items, xx, yy, w, h, rH, onChange, onSelect, zIndex)
-	self.menuList = TextList(menuItems, 400 - (gDialogWidth - 10), 120 - (gDialogHeight/2) + 10, 200 - 20, 240  - 10, 20, nil, function(index, item)
+	self.menuList = TextList(menuItems, 400 - (gDialogWidth - 10), 120 - (gDialogHeight/2) + 10, gDialogWidth - 20, gDialogHeight - 10, 20, nil, function(index, item)
 		if(item.label == menuItemNew) then
 			self:dismiss()
 			onLoadPatch(Presets():newPatch())
@@ -94,7 +94,7 @@ function PatchDialog:show(onDismiss, onLoadPatch, onSavePatch)
 					onLoadPatch(patch)
 				end
 			)
-		elseif(item.label == menuItemSynths) then
+		elseif(item.label == menuItemSequencers) then
 			self:dismiss()
 			PresetsDialog():show(
 				false,--isSynths

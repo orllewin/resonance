@@ -70,7 +70,9 @@ playdate.startAccelerometer()
 local mainInputHandler = {
 	
 	AButtonDown = function()
-		
+		if playdate.buttonIsPressed(playdate.kButtonB) then
+			showNodesMenu()
+		end
 	end,
 	
 	AButtonHeld = function()	
@@ -168,6 +170,10 @@ local mainInputHandler = {
 				end
 				nodeDidHold = false
 		end
+	end,
+	
+	BButtonDown = function()
+		
 	end,
 	
 	BButtonHeld = function()
@@ -356,11 +362,77 @@ function loadPatch(patch)
 	setLabelsVisible(true)
 end
 
+function showNodesMenu()
+	showingMenu = true
+	
+	nodesDialog:show(
+		function()
+			--onDismiss
+			showingMenu = false 
+		end,
+		function()
+			--onRandomise
+			showingMenu = false 
+			local nodeCount = #nodes
+			for n = 1,nodeCount,1 do
+				nodes[n]:randomise()
+			end
+			local playerCount = #playerNodes
+			for p = 1,playerCount,1 do
+				playerNodes[p]:randomise()
+			end
+		end,
+		function()
+			--onRandomiseNotes
+			showingMenu = false 
+			local scale = midi:generateRandomScale(40)
+			local nodeCount = #nodes
+			for n = 1,nodeCount,1 do
+				nodes[n]:chooseRandomNote(scale)
+			end
+		end,
+		function(waveform)
+			--onWaveform
+			showingMenu = false 
+			local nodeCount = #nodes
+			for n = 1,nodeCount,1 do
+				nodes[n]:setWaveform(waveform)
+			end
+		end,
+		function()
+			--onAddNew
+			showingMenu = false 
+			local newIndex = #nodes + 1
+			nodes[newIndex] = Node(geom.point.new(200, 120), 60)
+			setLabelsVisible(true)
+			
+			--todo-- set the new node as active - some weirdness stopping it being simple
+		end,
+		function()
+			--onOctaveUp
+			showingMenu = false 
+			local nodeCount = #nodes
+			for n = 1,nodeCount,1 do
+				nodes[n]:octaveUp()
+			end
+		end,
+		function()
+			--onOctaveDown
+			showingMenu = false 
+			local nodeCount = #nodes
+			for n = 1,nodeCount,1 do
+				nodes[n]:octaveDown()
+			end
+		end
+	)
+end
+
 function setup()
 	local backgroundImage = gfx.image.new( "images/background" )
 	assert( backgroundImage )
 	
-	local menuImage = gfx.image.new( "images/elderwean" )
+	--local menuImage = gfx.image.new( "images/elderwean" )
+	local menuImage = gfx.image.new( "images/menu_image" )
 	playdate.setMenuImage(menuImage, 100)
 	
 	gfx.sprite.setBackgroundDrawingCallback(
@@ -402,68 +474,7 @@ function setup()
 	
 	local nodesMenuItem, error = menu:addMenuItem("Nodes", 
 		function()
-			showingMenu = true
-	
-			nodesDialog:show(
-				function()
-					--onDismiss
-					showingMenu = false 
-				end,
-				function()
-					--onRandomise
-					showingMenu = false 
-					local nodeCount = #nodes
-					for n = 1,nodeCount,1 do
-						nodes[n]:randomise()
-					end
-					local playerCount = #playerNodes
-					for p = 1,playerCount,1 do
-						playerNodes[p]:randomise()
-					end
-				end,
-				function()
-					--onRandomiseNotes
-					showingMenu = false 
-					local scale = midi:generateRandomScale(40)
-					local nodeCount = #nodes
-					for n = 1,nodeCount,1 do
-						nodes[n]:chooseRandomNote(scale)
-					end
-				end,
-				function(waveform)
-					--onWaveform
-					showingMenu = false 
-					local nodeCount = #nodes
-					for n = 1,nodeCount,1 do
-						nodes[n]:setWaveform(waveform)
-					end
-				end,
-				function()
-					--onAddNew
-					showingMenu = false 
-					local newIndex = #nodes + 1
-					nodes[newIndex] = Node(geom.point.new(200, 120), 60)
-					setLabelsVisible(true)
-					
-					--todo-- set the new node as active - some weirdness stopping it being simple
-				end,
-				function()
-					--onOctaveUp
-					showingMenu = false 
-					local nodeCount = #nodes
-					for n = 1,nodeCount,1 do
-						nodes[n]:octaveUp()
-					end
-				end,
-				function()
-					--onOctaveDown
-					showingMenu = false 
-					local nodeCount = #nodes
-					for n = 1,nodeCount,1 do
-						nodes[n]:octaveDown()
-					end
-				end
-			)
+			showNodesMenu()
 		end
 	)
 	

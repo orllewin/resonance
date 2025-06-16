@@ -16,7 +16,7 @@ function Presets:synths()
 end
 
 function Presets:sequencers()
-	return presets()--todo
+	return self:presets()--todo
 end
 
 function Presets:defaultPatch()

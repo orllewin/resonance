@@ -12,29 +12,19 @@ class('PresetsDialog').extends()
 
 function PresetsDialog:init()
 		PresetsDialog.super.init(self)	
+		self.crankDelta = 0
 end
 
 function PresetsDialog:show(isSynths, onDismiss, onLoadPatch)
 	self.onDismiss = onDismiss
-	local background = gfx.image.new(200, 240, gfx.kColorWhite)
+	local background = gfx.image.new(gDialogWidth, gDialogHeight, gfx.kColorWhite)
 	gfx.pushContext(background)
 	gfx.setColor(gfx.kColorBlack)
-	gfx.drawRoundRect(0, 0, 200, 240, 12) 
-	
-	if isSynths then
-		gfx.drawText("Synth Presets", 10, 10)
-	elseif showPatches then
-		gfx.drawText("Sequencer Presets", 10, 10)
-	end
-	
-	self.crankDelta = 0
-	
-	gfx.drawLine(5, 24, 200 - 10, 24)
-	
+	gfx.drawRoundRect(0, 0, gDialogWidth, gDialogHeight, 12) 	
 	gfx.popContext()
 	
 	self.backgroundSprite = gfx.sprite.new(background)
-	self.backgroundSprite:moveTo(200, 120)
+	self.backgroundSprite:moveTo(400 - (gDialogWidth/2), 120)
 	self.backgroundSprite:add()
 	
 	local menuItems = {}
@@ -49,7 +39,7 @@ function PresetsDialog:show(isSynths, onDismiss, onLoadPatch)
 		self.presets = presets:sequencers()
 	end
 	
-		self.textList = TextList(self.presets, 110, 34, 200 - 20, 240 - 44, 20, nil, function(index, item)
+		self.textList = TextList(self.presets, 400 - (gDialogWidth - 10), 120 - (gDialogHeight/2) + 10, 200 - 20, gDialogHeight - 44, 20, nil, function(index, item)
 			self:dismiss()
 			onLoadPatch(item)
 			
