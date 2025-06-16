@@ -44,9 +44,9 @@ function Presets:newPatch()
 				y = 60
 			},
 			{
-				midiNote = 120,
+				midiNote = 60,
 				x = 100,
-				y = 60
+				y = 120
 			},
 			{
 				midiNote = 60,
@@ -54,9 +54,9 @@ function Presets:newPatch()
 				y = 60
 			},
 			{
-				midiNote = 120,
+				midiNote = 60,
 				x = 200,
-				y = 60
+				y = 120
 			},
 			{
 				midiNote = 60,
@@ -64,9 +64,9 @@ function Presets:newPatch()
 				y = 60
 			},
 			{
-				midiNote = 120,
+				midiNote = 60,
 				x = 300,
-				y = 60
+				y = 120
 			},
 			{
 				midiNote = 60,

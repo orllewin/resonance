@@ -33,8 +33,6 @@ end
 function PatchSaveDialog:setText(text)
 	local textImage = gfx.imageWithText(text .. ".res", self.availableWidth, 240)
 	self.textSprite:setImage(textImage)
-	
-	self.textSprite:add()
 end
 
 function PatchSaveDialog:dismiss()

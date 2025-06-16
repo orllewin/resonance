@@ -49,13 +49,12 @@ function UserPatchesDialog:show(onDismiss, onLoadPatch)
 			showList = true
 			--todo - improve this - just show a modal instead
 			menuItems[1] = {
-				label = "No patches saved"
+				label = "No user patches"
 			}
 		else
 		
 			for u = 1, #userPatches, 1 do
 				local userPatch = userPatches[u]
-				print("Adding userpath: " .. userPatch.name)
 				userPatchMenuItems[u] = {
 					label = userPatch.name
 				}

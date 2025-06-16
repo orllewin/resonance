@@ -6,6 +6,7 @@ import "user_patches"
 import 'text_list'
 import "dialogs/patch_load_dialog"
 import "dialogs/user_patches_dialog"
+import "dialogs/delete_patch_dialog"
 import "dialogs/patch_save_dialog"
 import "CoreLibs/keyboard"
 
@@ -67,21 +68,33 @@ function PatchDialog:show(onDismiss, onLoadPatch, onSavePatch, onDeletePatch)
 					onLoadPatch(patch)
 				end
 			)
+		elseif(item.label == "Delete") then
+			self:dismiss()
+			DeletePatchDialog():show(
+				function()
+					--onDismiss
+				end
+			)
 		elseif(item.label == "Presets") then
 			self:showPatchMenu(false, true, false, onDismiss, onLoadPatch, nil)
-		elseif(item.label == "Delete") then
-			self:showPatchMenu(true, false, true, onDismiss, onLoadPatch, onDeletePatch)
+
 		end
 	end, 29000)
 	
 	self.menuInputHandler = {
 		
-		BButtonDown = function()
+		BButtonUp = function()
 			self:dismiss()
+		end,
+		
+		BButtonDown = function()
 		end,
 		
 		AButtonDown = function()
 			self.menuList:tapA()
+		end,
+		
+		AButtonUp = function()
 		end,
 		
 		leftButtonDown = function()
@@ -115,7 +128,6 @@ function PatchDialog:show(onDismiss, onLoadPatch, onSavePatch, onDeletePatch)
 end
 
 function PatchDialog:showSaveDialog(onSavePatch)
-	self:dismiss()
 	local patchSaveDialog = PatchSaveDialog()
 	playdate.keyboard.keyboardDidShowCallback = function()
 		patchSaveDialog:show()
@@ -127,10 +139,12 @@ function PatchDialog:showSaveDialog(onSavePatch)
 		if(doSave) then
 			local saveName = playdate.keyboard.text
 			playdate.keyboard.text = ""--reset for next time
+			
+			patchSaveDialog:dismiss()
 			onSavePatch(saveName)
+		else
+			patchSaveDialog:dismiss()
 		end
-		
-		patchSaveDialog:dismiss()
 	end
 	
 	playdate.keyboard.show("")

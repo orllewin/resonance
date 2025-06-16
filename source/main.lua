@@ -25,7 +25,7 @@ import "patch_name"
 local gfx <const> = playdate.graphics
 local geom <const> = playdate.geometry
 
-local stepSize = 4
+local stepSize = 3
 
 --globals
 resFont = gfx.font.new("parodius_ext")
@@ -379,9 +379,8 @@ function setup()
 	
 	local patchMenuItem, error = menu:addMenuItem("Patches", 
 		function()
-			showingMenu = true
+			showingMenu = false
 		
-			--onDismiss, onLoadPatch, onSavePatch, onDeletePatch
 			patchDialog:show(
 				function()
 					--onDismiss
@@ -538,7 +537,7 @@ function playdate.update()
 	end
 	
 	--Only draw nodes if menu not displaying
-	if not showingMenu and not showingLoadPatchMenu and not showingSavePatchMenu then
+	--if not showingMenu and not showingLoadPatchMenu and not showingSavePatchMenu then
 		updateNodes()
 		
 		if(activeNodeLabel.isPlayer) then
@@ -551,7 +550,7 @@ function playdate.update()
 				gfx.drawText(activeNodeLabel.text, 5, 230)
 			end
 		end
-	end
+	--end
 end
 
 function updateNodes()
