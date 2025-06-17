@@ -227,7 +227,6 @@ function PlayerNode:updateOrbitOrOsc()
 			self.activeSprite:moveTo(self.p.x, self.p.y - 16)
 		end
 	elseif self.mode == Mode.osc then
-		print("update osc: self.oscDirection: " .. self.oscDirection)
 		local x = self.p.x
 		
 		local increment = self:map(self.velocity, 1, maxVelocity, 0.3, 2.0)
@@ -245,10 +244,13 @@ function PlayerNode:updateOrbitOrOsc()
 				self.oscDirection = 1
 			end
 		end
-		print("move to: " .. x)
 		self.p.x = x
 		self.p.y = self.oscEndPoint.y
 		self.sprite:moveTo(self.p.x, self.p.y)
+		
+		if self.isActive then
+			self.activeSprite:moveTo(self.p.x, self.p.y - 16)
+		end
 	end
 end
 
