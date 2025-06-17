@@ -350,6 +350,9 @@ function loadPatch(patch)
 				v.orbitVelocity,
 				v.orbitStartAngle
 			)
+			if v.orbitDirection ~= nil and v.orbitDirection == -1 then
+				playerNode:toggleDirection()
+			end
  		end
 		 table.insert(playerNodes, playerNode)
 	end

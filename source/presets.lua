@@ -9,29 +9,33 @@ function Presets:init()
 		
 end
 
-function Presets:synths()
-	return {
-		self:chromaCircle1("ChromaCircle", false)
-	}
-end
-
-function Presets:sequencers()
-	return self:presets()--todo
-end
-
 function Presets:defaultPatch()
 	return self:chromaCircle1("--", true)
 end
 
-function Presets:presets()
+function Presets:synths()
 	return {
-		self:new(),
+		{
+			label = "Synths:::",
+			type = "category_title"
+		},
 		self:chromaCircle1("ChromaCircle", false),
+		self:lydianGrid(),
+		self:new(),
+	}
+end
+
+function Presets:sequencers()
+	return {
+		{
+			label = "Sequencers:::",
+			type = "category_title"
+		},
 		self:mixolydian1(),
 		self:cropCircles(),
 		self:cMaj(),
 		self:dorian1(),
-		self:orlDrone(),
+		self:popolVuh(),
 		self:pentatonic1(),
 		self:rhubarb(),
 	}
@@ -77,9 +81,11 @@ function Presets:chromaCircle1(title, isStartup)
 			{ midiNote = 64, x = 50, y = 60 },
 			{ midiNote = 69, x = 150, y = 60 },
 			{ midiNote = 65, x = 250, y = 60 },
+			
 			{ midiNote = 72, x = 100, y = 120 },
 			{ midiNote = 62, x = 200, y = 120 },
 			{ midiNote = 74, x = 300, y = 120 },
+			
 			{ midiNote = 69, x = 50, y = 180 },
 			{ midiNote = 70, x = 150, y = 180 },
 			{ midiNote = 50, x = 250, y = 180 },
@@ -94,6 +100,58 @@ function Presets:chromaCircle1(title, isStartup)
 					orbitY = 120,
 					orbitVelocity = 12,
 					orbitStartAngle = 210
+				},
+		}
+	}
+end
+
+function Presets:lydianGrid()
+	local s = midi:generateScale(48, "Lydian")
+	return {
+		name = "Lydian Grid",
+		waveform = "Vosim",
+		nodes = {
+			{ midiNote = s[1], x = 49, y = 30 },
+			{ midiNote = s[3], x = 110, y = 30 },
+			{ midiNote = s[5], x = 168, y = 30 },
+			{ midiNote = s[7], x = 229, y = 30 },
+			{ midiNote = s[9], x = 287, y = 30 },
+			{ midiNote = s[11], x = 344, y = 30 },
+			
+			{ midiNote = s[12], x = 20, y = 76 },
+			{ midiNote = s[14], x = 81, y = 76 },
+			{ midiNote = s[16], x = 141, y = 76 },
+			{ midiNote = s[18], x = 202, y = 76 },
+			{ midiNote = s[20], x = 258, y = 76 },
+			{ midiNote = s[22], x = 319, y = 76 },
+			
+			{ midiNote = s[2], x = 49, y = 120 },
+			{ midiNote = s[4], x = 110, y = 120 },
+			{ midiNote = s[6], x = 168, y = 120 },
+			{ midiNote = s[8], x = 229, y = 120 },
+			{ midiNote = s[10], x = 287, y = 120 },
+			{ midiNote = s[12], x = 344, y = 120 },
+			
+			{ midiNote = s[23], x = 20, y = 163 },
+			{ midiNote = s[25], x = 81, y = 163 },
+			{ midiNote = s[27], x = 141, y = 163 },
+			{ midiNote = s[29], x = 202, y = 163 },
+			{ midiNote = s[31], x = 258, y = 163 },
+			{ midiNote = s[33], x = 319, y = 163 },
+			
+			{ midiNote = s[14], x = 49, y = 208 },
+			{ midiNote = s[16], x = 110, y = 208 },
+			{ midiNote = s[18], x = 168, y = 208 },
+			{ midiNote = s[20], x = 229, y = 208 },
+			{ midiNote = s[22], x = 287, y = 208 },
+			{ midiNote = s[24], x = 344, y = 208 },
+		},
+		players = {
+				{
+					x = 374,
+					y = 162,
+					size = 56,
+					isOrbiting = false
 				},
 		}
 	}
@@ -150,9 +208,9 @@ function Presets:cropCircles()
 	}
 end
 
-function Presets:orlDrone()
+function Presets:popolVuh()
 	return {
-		name = "Orl Drone",
+		name = "Popol Vuh",
 		waveform = "Triangle",
 		nodes = {
 			{ midiNote = 67, x = 29, y = 50, },
@@ -178,6 +236,7 @@ function Presets:orlDrone()
 				y = 117,
 				size = 75,
 				isOrbiting = true,
+				orbitDirection = -1,
 				orbitX = 296,
 				orbitY = 117,
 				orbitVelocity = 18,
@@ -189,7 +248,7 @@ end
 
 function Presets:cMaj()
 	return {
-		name = "C Major",
+		name = "Meditate",
 		waveform = "Triangle",
 		nodes = {
 			{ midiNote = 60, x = 45, y = 160 },
@@ -209,7 +268,7 @@ function Presets:cMaj()
 				isOrbiting = true,
 				orbitX = 116,
 				orbitY = 123,
-				orbitVelocity = 25,
+				orbitVelocity = 22,
 				orbitStartAngle = 210
 			},
 			{
@@ -219,7 +278,8 @@ function Presets:cMaj()
 				isOrbiting = true,
 				orbitX = 292,
 				orbitY = 105,
-				orbitVelocity = 28,
+				orbitVelocity = 25,
+				orbitDirection = -1,
 				orbitStartAngle = 1
 			}
 		}
