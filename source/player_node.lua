@@ -19,40 +19,21 @@ function PlayerNode:init(p, size)
 		
 		--orbit
 		self.orbitPoint = p:copy()
-		self.orbitVelocity = 10
+		self.velocity = 10
 		self.orbitDirection = 1
 		self.orbitDegree = 320
-		self.isOrbiting = false
+		
+		--oscillator
+		self.oscStartPoint = p:copy()
+		self.oscEndPoint = p:copy()
 		
 		self.size = size
 						
 		self.sprite = gfx.sprite.new()
 		self.sprite:moveTo(self.p.x, self.p.y)
 		self.sprite:add()
-		
-		local originImage = gfx.image.new(8, 8)
-		gfx.pushContext(originImage)
-		gfx.setColor(gfx.kColorBlack)
-		gfx.drawCircleAtPoint(4, 4, 4)
-		gfx.popContext()
-		self.orbitOriginSprite = gfx.sprite.new(originImage)
-		self.orbitOriginSprite:moveTo(self.p.x, self.p.y)
-		
-		local orbitVelocityImage = gfx.image.new(2, math.max(3, self.orbitVelocity))
-		gfx.pushContext(orbitVelocityImage)
-		gfx.setColor(gfx.kColorBlack)
-		gfx.fillRect(0, 0, 2, self.orbitVelocity)
-		gfx.popContext()
-		self.orbitVelcitySprite = gfx.sprite.new(orbitVelocityImage)
-		self.orbitVelcitySprite:moveTo(self.p.x, self.p.y)
-		
-		local orbitRadius = math.max(3, self.orbitPoint:distanceToPoint(self.p))
-		local orbitOrbitImage = gfx.image.new(orbitRadius*2, orbitRadius*2)
-		gfx.pushContext(orbitOrbitImage)
-		gfx.setColor(gfx.kColorBlack)
-		gfx.drawCircleAtPoint(orbitRadius, orbitRadius, orbitRadius)
-		gfx.popContext()
-		self.orbitOrbitSprite = gfx.sprite.new(orbitOrbitImage)
+				
+		self.orbitOrbitSprite = gfx.sprite.new()
 		self.orbitOrbitSprite:moveTo(self.orbitPoint.x, self.orbitPoint.y)
 		
 		local arrowImage = gfx.image.new("images/focus_indicator")
@@ -90,9 +71,7 @@ end
 
 function PlayerNode:stop()
 	self.sprite:remove()
-	self.orbitOriginSprite:remove()
-	self.orbitVelcitySprite:remove()
-	self.orbitOrbitSprite:remove()
+  self.orbitOrbitSprite:remove()
 	self.activeSprite:remove()
 end
 
@@ -106,42 +85,22 @@ function PlayerNode:setActive(isActive)
 	self:crank(0)
 end
 
+function PlayerNode:setActiveOscillator(sX, sY, eX, eY, velocity)
+	self.oscStartPoint.x = sX
+	self.oscStartPoint.y = sY
+	self.oscEndPoint.x = eX
+	self.oscEndPoint.y = eY
+	self.velocity = velocity
+	self.mode = Mode.osc
+end
+
 function PlayerNode:setActiveOrbit(x, y, velocity, angle)
 	self.orbitPoint.x = x
 	self.orbitPoint.y = y
-	self.orbitVelocity = velocity
+	self.velocity = velocity
 	self.orbitDegree = angle
-	self.orbitOrbitSprite:moveTo(self.orbitPoint.x, self.orbitPoint.y)
-	self.orbitOrbitSprite:add()
+
 	self:moveOrigin(0,0)
-	self.orbitOriginSprite:remove()
-	self.orbitVelcitySprite:remove()
-	self.orbitOriginSprite:remove()
-	self.isOrbiting = true
-end
-
-function PlayerNode:moveOrigin(x, y)
-	self.orbitPoint.x = self.orbitPoint.x + x
-	self.orbitPoint.y = self.orbitPoint.y + y
-	self.orbitOriginSprite:moveTo(self.orbitPoint.x, self.orbitPoint.y)
-	self.orbitVelcitySprite:moveTo(self.orbitPoint.x, self.orbitPoint.y)
-	self.orbitOrbitSprite:moveTo(self.orbitPoint.x, self.orbitPoint.y)
-	self:changeOrbitVelocity(0)
-end
-
-function PlayerNode:setOrbitVelocity(velocity)
-	self.orbitVelocity = velocity
-	self:changeOrbitVelocity(0)
-end
-
-function PlayerNode:changeOrbitVelocity(change)
-	self.orbitVelocity = math.max(1, self.orbitVelocity + change)
-	local orbitVelocityImage = gfx.image.new(2, self.orbitVelocity)
-	gfx.pushContext(orbitVelocityImage)
-	gfx.setColor(gfx.kColorBlack)
-	gfx.fillRect(0, 0, 2, self.orbitVelocity)
-	gfx.popContext()
-	self.orbitVelcitySprite:setImage(orbitVelocityImage)
 	
 	local orbitRadius = math.max(3, self.orbitPoint:distanceToPoint(self.p))
 	local orbitOrbitImage = gfx.image.new(orbitRadius * 2 + 6, orbitRadius * 2 + 6)
@@ -153,6 +112,20 @@ function PlayerNode:changeOrbitVelocity(change)
 	gfx.popContext()
 	self.orbitOrbitSprite:setImage(orbitOrbitImage)
 	
+	self.orbitOrbitSprite:moveTo(self.orbitPoint.x, self.orbitPoint.y)
+	self.orbitOrbitSprite:add()
+	
+	self.mode = Mode.orbit
+end
+
+function PlayerNode:moveOrigin(x, y)
+	self.orbitPoint.x = self.orbitPoint.x + x
+	self.orbitPoint.y = self.orbitPoint.y + y
+	self.orbitOrbitSprite:moveTo(self.orbitPoint.x, self.orbitPoint.y)
+end
+
+function PlayerNode:setVelocity(velocity)
+	self.velocity = velocity
 end
 
 function PlayerNode:crank(change)
@@ -188,10 +161,13 @@ function PlayerNode:moveTo(x, y)
 end
 
 function PlayerNode:move(x, y)
-	if(self.isOrbiting) then
-		self.isOrbiting = false
+	if self.mode == Mode.orbit then
 		self.orbitOrbitSprite:remove()
+		self.mode = Mode.manual
+	elseif self.mode == Mode.osc then
+		self.mode = Mode.manual
 	end
+	
 	self.p.x = self.p.x + x
 	self.p.y = self.p.y + y
 	
@@ -215,13 +191,13 @@ function PlayerNode:move(x, y)
 end
 
 function PlayerNode:updateOrbit()
-	if(self.isOrbiting) then
+	if self.mode == Mode.orbit then
 		local origin = self.orbitPoint
 		local radius = self.orbitPoint:distanceToPoint(self.p)
-		local velocity = self.orbitVelocity
+		local velocity = self.velocity
 		
 		if self.orbitDegree == nil then self.orbitDegree = 1 end
-		local angle = (self.orbitDegree * self:map(self.orbitVelocity, 1, 100, 0.01, 1.0)) * math.pi / 180
+		local angle = (self.orbitDegree * self:map(self.velocity, 1, 100, 0.01, 1.0)) * math.pi / 180
 
 		if(self.orbitDirection == 1) then
 			self.orbitDegree += 1
@@ -240,6 +216,8 @@ function PlayerNode:updateOrbit()
 		if self.isActive then
 			self.activeSprite:moveTo(self.p.x, self.p.y - 16)
 		end
+	elseif mode == Mode.osc then
+			print("OSCOSCOSC")
 	end
 end
 
@@ -252,8 +230,8 @@ function PlayerNode:getState()
 	saveState.x = self.p.x
 	saveState.y = self.p.y
 	saveState.size = self.size
-	saveState.isOrbiting = self.isOrbiting
-	saveState.orbitVelocity = self.orbitVelocity
+	saveState.mode = self.mode
+	saveState.velocity = self.velocity
 	saveState.orbitX = self.orbitPoint.x
 	saveState.orbitY = self.orbitPoint.y
 	return saveState

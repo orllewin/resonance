@@ -60,12 +60,7 @@ function Presets:newPatch()
 			{
 				x = 200,
 				y = 180,
-				size = 66,
-				isOrbiting = false,
-				orbitX = 166,
-				orbitY = 120,
-				orbitVelocity = 12,
-				orbitStartAngle = 210
+				size = 66
 			},
 		}
 	}
@@ -91,14 +86,12 @@ function Presets:origin()
 				{
 					x = 159,
 					y = 75,
-					size = 80,
-					isOrbiting = false
+					size = 80
 				},
 				{
 					x = 150,
 					y = 174,
-					size = 70,
-					isOrbiting = false
+					size = 70
 				}
 		}
 	}
@@ -129,12 +122,7 @@ function Presets:chromaCircle1(title, isStartup)
 				{
 					x = 350,
 					y = playerY,
-					size = 66,
-					isOrbiting = false,
-					orbitX = 166,
-					orbitY = 120,
-					orbitVelocity = 12,
-					orbitStartAngle = 210
+					size = 66
 				},
 		}
 	}
@@ -185,8 +173,7 @@ function Presets:lydianGrid()
 				{
 					x = 374,
 					y = 162,
-					size = 56,
-					isOrbiting = false
+					size = 56
 				},
 		}
 	}
@@ -212,30 +199,30 @@ function Presets:cropCircles()
 				x = 66,
 				y = 120,
 				size = 66,
-				isOrbiting = true,
+				mode = 1,
 				orbitX = 133,
 				orbitY = 120,
-				orbitVelocity = 9,
+				velocity = 9,
 				orbitStartAngle = 210
 			},
 			{
 				x = 66,
 				y = 120,
 				size = 66,
-				isOrbiting = true,
+				mode = 1,
 				orbitX = 166,
 				orbitY = 120,
-				orbitVelocity = 12,
+				velocity = 12,
 				orbitStartAngle = 210
 			},
 			{
 				x = 66,
 				y = 120,
 				size = 132,
-				isOrbiting = true,
+				mode = 1,
 				orbitX = 200,
 				orbitY = 120,
-				orbitVelocity = 15,
+				velocity = 15,
 				orbitStartAngle = 210
 			}
 		}
@@ -260,21 +247,21 @@ function Presets:popolVuh()
 				x = 128,
 				y = 80,
 				size = 75,
-				isOrbiting = true,
+				mode = 1,
 				orbitX = 103,
 				orbitY = 80,
-				orbitVelocity = 20,
+				velocity = 20,
 				orbitStartAngle = 210
 			},
 			{
 				x = 316,
 				y = 117,
 				size = 75,
-				isOrbiting = true,
+				mode = 1,
 				orbitDirection = -1,
 				orbitX = 296,
 				orbitY = 117,
-				orbitVelocity = 18,
+				velocity = 18,
 				orbitStartAngle = 1
 			}
 		}
@@ -300,20 +287,20 @@ function Presets:cMaj()
 				x = 135,
 				y = 123,
 				size = 75,
-				isOrbiting = true,
+				mode = 1,
 				orbitX = 116,
 				orbitY = 123,
-				orbitVelocity = 22,
+				velocity = 22,
 				orbitStartAngle = 210
 			},
 			{
 				x = 309,
 				y = 105,
 				size = 60,
-				isOrbiting = true,
+				mode = 1,
 				orbitX = 292,
 				orbitY = 105,
-				orbitVelocity = 25,
+				velocity = 25,
 				orbitDirection = -1,
 				orbitStartAngle = 1
 			}
@@ -381,11 +368,6 @@ function Presets:new()
 	player1.x = 133
 	player1.y = 120
 	player1.size = 100
-	player1.isOrbiting = false
-	player1.orbitX = 200
-	player1.orbitY = 120
-	player1.orbitVelocity = 25
-	player1.orbitStartAngle = 1
 	players[1] = player1
 
 	preset.players = players
@@ -461,10 +443,10 @@ function Presets:rhubarb()
 	player1.x = 304
 	player1.y = 110
 	player1.size = 100
-	player1.isOrbiting = true
+	player1.mode = 1
 	player1.orbitX = 209
 	player1.orbitY = 110
-	player1.orbitVelocity = 12
+	player1.velocity = 12
 	player1.orbitStartAngle = 350
 	players[1] = player1
 
@@ -492,10 +474,10 @@ function Presets:pentatonic1()
 	player1.x = 120
 	player1.y = 120
 	player1.size = 125
-	player1.isOrbiting = true
+	player1.mode = 1
 	player1.orbitX = 0
 	player1.orbitY = 120
-	player1.orbitVelocity = 25
+	player1.velocity = 25
 	player1.orbitStartAngle = 1
 	players[1] = player1
 	
@@ -503,10 +485,10 @@ function Presets:pentatonic1()
 	player2.x = 250
 	player2.y = 120
 	player2.size = 75
-	player2.isOrbiting = true
+	player2.mode = 1
 	player2.orbitX = 300
 	player2.orbitY = 120
-	player2.orbitVelocity = 25
+	player2.velocity = 25
 	player2.orbitStartAngle = 1
 	players[2] = player2
 	
@@ -535,10 +517,10 @@ function Presets:dorian1()
 	player1.x = 67
 	player1.y = 120
 	player1.size = 90
-	player1.isOrbiting = true
+	player1.mode = 1
 	player1.orbitX = 100
 	player1.orbitY = 120
-	player1.orbitVelocity = 20
+	player1.velocity = 20
 	player1.orbitStartAngle = 1
 	players[1] = player1
 	
@@ -546,10 +528,10 @@ function Presets:dorian1()
 	player2.x = 333
 	player2.y = 120
 	player2.size = 100
-	player2.isOrbiting = true
+	player2.mode = 1
 	player2.orbitX = 300
 	player2.orbitY = 120
-	player2.orbitVelocity = 28
+	player2.velocity = 28
 	player2.orbitStartAngle = 1
 	players[2] = player2
 	
@@ -578,10 +560,10 @@ function Presets:mixolydian1()
 	player1.x = 33
 	player1.y = 120
 	player1.size = 160
-	player1.isOrbiting = true
+	player1.mode = 1
 	player1.orbitX = 200
 	player1.orbitY = 120
-	player1.orbitVelocity = 20
+	player1.velocity = 20
 	player1.orbitStartAngle = 1
 	players[1] = player1
 	
@@ -589,10 +571,10 @@ function Presets:mixolydian1()
 	player2.x = 200
 	player2.y = 60
 	player2.size = 100
-	player2.isOrbiting = true
+	player2.mode = 1
 	player2.orbitX = 200
 	player2.orbitY = 120
-	player2.orbitVelocity = 15
+	player2.velocity = 15
 	player2.orbitStartAngle = 1
 	players[2] = player2
 	preset.players = players

@@ -38,7 +38,7 @@ function VelocityDialog:show(player, onDismiss, onVelocity)
 	self.backgroundSprite:moveTo(200, dialogY)
 	self.backgroundSprite:add()
 	
-	self.velocity = player.orbitVelocity
+	self.velocity = player.velocity
 	self.velocitySprite = gfx.sprite.new()
 	self.velocitySprite:moveTo(200, dialogY)
 	self.velocitySprite:add()

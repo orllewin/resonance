@@ -93,7 +93,7 @@ local mainInputHandler = {
 					function(oX, oY, pX, pY)
 						--onSetOrbit
 						playerNodes[activePlayerNode]:moveTo(pX, pY)
-						playerNodes[activePlayerNode]:setActiveOrbit(oX, oY, 50, 1)
+						playerNodes[activePlayerNode]:setActiveOrbit(oX, oY, 20, 1)
 					end
 				)
 			end,
@@ -111,7 +111,7 @@ local mainInputHandler = {
 					function(oX, oY, pX, pY)
 						--onSetOrbit
 						playerNodes[activePlayerNode]:moveTo(pX, pY)
-						playerNodes[activePlayerNode]:setActiveOrbit(oX, oY, 50, 1)
+						playerNodes[activePlayerNode]:setActiveOscillator(oX, oY, pX, pY, 20)
 					end
 				)
 			end,
@@ -124,7 +124,7 @@ local mainInputHandler = {
 					end,
 					function(velocity)
 						--onSetVelocity
-						playerNodes[activePlayerNode]:setOrbitVelocity(velocity)
+						playerNodes[activePlayerNode]:setVelocity(velocity)
 					end
 				)
 			end,
@@ -336,16 +336,18 @@ function loadPatch(patch)
 	
 	for k, v in pairs(patch.players) do
 		local playerNode = PlayerNode(geom.point.new(v.x, v.y), v.size)
-		if v.isOrbiting then
+		if v.mode ~= nil and v.mode == 1 then
 			playerNode:setActiveOrbit(
 				v.orbitX, 
 				v.orbitY,
-				v.orbitVelocity,
+				v.velocity,
 				v.orbitStartAngle
 			)
 			if v.orbitDirection ~= nil and v.orbitDirection == -1 then
 				playerNode:toggleDirection()
 			end
+		elseif v.mode ~= nil and v.mode == 2 then
+			--todo - set oscillating
  		end
 		 table.insert(playerNodes, playerNode)
 	end
