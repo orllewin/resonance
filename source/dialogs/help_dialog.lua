@@ -8,7 +8,7 @@ local gfx <const> = playdate.graphics
 class('HelpDialog').extends()
 
 local text = "Welcome to Resonance, a drone instrument and sequencer from orllewin (orllewin.uk)\n\n" ..
-"There are three main controls:\n\n" ..
+"Controls:\n\n" ..
 "(A) steps through the note nodes, when selected you can move a node or change its note with the crank. A long press with (A) will open a context menu for the node.\n\n" .. 
 "(B) steps through the player nodes, when a player approaches a note node it causes it to emit audio. A player can be controlled manually or with a long press of (B) a context menu will open where you can set orbits and more. The crank will change a player nodes range.\n\n" ..
 "A global menu can be opened by pressing (B) then (A) together."
