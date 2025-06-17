@@ -10,7 +10,8 @@ function Presets:init()
 end
 
 function Presets:defaultPatch()
-	return self:chromaCircle1("--", true)
+	--return self:chromaCircle1("--", true)
+	return self:origin()
 end
 
 function Presets:synths()
@@ -19,6 +20,7 @@ function Presets:synths()
 			label = "Synths:::",
 			type = "category_title"
 		},
+		self:origin(),
 		self:chromaCircle1("ChromaCircle", false),
 		self:lydianGrid(),
 		self:new(),
@@ -65,6 +67,39 @@ function Presets:newPatch()
 				orbitVelocity = 12,
 				orbitStartAngle = 210
 			},
+		}
+	}
+end
+
+function Presets:origin()
+	return {
+		name = "Origin",
+		waveform = "Triangle",
+		nodes = {
+			{ midiNote = 60, x = 66, y = 55 },
+			{ midiNote = 60, x = 200, y = 55 },
+			{ midiNote = 65, x = 333, y = 55 },
+			
+			{ midiNote = 53, x = 130, y = 115 },
+			{ midiNote = 60, x = 264, y = 115 },
+			
+			{ midiNote = 62, x = 66, y = 175 },
+			{ midiNote = 48, x = 200, y = 175 },
+			{ midiNote = 69, x = 333, y = 175 },
+		},
+		players = {
+				{
+					x = 159,
+					y = 75,
+					size = 80,
+					isOrbiting = false
+				},
+				{
+					x = 150,
+					y = 174,
+					size = 70,
+					isOrbiting = false
+				}
 		}
 	}
 end

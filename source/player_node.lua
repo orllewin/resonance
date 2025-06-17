@@ -4,6 +4,12 @@ import "CoreLibs/graphics"
 local gfx <const> = playdate.graphics
 local diam = 16
 
+local Mode = {
+	manual = 0,
+	orbit = 1,
+	osc = 2
+}
+
 class('PlayerNode').extends()
 
 function PlayerNode:init(p, size, orbitOrigin, orbitVelocity, orbitDirection)
@@ -61,11 +67,14 @@ function PlayerNode:init(p, size, orbitOrigin, orbitVelocity, orbitDirection)
 		
 		self:crank(0)
 		
+		self.mode = Mode.manual
+		
 		if(orbitVelocity ~= nil and orbitVelocity > 0 and orbitOrigin ~= nil) then
 			self.orbitOrbitSprite:moveTo(self.orbitPoint.x, self.orbitPoint.y)
 			self.orbitOrbitSprite:add()
 			self:moveOrigin(0,0)
 			self:setOriginMode(false)
+			self.mode = Mode.orbit
 		else
 			self.isOrbiting = false
 		end
