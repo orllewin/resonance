@@ -47,8 +47,6 @@ local rightDown = false
 local upDown = false
 local downDown = false
 
-local setOriginMode = false
-
 local patchNameSprite = PatchName()
 
 local showingLoadPatchMenu = false
@@ -144,10 +142,6 @@ local mainInputHandler = {
 	end,
 	
 	AButtonUp = function()
-		if setOriginMode then
-			setOriginMode = false
-			playerNodes[activePlayerNode]:setOriginMode(false)
-		else
 			if not nodeDidHold then
 				if(activeNode > 0) then
 					activeNode = 0
@@ -167,7 +161,6 @@ local mainInputHandler = {
 					end
 				end
 				nodeDidHold = false
-		end
 	end,
 	
 	BButtonDown = function()
@@ -342,7 +335,7 @@ function loadPatch(patch)
 	end
 	
 	for k, v in pairs(patch.players) do
-		local playerNode = PlayerNode(geom.point.new(v.x, v.y), v.size, nil, nil, 1)
+		local playerNode = PlayerNode(geom.point.new(v.x, v.y), v.size)
 		if v.isOrbiting then
 			playerNode:setActiveOrbit(
 				v.orbitX, 
@@ -513,9 +506,7 @@ function playdate.update()
 		oscillatorConfig:checkKeys()
 	else
 		if(leftDown) then
-			if setOriginMode then
-				playerNodes[activePlayerNode]:moveOrigin(-stepSize, 0)
-			elseif(activeNode > 0) then
+			if(activeNode > 0) then
 				nodes[activeNode]:move(-stepSize, 0)
 				activeNodeLabel:updateNode(nodes[activeNode])
 			else
@@ -523,9 +514,7 @@ function playdate.update()
 			end
 		end
 		if(rightDown) then
-			if setOriginMode then
-				playerNodes[activePlayerNode]:moveOrigin(stepSize, 0)
-			elseif(activeNode > 0) then
+			if(activeNode > 0) then
 				nodes[activeNode]:move(stepSize, 0)
 				activeNodeLabel:updateNode(nodes[activeNode])
 			else
@@ -533,9 +522,7 @@ function playdate.update()
 			end
 		end
 		if(upDown) then
-			if setOriginMode then
-				playerNodes[activePlayerNode]:changeOrbitVelocity(2)
-			elseif(activeNode > 0) then
+			if(activeNode > 0) then
 				nodes[activeNode]:move(0, -stepSize)
 				activeNodeLabel:updateNode(nodes[activeNode])
 			else
@@ -543,9 +530,7 @@ function playdate.update()
 			end
 		end
 		if(downDown) then
-			if setOriginMode then
-				playerNodes[activePlayerNode]:changeOrbitVelocity(-stepSize)
-			elseif(activeNode > 0) then
+			if(activeNode > 0) then
 				nodes[activeNode]:move(0, stepSize)
 				activeNodeLabel:updateNode(nodes[activeNode])
 			else

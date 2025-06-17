@@ -12,27 +12,20 @@ local Mode = {
 
 class('PlayerNode').extends()
 
-function PlayerNode:init(p, size, orbitOrigin, orbitVelocity, orbitDirection)
+function PlayerNode:init(p, size)
 		PlayerNode.super.init(self)
 		
 		self.p = p
-		self.orbitPoint = p:copy()
-		if(orbitOrigin ~= nil) then
-			self.orbitPoint.x = orbitOrigin.x
-			self.orbitPoint.y = orbitOrigin.y
-		end
-
-		self.orbitVelocity = orbitVelocity
-		if self.orbitVelocity == nil then self.orbitVelocity = 3 end
 		
-		self.orbitDirection = orbitDirection
-		if self.orbitDirection == nil then self.orbitDirection = 1 end
-
+		--orbit
+		self.orbitPoint = p:copy()
+		self.orbitVelocity = 10
+		self.orbitDirection = 1
 		self.orbitDegree = 320
+		self.isOrbiting = false
 		
 		self.size = size
-		self.isOriginMode = false
-				
+						
 		self.sprite = gfx.sprite.new()
 		self.sprite:moveTo(self.p.x, self.p.y)
 		self.sprite:add()
@@ -68,16 +61,6 @@ function PlayerNode:init(p, size, orbitOrigin, orbitVelocity, orbitDirection)
 		self:crank(0)
 		
 		self.mode = Mode.manual
-		
-		if(orbitVelocity ~= nil and orbitVelocity > 0 and orbitOrigin ~= nil) then
-			self.orbitOrbitSprite:moveTo(self.orbitPoint.x, self.orbitPoint.y)
-			self.orbitOrbitSprite:add()
-			self:moveOrigin(0,0)
-			self:setOriginMode(false)
-			self.mode = Mode.orbit
-		else
-			self.isOrbiting = false
-		end
 end
 
 function PlayerNode:randomise()
@@ -131,27 +114,10 @@ function PlayerNode:setActiveOrbit(x, y, velocity, angle)
 	self.orbitOrbitSprite:moveTo(self.orbitPoint.x, self.orbitPoint.y)
 	self.orbitOrbitSprite:add()
 	self:moveOrigin(0,0)
-	self:setOriginMode(false)
-end
-
-function PlayerNode:setOriginMode(isOriginMode)
-	self.isOriginMode = isOriginMode
-	
-	if isOriginMode then
-		self.orbitPoint.x = self.p.x
-		self.orbitPoint.y = self.p.y
-		self.orbitOriginSprite:moveTo(self.orbitPoint.x, self.orbitPoint.y)
-		self.orbitVelcitySprite:moveTo(self.orbitPoint.x, self.orbitPoint.y)
-		self.orbitOrbitSprite:moveTo(self.orbitPoint.x, self.orbitPoint.y)
-		self.orbitOriginSprite:add()
-		self.orbitVelcitySprite:add()
-		self.orbitOrbitSprite:add()
-	else
-		self.orbitOriginSprite:remove()
-		self.orbitVelcitySprite:remove()
-		self.orbitOriginSprite:remove()
-		self.isOrbiting = true
-	end
+	self.orbitOriginSprite:remove()
+	self.orbitVelcitySprite:remove()
+	self.orbitOriginSprite:remove()
+	self.isOrbiting = true
 end
 
 function PlayerNode:moveOrigin(x, y)
