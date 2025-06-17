@@ -8,6 +8,7 @@ import "node"
 import "player_node"
 import "sprites/orbit_config"
 import "sprites/oscillator_config"
+import "sprites/patch_name"
 
 import "midi"
 
@@ -21,7 +22,7 @@ import "dialogs/help_dialog"
 import "sprites/active_node"
 
 import "presets"
-import "patch_name"
+
 
 local gfx <const> = playdate.graphics
 local geom <const> = playdate.geometry
