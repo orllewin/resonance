@@ -15,9 +15,6 @@ local dialogHeight = 22
 local velocityWidth = 173
 local velocityHeight = 16
 
-local maxVelocity = 150
-
-
 function VelocityDialog:init()
 		VelocityDialog.super.init(self)	
 		self.crankDelta = 0
@@ -85,7 +82,7 @@ function VelocityDialog:drawVelocity()
 	local velocityImage = gfx.image.new(velocityWidth, velocityHeight, playdate.graphics.kColorWhite)
 	gfx.pushContext(velocityImage)
 	gfx.setColor(gfx.kColorBlack)
-	gfx.fillRoundRect(0, 0, self:map(self.velocity, 1, 200, 1, velocityWidth), velocityHeight, 3) 
+	gfx.fillRoundRect(0, 0, self:map(self.velocity, 1, maxVelocity, 1, velocityWidth), velocityHeight, 3) 
 	gfx.popContext()
 	self.velocitySprite:setImage(velocityImage)
 end

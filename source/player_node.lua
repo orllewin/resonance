@@ -26,6 +26,7 @@ function PlayerNode:init(p, size)
 		--oscillator
 		self.oscStartPoint = p:copy()
 		self.oscEndPoint = p:copy()
+		self.oscDirection = 1
 		
 		self.size = size
 						
@@ -86,11 +87,20 @@ function PlayerNode:setActive(isActive)
 end
 
 function PlayerNode:setActiveOscillator(sX, sY, eX, eY, velocity)
-	self.oscStartPoint.x = sX
-	self.oscStartPoint.y = sY
-	self.oscEndPoint.x = eX
-	self.oscEndPoint.y = eY
+	if(sX < eX) then
+		self.oscStartPoint.x = sX
+		self.oscStartPoint.y = sY
+		self.oscEndPoint.x = eX
+		self.oscEndPoint.y = eY
+	else
+		self.oscStartPoint.x = eX
+		self.oscStartPoint.y = eY
+		self.oscEndPoint.x = sX
+		self.oscEndPoint.y = sY
+	end
 	self.velocity = velocity
+	self.oscDirection = 1
+	self:moveTo(self.oscStartPoint.x, self.oscStartPoint.y)
 	self.mode = Mode.osc
 end
 
@@ -190,7 +200,7 @@ function PlayerNode:move(x, y)
 	end
 end
 
-function PlayerNode:updateOrbit()
+function PlayerNode:updateOrbitOrOsc()
 	if self.mode == Mode.orbit then
 		local origin = self.orbitPoint
 		local radius = self.orbitPoint:distanceToPoint(self.p)
@@ -216,8 +226,29 @@ function PlayerNode:updateOrbit()
 		if self.isActive then
 			self.activeSprite:moveTo(self.p.x, self.p.y - 16)
 		end
-	elseif mode == Mode.osc then
-			print("OSCOSCOSC")
+	elseif self.mode == Mode.osc then
+		print("update osc: self.oscDirection: " .. self.oscDirection)
+		local x = self.p.x
+		
+		local increment = self:map(self.velocity, 1, maxVelocity, 0.3, 2.0)
+		if self.oscDirection == 1 then
+			--moving right
+			
+			x += increment
+			if x > self.oscEndPoint.x then
+				self.oscDirection = -1
+			end
+		else
+			--moving left
+			x -= increment
+			if x < self.oscStartPoint.x then
+				self.oscDirection = 1
+			end
+		end
+		print("move to: " .. x)
+		self.p.x = x
+		self.p.y = self.oscEndPoint.y
+		self.sprite:moveTo(self.p.x, self.p.y)
 	end
 end
 

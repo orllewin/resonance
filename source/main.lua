@@ -36,6 +36,8 @@ gfx.setFont(resFont)
 gDialogHeight = 240
 gDialogWidth = 200 
 
+maxVelocity = 75
+
 local introLabelSprite = gfx.sprite.spriteWithText("Resonance", 400, 20)
 
 local nodes = {}
@@ -109,7 +111,8 @@ local mainInputHandler = {
 						--onDismiss
 					end,
 					function(oX, oY, pX, pY)
-						--onSetOrbit
+						--onSetOscillator
+						print("set osc: " .. oX .. "." .. oY .. " and " .. pX .. "." .. pY)
 						playerNodes[activePlayerNode]:moveTo(pX, pY)
 						playerNodes[activePlayerNode]:setActiveOscillator(oX, oY, pX, pY, 20)
 					end
@@ -563,9 +566,10 @@ function updateNodes()
 		for i = 1,nodeCount,1 do 
 			local node = nodes[i]
 			node:checkPlayers(playerNodes) 
-			for p = 1, #playerNodes, 1 do 
+			local playerCount = #playerNodes
+			for p = 1, playerCount, 1 do 
 				local player = playerNodes[p]
-				player:updateOrbit()
+				player:updateOrbitOrOsc()
 				if(node.p:distanceToPoint(player.p) < player.size) then
 					gfx.drawLine(node.p.x, node.p.y, player.p.x, player.p.y)
 				end
