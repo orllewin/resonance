@@ -17,6 +17,7 @@ class('NodesDialog').extends()
 local menuOptionAddNoteNode = "New note node"
 local menuOptionAddPlayerNode = "New player node"
 local menuOptionSetWaveform = "Set waveform"
+local menuOptionEffects = "Effects"
 local menuOptionOctaveUp = "Octave up"
 local menuOptionOctaveDown = "Octave down"
 local menuOptionRndPositions = "Randomise positions"
@@ -29,6 +30,7 @@ local menuItems = {
 	{label = menuOptionAddPlayerNode},
 	{type = "divider"},
 	{label = "Global:::", type = "category_title"},
+	{label = menuOptionEffects},
 	{label = menuOptionSetWaveform},
 	{label = menuOptionOctaveUp},
 	{label = menuOptionOctaveDown},
@@ -49,7 +51,8 @@ function NodesDialog:show(
 	onWaveform,
 	onAddNoteNode,
 	onOctaveUp,
-	onOctaveDown
+	onOctaveDown,
+	onEffects
 )
 	
 	self.onDismiss = onDismiss
@@ -85,6 +88,9 @@ function NodesDialog:show(
 		elseif item.label == menuOptionRndNotes then
 			self:dismiss()
 			onRandomiseNotes()
+		elseif item.label == menuOptionEffects then
+			self:dismiss()
+			onEffects()
 		end
 	end, 29000)
 	

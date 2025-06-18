@@ -18,6 +18,7 @@ import "dialogs/node_dialog"
 import "dialogs/player_dialog"
 import "dialogs/velocity_dialog"
 import "dialogs/help_dialog"
+import "dialogs/effects_dialog"
 
 import "sprites/active_node"
 
@@ -445,6 +446,16 @@ function showNodesMenu()
 			for n = 1,nodeCount,1 do
 				nodes[n]:octaveDown()
 			end
+		end,
+		function()
+			--onEffects
+			showingMenu = true
+			EffectsDialog():show(
+				function() 
+					--onDismiss
+					showingMenu = false 
+				end
+			)
 		end
 	)
 end

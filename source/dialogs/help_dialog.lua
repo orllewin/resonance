@@ -1,7 +1,7 @@
 import "CoreLibs/sprites"
 import "CoreLibs/graphics"
 import "CoreLibs/ui"
-import "button"
+import "views/button"
 
 local gfx <const> = playdate.graphics
 
