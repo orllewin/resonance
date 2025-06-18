@@ -41,6 +41,7 @@ maxVelocity = 75
 local introLabelSprite = gfx.sprite.spriteWithText("Resonance", 400, 20)
 
 local nodes = {}
+nodeCount = 0
 local playerNodes = {}
 local synths = {}
 
@@ -201,6 +202,7 @@ local mainInputHandler = {
 					activeNode = 1
 					nodes[activeNode]:select()
 					activeNodeLabel:updateNode(nodes[activeNode])
+					nodeCount = #nodes
 				end
 			end
 		)
@@ -321,6 +323,7 @@ function loadPatch(patch)
 		nodes[k] = nil 
 	end
 	
+	
 	for k, v in pairs(patch.nodes) do
 		local node = Node(geom.point.new(v.x, v.y), v.midiNote)
 		if v.waveform ~= nil then 
@@ -330,6 +333,8 @@ function loadPatch(patch)
 		end
 		table.insert(nodes, node)
 	end
+	
+	nodeCount = #nodes
 	
 	--empty players table
 	for k, v in pairs(playerNodes) do 
@@ -408,8 +413,9 @@ function showNodesMenu()
 			--onAddNew
 			showingMenu = false 
 			local newIndex = #nodes + 1
-			nodes[newIndex] = Node(geom.point.new(200, 120), 60)
+			nodes[newIndex] = Node(geom.point.new(200, 120), 60)--table.insert duh
 			setLabelsVisible(true)
+			nodeCount = #nodes
 			
 			--todo-- set the new node as active - some weirdness stopping it being simple
 		end,
@@ -562,7 +568,6 @@ function playdate.update()
 end
 
 function updateNodes()
-		local nodeCount = #nodes
 		for i = 1,nodeCount,1 do 
 			local node = nodes[i]
 			node:checkPlayers(playerNodes) 

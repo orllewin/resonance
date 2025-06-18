@@ -100,11 +100,18 @@ function Node:checkPlayers(players)
 	local playerCount = #players
 	
 	local closestDistance = 600
+	
+  local distances = {}
+	local ranges = {}	
+	
 	local withinRange = false
+	
 	for p = 1, playerCount, 1 do
 		local player = players[p]
 		local distance =  self.p:distanceToPoint(player.p)
 		if distance < player.size then
+			table.insert(distances, distance)
+			table.insert(ranges, player.size)
 			withinRange = true
 		end
 		
@@ -116,7 +123,18 @@ function Node:checkPlayers(players)
 	if(not withinRange) then
 		self.synth:noteOff()
 	else
-		self.synth:setVolume(self:map(closestDistance, 0, 100, 1.0, 0.0)/10.0)
+		
+		local volume = 0
+		local playersInRange = #distances
+		
+		for i = 1,playersInRange,1 do
+			local playerVolume = self:map(distances[i], ranges[i], 0, 0.0, 1.0)
+			volume += playerVolume
+		end
+		
+		self.synth:setVolume((math.min(volume, 1.0))/nodeCount)
+		
+		--self.synth:setVolume(self:map(closestDistance, 0, 100, 1.0, 0.0)/nodeCount)
 		if(not self.synth:isPlaying()) then
 			self.synth:playMIDINote(self.midiNote)
 		end
