@@ -33,6 +33,17 @@ local stepSize = 3
 resFont = gfx.font.new("parodius_ext")
 gfx.setFont(resFont)
 
+gChannel = playdate.sound.channel.new()
+gDelay = playdate.sound.delayline.new(3.0)
+gDelayTap1 = gDelay:addTap(3.0)
+gDelayTap1:setDelay(1.2)
+gDelayTap1:setVolume(0.5)
+gChannel:addSource(gDelayTap1)
+gDelay:setMix(0.0)
+gDelay:setFeedback(0.20)
+
+gChannel:addEffect(gDelay)
+
 gDialogHeight = 240
 gDialogWidth = 200 
 

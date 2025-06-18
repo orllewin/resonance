@@ -30,10 +30,13 @@ function Node:init(p, midiNote)
 		self.activeSprite = gfx.sprite.new(arrowImage)
 		
 		self.synth = playdate.sound.synth.new(playdate.sound.kWaveTriangle)
+		gChannel:addSource(self.synth)
 		self.waveform = "Triangle"
 		self.synth:setADSR(0.5, 0.5, 1.0, 2.0)
 		self.synth:playMIDINote(self.midiNote)
 		self.synth:setVolume(0)
+		
+		
 end
 
 function Node:octaveUp()
