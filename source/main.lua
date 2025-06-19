@@ -116,15 +116,18 @@ local mainInputHandler = {
 	
 	AButtonHeld = function()	
 		local playerDialog = PlayerDialog()
+		showingMenu = true
 		playerDialog:show(
 			playerNodes[activePlayerNode],
 			activePlayerNode,
 			function()
 				--onDismiss
+				showingMenu = false
 			end,
 			function()
 				--onSetOrbit
 				playerNodes[activePlayerNode]:move(0, 0)--removes orbit
+				showingMenu = false
 				orbitConfig:show(
 					function()
 						--onDismiss
@@ -138,10 +141,12 @@ local mainInputHandler = {
 			end,
 			function()
 				--onToggleDirection
+				showingMenu = false
 				playerNodes[activePlayerNode]:toggleDirection()
 			end,
 			function()
 				--onSetOscillator
+				showingMenu = false
 				playerNodes[activePlayerNode]:move(0, 0)--removes orbit
 				oscillatorConfig:show(
 					function()
@@ -157,6 +162,7 @@ local mainInputHandler = {
 			end,
 			function()
 				--onSetVelocity
+				showingMenu = false
 				VelocityDialog():show(
 					playerNodes[activePlayerNode],
 					function()
@@ -171,6 +177,7 @@ local mainInputHandler = {
 			function()
 				--onRemove
 				--todo confirmation dialog?
+				showingMenu = false
 				if #playerNodes > 1 then
 					playerNodes[activePlayerNode]:stop()
 					table.remove(playerNodes, activePlayerNode)
@@ -215,23 +222,27 @@ local mainInputHandler = {
 			return
 		end
 		local nodeDialog = NodeDialog()
+		showingMenu = true
 		nodeDialog:show(
 			nodes[activeNode],
 			function ()
 				-- onDismiss
 				--showingMenu = false
 				nodeDidHold = true
+				showingMenu = false
 			end,
 			function (waveform)
 				--onWaveform
 				--showingMenu = false
 				nodeDidHold = true
+				showingMenu = false
 				nodes[activeNode]:setWaveform(waveform)
 				nodes[activeNode]:select()
 				activeNodeLabel:updateNode(nodes[activeNode])
 			end,
 			function()
 				--onRemove
+				showingMenu = false
 				if #nodes > 1 then
 					nodes[activeNode]:stop()
 					table.remove(nodes, activeNode)
@@ -603,9 +614,8 @@ function playdate.update()
 	end
 	
 	--Only draw nodes if menu not displaying
+	updateNodes()
 	if not showingMenu then
-		updateNodes()
-		
 		if(activeNodeLabel.isPlayer) then
 			activeNodeLabel:updatePlayer(playerNodes[activePlayerNode])
 			gfx.drawText(activeNodeLabel.text, 5, 230)
@@ -627,8 +637,10 @@ function updateNodes()
 			for p = 1, playerCount, 1 do 
 				local player = playerNodes[p]
 				player:updateOrbitOrOsc()
-				if(node.p:distanceToPoint(player.p) < player.size) then
-					gfx.drawLine(node.p.x, node.p.y, player.p.x, player.p.y)
+				if not showingMenu then
+					if(node.p:distanceToPoint(player.p) < player.size) then
+						gfx.drawLine(node.p.x, node.p.y, player.p.x, player.p.y)
+					end
 				end
 			end
 		end

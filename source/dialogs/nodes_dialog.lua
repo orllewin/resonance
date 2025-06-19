@@ -16,19 +16,14 @@ class('NodesDialog').extends()
 
 local menuOptionAddNoteNode = "New note node"
 local menuOptionAddPlayerNode = "New player node"
-local menuOptionSetWaveform = "Set waveform"
+local menuOptionSetWaveform = "Waveform"
 local menuOptionEffects = "Effects"
 local menuOptionOctaveUp = "Octave up"
 local menuOptionOctaveDown = "Octave down"
-local menuOptionRndPositions = "Randomise positions"
-local menuOptionRndPositions = "Randomise positions"
-local menuOptionRndNotes = "Randomise notes"
+local menuOptionRndPositions = "Random positions"
+local menuOptionRndNotes = "Random notes"
 
 local menuItems = {
-	{label = "Nodes:::", type = "category_title"},
-	{label = menuOptionAddNoteNode},
-	{label = menuOptionAddPlayerNode},
-	{type = "divider"},
 	{label = "Global:::", type = "category_title"},
 	{label = menuOptionEffects},
 	{label = menuOptionSetWaveform},
@@ -36,6 +31,10 @@ local menuItems = {
 	{label = menuOptionOctaveDown},
 	{label = menuOptionRndPositions},
 	{label = menuOptionRndNotes},
+	{type = "divider"},
+	{label = "Nodes:::", type = "category_title"},
+	{label = menuOptionAddNoteNode},
+	{label = menuOptionAddPlayerNode},
 }
 
 function NodesDialog:init()

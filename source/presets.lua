@@ -100,19 +100,18 @@ end
 function Presets:dualOscillator()
 	return {
 		name = "Dual Oscillator",
-		waveform = "Vosim",
+		waveform = "Triangle",
 		nodes = {
-			{ midiNote = 40, x = 50, y = 60 },
-			{ midiNote = 48, x = 150, y = 60 },
-			{ midiNote = 50, x = 250, y = 60 },
-			
-			{ midiNote = 60, x = 100, y = 120 },
-			{ midiNote = 77, x = 200, y = 120 },
-			{ midiNote = 55, x = 300, y = 120 },
-			
-			{ midiNote = 65, x = 50, y = 180 },
-			{ midiNote = 79, x = 150, y = 180 },
-			{ midiNote = 72, x = 250, y = 180 },
+			{ midiNote = 60, x = 66, y = 55 },
+		{ midiNote = 60, x = 200, y = 55 },
+		{ midiNote = 65, x = 333, y = 55 },
+		
+		{ midiNote = 53, x = 130, y = 115 },
+		{ midiNote = 60, x = 264, y = 115 },
+		
+		{ midiNote = 62, x = 66, y = 175 },
+		{ midiNote = 48, x = 200, y = 175 },
+		{ midiNote = 69, x = 333, y = 175 },
 		},
 		players = {
 				{
