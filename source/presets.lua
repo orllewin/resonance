@@ -108,7 +108,7 @@ function Presets:dualOscillator()
 			
 			{ midiNote = 60, x = 100, y = 120 },
 			{ midiNote = 77, x = 200, y = 120 },
-			{ midiNote = 81, x = 300, y = 120 },
+			{ midiNote = 55, x = 300, y = 120 },
 			
 			{ midiNote = 65, x = 50, y = 180 },
 			{ midiNote = 79, x = 150, y = 180 },
