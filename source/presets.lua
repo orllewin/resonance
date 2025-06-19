@@ -102,15 +102,15 @@ function Presets:dualOscillator()
 		waveform = "Triangle",
 		nodes = {
 			{ midiNote = 60, x = 66, y = 55 },
-		{ midiNote = 60, x = 200, y = 55 },
-		{ midiNote = 65, x = 333, y = 55 },
-		
-		{ midiNote = 53, x = 130, y = 115 },
-		{ midiNote = 60, x = 264, y = 115 },
-		
-		{ midiNote = 62, x = 66, y = 175 },
-		{ midiNote = 48, x = 200, y = 175 },
-		{ midiNote = 69, x = 333, y = 175 },
+			{ midiNote = 60, x = 200, y = 55 },
+			{ midiNote = 65, x = 333, y = 55 },
+			
+			{ midiNote = 53, x = 130, y = 115 },
+			{ midiNote = 60, x = 264, y = 115 },
+			
+			{ midiNote = 62, x = 66, y = 175 },
+			{ midiNote = 48, x = 200, y = 175 },
+			{ midiNote = 69, x = 333, y = 175 },
 		},
 		players = {
 				{
