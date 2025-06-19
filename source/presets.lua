@@ -35,8 +35,8 @@ function Presets:sequencers()
 		},
 		self:mixolydian1(),
 		self:cropCircles(),
+		self:dualOscillator(),
 		self:cMaj(),
-		self:dorian1(),
 		self:popolVuh(),
 		self:pentatonic1(),
 		self:rhubarb(),
@@ -92,6 +92,50 @@ function Presets:origin()
 					x = 150,
 					y = 174,
 					size = 70
+				}
+		}
+	}
+end
+
+function Presets:dualOscillator()
+	return {
+		name = "Dual Oscillator",
+		waveform = "Vosim",
+		nodes = {
+			{ midiNote = 40, x = 50, y = 60 },
+			{ midiNote = 48, x = 150, y = 60 },
+			{ midiNote = 50, x = 250, y = 60 },
+			
+			{ midiNote = 60, x = 100, y = 120 },
+			{ midiNote = 77, x = 200, y = 120 },
+			{ midiNote = 81, x = 300, y = 120 },
+			
+			{ midiNote = 65, x = 50, y = 180 },
+			{ midiNote = 79, x = 150, y = 180 },
+			{ midiNote = 72, x = 250, y = 180 },
+		},
+		players = {
+				{
+					x = 100,
+					y = 100,
+					size = 90,
+					mode = 2,
+					velocity = 12,
+					oscStartPointX = 20,
+					oscStartPointY = 70,
+					oscEndPointX = 380,
+					oscEndPointY = 70
+				},
+				{
+					x = 100,
+					y = 200,
+					size = 120,
+					mode = 2,
+					velocity = 14,
+					oscStartPointX = 20,
+					oscStartPointY = 160,
+					oscEndPointX = 380,
+					oscEndPointY = 160
 				}
 		}
 	}
@@ -489,49 +533,6 @@ function Presets:pentatonic1()
 	player2.orbitX = 300
 	player2.orbitY = 120
 	player2.velocity = 25
-	player2.orbitStartAngle = 1
-	players[2] = player2
-	
-	preset.players = players
-	
-	return preset
-end
-
-function Presets:dorian1()
-	local preset = {}
-	preset.name = "Dorian"
-	local scale = midi:generateScale(36, "Dorian")
-	preset.nodes = {
-		self:noteTwoSquares(1, scale[27], "Triangle"), 
-		self:noteTwoSquares(2, scale[25], "Triangle"), 
-		self:noteTwoSquares(3, scale[13], "Triangle"), 
-		self:noteTwoSquares(4, scale[13], "Triangle"), 
-		self:noteTwoSquares(5, scale[16], "Triangle"), 
-		self:noteTwoSquares(6, scale[22], "Triangle"), 
-		self:noteTwoSquares(7, scale[24], "Triangle"), 
-		self:noteTwoSquares(8, scale[26], "Triangle")
-	}
-	
-	local players = {}
-	local player1 = {}
-	player1.x = 67
-	player1.y = 120
-	player1.size = 90
-	player1.mode = 1
-	player1.orbitX = 100
-	player1.orbitY = 120
-	player1.velocity = 20
-	player1.orbitStartAngle = 1
-	players[1] = player1
-	
-	local player2 = {}
-	player2.x = 333
-	player2.y = 120
-	player2.size = 100
-	player2.mode = 1
-	player2.orbitX = 300
-	player2.orbitY = 120
-	player2.velocity = 28
 	player2.orbitStartAngle = 1
 	players[2] = player2
 	

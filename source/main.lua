@@ -391,7 +391,13 @@ function loadPatch(patch)
 				playerNode:toggleDirection()
 			end
 		elseif v.mode ~= nil and v.mode == 2 then
-			--todo - set oscillating
+			playerNode:setActiveOscillator(
+				v.oscStartPointX,
+				v.oscStartPointY,
+				v.oscEndPointX,
+				v.oscEndPointY,
+				v.velocity
+			)
  		end
 		 table.insert(playerNodes, playerNode)
 	end

@@ -267,5 +267,9 @@ function PlayerNode:getState()
 	saveState.velocity = self.velocity
 	saveState.orbitX = self.orbitPoint.x
 	saveState.orbitY = self.orbitPoint.y
+	saveState.oscStartPointX = self.oscStartPoint.x
+	saveState.oscStartPointY = self.oscStartPoint.y
+	saveState.oscEndPointX = self.oscEndoint.x
+	saveState.oscEndPointY = self.oscEndPoint.y
 	return saveState
 end
