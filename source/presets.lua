@@ -375,46 +375,14 @@ function Presets:rhubarb()
 		name = "Rhubarb",
 		waveform = "Vosim",
 		nodes = {
-			{
-				midiNote = 66,
-				x = 314,
-				y = 62
-			},
-			{
-				midiNote = 50,
-				x = 270,
-				y = 96
-			},
-			{
-				midiNote = 54,
-				x = 256,
-				y = 150
-			},
-			{
-				midiNote = 61,
-				x = 312,
-				y = 178
-			},
-			{
-				midiNote = 64,
-				x = 171,
-				y = 210
-			},
-			{
-				midiNote = 59,
-				x = 92,
-				y = 158
-			},
-			{
-				midiNote = 52,
-				x = 145,
-				y = 128
-			},
-			{
-				midiNote = 57,
-				x = 113,
-				y = 73
-			}
+			{ midiNote = 66, x = 314, y = 62 },
+			{ midiNote = 50, x = 270, y = 96 },
+			{ midiNote = 54, x = 256, y = 150 },
+			{ midiNote = 61, x = 312, y = 178 },
+			{ midiNote = 64, x = 171, y = 210 },
+			{ midiNote = 59, x = 92, y = 158 },
+			{ midiNote = 52, x = 145, y = 128 },
+			{ midiNote = 57, x = 113, y = 73 }
 		},
 		players = {
 			{
