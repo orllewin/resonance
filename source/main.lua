@@ -505,7 +505,6 @@ function setup()
 	local backgroundImage = gfx.image.new( "images/background" )
 	assert( backgroundImage )
 	
-	--local menuImage = gfx.image.new( "images/elderwean" )
 	local menuImage = gfx.image.new( "images/menu_image" )
 	playdate.setMenuImage(menuImage, 100)
 	
