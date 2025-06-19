@@ -50,7 +50,6 @@ function EffectsDialog:show(onDismiss)
 			gDelayTap1:setDelay(gDelayMax)
 		end
 	)
-	self.delayTimeEncoder:focus()
 	self.focusedView = self.delayTimeEncoder
 	
 	self.feedbackEncoder = Encoder(400 - (effectDialogWidth) + 115, row1EncoderY, gDelayFeedback * 100.0, 
@@ -220,6 +219,8 @@ if self.focusedColumn == 1 then
 	}
 	
 	playdate.inputHandlers.push(self.inputHandler)
+	
+	self.focusedView:focus()
 end
 
 function EffectsDialog:map(value, start1, stop1, start2, stop2)
