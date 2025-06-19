@@ -351,70 +351,23 @@ function Presets:cMaj()
 end
 
 function Presets:new()
-	local preset = {}
-	preset.name = "8 nodes 1 inducer"
-	local nodes = {}
-	nodes[1] = {
-				midiNote = 60,
-				x = 22,
-				y = 22,
-				waveform = "Sine"
-			}
-	nodes[2] = {
-				midiNote = 60,
-				x = 22,
-				y = 50,
-				waveform = "Sine"
-			}
-	nodes[3] = {
-				midiNote = 60,
-				x = 22,
-				y = 78,
-				waveform = "Sine"
-			}
-	nodes[4] = {
-				midiNote = 60,
-				x = 22,
-				y = 106,
-				waveform = "Sine"
-			}
-	nodes[5] = {
-				midiNote = 60,
-				x = 22,
-				y = 134,
-				waveform = "Sine"
-			}
-	nodes[6] = {
-				midiNote = 60,
-				x = 22,
-				y = 162,
-				waveform = "Sine"
-			}
-	nodes[7] = {
-				midiNote = 60,
-				x = 22,
-				y = 190,
-				waveform = "Sine"
-			}
-	nodes[8] = {
-				midiNote = 60,
-				x = 22,
-				y = 218,
-				waveform = "Sine"
-			}
-		
-	preset.nodes = nodes
-	
-	local players = {}
-	local player1 = {}
-	player1.x = 133
-	player1.y = 120
-	player1.size = 100
-	players[1] = player1
-
-	preset.players = players
-
-	return preset
+	return {
+		name = "8 nodes 1 inducer",
+		waveform = "Sine",
+		nodes = {
+			{	midiNote = 60, x = 22, y = 22 },
+			{ midiNote = 60, x = 22, y = 50 },
+			{ midiNote = 60, x = 22, y = 78 },
+			{ midiNote = 60, x = 22, y = 106 },
+			{ midiNote = 60, x = 22, y = 134 },
+			{ midiNote = 60, x = 22, y = 162 },
+			{ midiNote = 60, x = 22, y = 190 },
+			{ midiNote = 60, x = 22, y = 218 }
+		},
+		players = {
+			{ x = 133, y = 120, size = 100 }
+		}
+	}
 end
 
 function Presets:rhubarb()
