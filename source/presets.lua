@@ -170,57 +170,6 @@ function Presets:chromaCircle1(title, isStartup)
 	}
 end
 
-function Presets:lydianGrid()
-	local s = midi:generateScale(48, "Lydian")
-	return {
-		name = "Lydian Grid",
-		waveform = "Vosim",
-		nodes = {
-			{ midiNote = s[1], x = 49, y = 30 },
-			{ midiNote = s[3], x = 110, y = 30 },
-			{ midiNote = s[5], x = 168, y = 30 },
-			{ midiNote = s[7], x = 229, y = 30 },
-			{ midiNote = s[9], x = 287, y = 30 },
-			{ midiNote = s[11], x = 344, y = 30 },
-			
-			{ midiNote = s[12], x = 20, y = 76 },
-			{ midiNote = s[14], x = 81, y = 76 },
-			{ midiNote = s[16], x = 141, y = 76 },
-			{ midiNote = s[18], x = 202, y = 76 },
-			{ midiNote = s[20], x = 258, y = 76 },
-			{ midiNote = s[22], x = 319, y = 76 },
-			
-			{ midiNote = s[2], x = 49, y = 120 },
-			{ midiNote = s[4], x = 110, y = 120 },
-			{ midiNote = s[6], x = 168, y = 120 },
-			{ midiNote = s[8], x = 229, y = 120 },
-			{ midiNote = s[10], x = 287, y = 120 },
-			{ midiNote = s[12], x = 344, y = 120 },
-			
-			{ midiNote = s[23], x = 20, y = 163 },
-			{ midiNote = s[25], x = 81, y = 163 },
-			{ midiNote = s[27], x = 141, y = 163 },
-			{ midiNote = s[29], x = 202, y = 163 },
-			{ midiNote = s[31], x = 258, y = 163 },
-			{ midiNote = s[33], x = 319, y = 163 },
-			
-			{ midiNote = s[14], x = 49, y = 208 },
-			{ midiNote = s[16], x = 110, y = 208 },
-			{ midiNote = s[18], x = 168, y = 208 },
-			{ midiNote = s[20], x = 229, y = 208 },
-			{ midiNote = s[22], x = 287, y = 208 },
-			{ midiNote = s[24], x = 344, y = 208 },
-		},
-		players = {
-				{
-					x = 374,
-					y = 162,
-					size = 56
-				},
-		}
-	}
-end
-
 function Presets:cropCircles()
 	return {
 		name = "Crop Circle",
