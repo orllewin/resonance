@@ -371,82 +371,64 @@ function Presets:new()
 end
 
 function Presets:rhubarb()
-	local preset = {}
-	preset.name = "Rhubarb"
-	local nodes = {}
-	
-	local n1 = {}
-	n1.midiNote = 66
-	n1.x = 314
-	n1.y = 62
-	n1.waveform = "Vosim"
-	nodes[1] = n1
-	
-	local n2 = {}
-	n2.midiNote = 50
-	n2.x = 270
-	n2.y = 96
-	n2.waveform = "Vosim"
-	nodes[2] = n2
-	
-	local n3 = {}
-	n3.midiNote = 54
-	n3.x = 256
-	n3.y = 150
-	n3.waveform = "Vosim"
-	nodes[3] = n3
-	
-	local n4 = {}
-	n4.midiNote = 61
-	n4.x = 312
-	n4.y = 178
-	n4.waveform = "Vosim"
-	nodes[4] = n4
-	
-	local n5 = {}
-	n5.midiNote = 64
-	n5.x = 171
-	n5.y = 210
-	n5.waveform = "Vosim"
-	nodes[5] = n5
-	
-	local n6 = {}
-	n6.midiNote = 59
-	n6.x = 92
-	n6.y = 158
-	n6.waveform = "Vosim"
-	nodes[6] = n6
-	
-	local n7 = {}
-	n7.midiNote = 52
-	n7.x = 145
-	n7.y = 128
-	n7.waveform = "Vosim"
-	nodes[7] = n7
-	
-	local n8 = {}
-	n8.midiNote = 57
-	n8.x = 113
-	n8.y = 73
-	n8.waveform = "Vosim"
-	nodes[8] = n8
-	
-	preset.nodes = nodes
-	
-	local players = {}
-	local player1 = {}
-	player1.x = 304
-	player1.y = 110
-	player1.size = 100
-	player1.mode = 1
-	player1.orbitX = 209
-	player1.orbitY = 110
-	player1.velocity = 12
-	player1.orbitStartAngle = 350
-	players[1] = player1
-
-	preset.players = players
-	return preset
+	return {
+		name = "Rhubarb",
+		waveform = "Vosim",
+		nodes = {
+			{
+				midiNote = 66,
+				x = 314,
+				y = 62
+			},
+			{
+				midiNote = 50,
+				x = 270,
+				y = 96
+			},
+			{
+				midiNote = 54,
+				x = 256,
+				y = 150
+			},
+			{
+				midiNote = 61,
+				x = 312,
+				y = 178
+			},
+			{
+				midiNote = 64,
+				x = 171,
+				y = 210
+			},
+			{
+				midiNote = 59,
+				x = 92,
+				y = 158
+			},
+			{
+				midiNote = 52,
+				x = 145,
+				y = 128
+			},
+			{
+				midiNote = 57,
+				x = 113,
+				y = 73
+			}
+		},
+		players = {
+			{
+				x = 304,
+				y = 110,
+				size = 100,
+				mode = 1,
+				orbitX = 209,
+				orbitY = 110,
+				velocity = 12,
+				orbitStartAngle = 350
+			}
+		}
+	}
 end
 
 function Presets:pentatonic1()
