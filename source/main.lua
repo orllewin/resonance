@@ -572,8 +572,6 @@ function playdate.update()
 	
 	playdate.timer.updateTimers()
 	
-	--These will only fire with the main input handler 
-	--since it's the only one that needs key repeat:
 	if orbitConfig.showing then
 		orbitConfig:checkKeys()
 	elseif oscillatorConfig.showing then
@@ -613,7 +611,6 @@ function playdate.update()
 		end
 	end
 	
-	--Only draw nodes if menu not displaying
 	updateNodes()
 	if not showingMenu then
 		if(activeNodeLabel.isPlayer) then
