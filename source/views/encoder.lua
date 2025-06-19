@@ -23,10 +23,10 @@ gfx.drawCircleAtPoint(encoderDiam/2, encoderDiam/2, encoderDiam/2 - 2)
 gfx.drawLine(encoderDiam/2, encoderDiam/2, 7, encoderDiam - 7)
 gfx.popContext()
 
-function Encoder:init(x, y, onChange)
+function Encoder:init(x, y, value, onChange)
 		Encoder.super.init(self)
 		self.onChange = onChange
-		self.value = 0
+		self.value = value
 		self.focused = false
 		
 		self.sprite = gfx.sprite.new()
@@ -68,7 +68,7 @@ function Encoder:turn(change)
 	end
 	
 	self:redraw()
-	self.onChange()
+	self.onChange(self.value)
 end
 
 function Encoder:remove()

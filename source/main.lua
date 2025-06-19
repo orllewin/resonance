@@ -34,16 +34,40 @@ local stepSize = 3
 resFont = gfx.font.new("parodius_ext")
 gfx.setFont(resFont)
 
+
+--delay globals
 gChannel = playdate.sound.channel.new()
 gDelay = playdate.sound.delayline.new(3.0)
-gDelayTap1 = gDelay:addTap(3.0)
-gDelayTap1:setDelay(1.2)
-gDelayTap1:setVolume(0.5)
+gDelayMax = 3.0
+gDelayTap1 = gDelay:addTap(gDelayMax)
+
+gDelayTime = 1.2
+gDelayTap1:setDelay(gDelayTime)
+
+gDelayVolume = 0.0
+gDelayTap1:setVolume(gDelayVolume)
 gChannel:addSource(gDelayTap1)
 gDelay:setMix(0.0)
-gDelay:setFeedback(0.20)
+
+gDelayFeedback = 0.2
+gDelay:setFeedback(gDelayFeedback)
 
 gChannel:addEffect(gDelay)
+
+--lowpass globals
+gLowPass = playdate.sound.twopolefilter.new(playdate.sound.kFilterLowPass)
+
+gLowPassMix = 0.0
+gLowPass:setMix(gLowPassMix)
+
+gLowPassFreq = 120
+gLowPassFreqMin = 40
+gLowPassFreqMax = 320
+gLowPass:setFrequency(gLowPassFreq)
+
+gLowPassRes = 0.5
+gLowPass:setResonance(gLowPassRes)
+gChannel:addEffect(gLowPass)
 
 gDialogHeight = 240
 gDialogWidth = 200 
