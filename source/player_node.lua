@@ -269,7 +269,7 @@ function PlayerNode:getState()
 	saveState.orbitY = self.orbitPoint.y
 	saveState.oscStartPointX = self.oscStartPoint.x
 	saveState.oscStartPointY = self.oscStartPoint.y
-	saveState.oscEndPointX = self.oscEndoint.x
+	saveState.oscEndPointX = self.oscEndPoint.x
 	saveState.oscEndPointY = self.oscEndPoint.y
 	return saveState
 end

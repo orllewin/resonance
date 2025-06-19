@@ -22,7 +22,6 @@ function Presets:synths()
 		},
 		self:origin(),
 		self:chromaCircle1("ChromaCircle", false),
-		self:lydianGrid(),
 		self:new(),
 	}
 end
