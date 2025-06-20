@@ -1,9 +1,9 @@
 name=Resonance
 author=Orllewin
-descriptionDrone instrument and sequencer
+description=Drone instrument and sequencer
 bundleID=org.orllewin.resonance
-version=1.0.1
-buildNumber=2
+version=1.0.2
+buildNumber=3
 imagePath=images/
 pdxversion=20703
-buildtime=803686781
+buildtime=803714708
