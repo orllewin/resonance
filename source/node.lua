@@ -13,6 +13,8 @@ function Node:init(p, midiNote)
 		self.p = p
 		self.midiNote = midiNote
 		
+		self.crankDelta = 0 
+		
 		local image = gfx.image.new(diam, diam)
 		gfx.pushContext(image)
 		gfx.setColor(gfx.kColorBlack)
@@ -156,17 +158,25 @@ function Node:map(value, start1, stop1, start2, stop2)
 end
 
 function Node:crank(change)
+	self.crankDelta += change
 	if(change == 0) then
 		--do nothing
-	elseif(change > 0) then
+	elseif(self.crankDelta > 10) then
 		self.midiNote = math.max (1, self.midiNote - 1)
-	elseif(change < 0) then
+		self.crankDelta = 0
+		local image = gfx.imageWithText(midi:label(self.midiNote), 1000, 1000)
+		self.label:setImage(image)
+		self.label:moveTo(self.p.x + selectedDiam + image.width/2, self.p.y)
+		self.synth:playMIDINote(self.midiNote)
+	elseif(self.crankDelta < -10) then
 		self.midiNote = math.min (127, self.midiNote + 1)
+		self.crankDelta = 0
+		local image = gfx.imageWithText(midi:label(self.midiNote), 1000, 1000)
+		self.label:setImage(image)
+		self.label:moveTo(self.p.x + selectedDiam + image.width/2, self.p.y)
+		self.synth:playMIDINote(self.midiNote)
 	end
-	local image = gfx.imageWithText(midi:label(self.midiNote), 1000, 1000)
-	self.label:setImage(image)
-	self.label:moveTo(self.p.x + selectedDiam + image.width/2, self.p.y)
-	self.synth:playMIDINote(self.midiNote)
+
 end
 
 function Node:chooseRandomNote(notes)
