@@ -72,6 +72,8 @@ function OscillatorConfig:show(onCancel, onSetOrbit)
 	
 	self.orbitX = 300
 	self.orbitY = 120
+	
+	self.arrowSprite:moveTo(200, 120)
 		
 	local inputHandler = {
 		AButtonDown = function()
