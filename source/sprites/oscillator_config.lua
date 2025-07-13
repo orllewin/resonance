@@ -72,7 +72,7 @@ function OscillatorConfig:show(onCancel, onSetOrbit)
 	
 	self.orbitX = 300
 	self.orbitY = 120
-	
+		
 	local inputHandler = {
 		AButtonDown = function()
 			if not self.isOriginSet then
@@ -85,6 +85,7 @@ function OscillatorConfig:show(onCancel, onSetOrbit)
 				self.arrowSprite:add()
 				self:redrawLine()
 				self.lineSprite:add()
+				self:moveBy(0, 0)
 			elseif not self.isOrbitSet then				
 				self:dismiss()
 				onSetOrbit(self.originX, self.originY, self.orbitX, self.orbitY)
@@ -133,6 +134,7 @@ function OscillatorConfig:show(onCancel, onSetOrbit)
 		end
 	}
 	
+	self:moveBy(0, 0)
 	self.layerSprite:add()
 	self.originSprite:add()
 	self.arrowSprite:add()
@@ -146,16 +148,18 @@ function OscillatorConfig:redrawLine()
 	self.orbitY = self.originY
 	
 	local length = math.abs(self.originX - self.orbitX)
-	local lineHeight = 7
-	local lineImage = gfx.image.new(length, lineHeight)
-	gfx.pushContext(lineImage)
-		gfx.setLineWidth(4)
-		gfx.setLineCapStyle(gfx.kLineCapStyleRound)
-		gfx.drawLine(10, lineHeight/2, length - 10, lineHeight/2)
-	gfx.popContext()
-	
-	self.lineSprite:setImage(lineImage)
-	self.lineSprite:moveTo((self.originX + self.orbitX)/2, self.originY)
+	if length > 0 then
+		local lineHeight = 7
+		local lineImage = gfx.image.new(length, lineHeight)
+		gfx.pushContext(lineImage)
+			gfx.setLineWidth(4)
+			gfx.setLineCapStyle(gfx.kLineCapStyleRound)
+			gfx.drawLine(10, lineHeight/2, length - 10, lineHeight/2)
+		gfx.popContext()
+		
+		self.lineSprite:setImage(lineImage)
+		self.lineSprite:moveTo((self.originX + self.orbitX)/2, self.originY)
+	end
 end
 
 function OscillatorConfig:moveBy(x, y)
