@@ -555,6 +555,16 @@ function setup()
 		end
 	)
 	
+	local invertMenu, error = menu:addMenuItem("Invert", 
+		function()
+			if playdate.display.getInverted() then
+				playdate.display.setInverted(false)
+			else
+				playdate.display.setInverted(true)
+			end
+		end
+	)
+	
 	loadPatch(Presets():defaultPatch())
 	
 	introLabelSprite:moveTo(310, 220)

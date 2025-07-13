@@ -171,7 +171,9 @@ function Node:crank(change)
 	
 	local image = gfx.imageWithText(midi:label(self.midiNote), 1000, 1000)
 	self.label:setImage(image)
-	self.label:moveTo(self.p.x + selectedDiam + image.width/2, self.p.y)
+	
+	self:updateLabelPosition()
+	
 	self.synth:playMIDINote(self.midiNote)
 
 end
@@ -198,10 +200,19 @@ function Node:select()
 	gfx.fillCircleAtPoint(selectedDiam/2, selectedDiam/2, diam/2)
 	gfx.popContext()
 	self.sprite:setImage(image)
-	self.label:moveTo(self.p.x + selectedDiam + image.width/2, self.p.y)
+
+	self:updateLabelPosition()
 	
 	self.activeSprite:moveTo(self.p.x, self.p.y - 16)
 	self.activeSprite:add()
+end
+
+function Node:updateLabelPosition()
+	if self.p.x > 360 then
+		self.label:moveTo(self.p.x - selectedDiam - self.sprite.width/2, self.p.y)
+	else
+		self.label:moveTo(self.p.x + selectedDiam + self.sprite.width/2, self.p.y)
+	end
 end
 
 function Node:deselect()
@@ -237,7 +248,7 @@ function Node:move(x, y)
 		self.p.y = 240
 	end
 	self.sprite:moveTo(self.p.x, self.p.y)
-	self.label:moveTo(self.p.x + selectedDiam + self.label.width/2, self.p.y)
+	self:updateLabelPosition()
 	self.activeSprite:moveTo(self.p.x, self.p.y - 16)
 end
 

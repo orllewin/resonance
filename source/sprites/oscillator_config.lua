@@ -8,56 +8,50 @@ class('OscillatorConfig').extends()
 
 function OscillatorConfig:init()
 		OscillatorConfig.super.init(self)	
+		
+		local layerImage = gfx.image.new(400, 240, gfx.kColorClear)
+		gfx.pushContext(layerImage)
+			local black = gfx.image.new(400, 240, gfx.kColorWhite)
+			black:drawFaded(0, 0, 0.75, gfx.image.kDitherTypeDiagonalLine)
+		gfx.popContext()
+		self.layerSprite = gfx.sprite.new(layerImage)
+		self.layerSprite:moveTo(200, 120)
+		
+		--focusIndicator:setInverted(true)
+		self.arrowSprite = gfx.sprite.new(focusIndicator)
+		self.arrowSprite:moveTo(200, 120)
 
 		local label1 = "Point A"
 		local originLabelWidth,originLabelHeight = gfx.getTextSizeForMaxWidth(label1, 200)
-		local oOWidth = originLabelWidth + 6 + 16
+		local oOWidth = originLabelWidth + 6
 		local oOHeight = originLabelHeight + 6 + 6
 		local orbitOriginImage = gfx.image.new(oOWidth, oOHeight)
 		gfx.pushContext(orbitOriginImage)
 			gfx.setColor(gfx.kColorBlack)
 			gfx.fillRoundRect(0, 0, originLabelWidth + 6, oOHeight - 6, 5)
-			
 			gfx.setImageDrawMode(playdate.graphics.kDrawModeFillWhite)
-			
 			gfx.drawText(label1, 3, 4)
-			gfx.setImageDrawMode(playdate.graphics.kDrawModeFillBlack)
-			focusIndicator:draw(originLabelWidth + 6, 5)
 		gfx.popContext()
 		self.originSprite = gfx.sprite.new(orbitOriginImage)
 		self.originSprite:moveTo(200, 120)
-		self.orbitOriginLeftBound = -((self.originSprite.width/2) - 16)
-		self.orbitOriginRightBound = 400 - (self.originSprite.width/2)
-		self.orbitOriginTopBound = oOHeight/2 - 16
-		self.orbigOriginBottomBound = 240 - 16
 		
 		local label2 = "Point B"
-		local orbitLabelWidth,orbitLabelHeight = gfx.getTextSizeForMaxWidth(label2, 200)
-		local orbitSpriteWidth = orbitLabelWidth + 6 + 16
+		local orbitLabelWidth, orbitLabelHeight = gfx.getTextSizeForMaxWidth(label2, 200)
+		local orbitSpriteWidth = orbitLabelWidth + 6
 		local orbitSpriteHeight = orbitLabelHeight + 6 + 6
 		local orbitImage = gfx.image.new(orbitSpriteWidth, orbitSpriteHeight)
 		gfx.pushContext(orbitImage)
 			gfx.setColor(gfx.kColorBlack)
-			gfx.fillRoundRect(16, 0, orbitLabelWidth + 6, orbitSpriteHeight - 6, 5)
-			
+			gfx.fillRoundRect(0, 0, orbitLabelWidth + 6, orbitSpriteHeight - 6, 5)
 			gfx.setImageDrawMode(playdate.graphics.kDrawModeFillWhite)
-			
-			gfx.drawText(label2, 19, 4)
-			
-			gfx.setImageDrawMode(playdate.graphics.kDrawModeFillBlack)
-			focusIndicator:draw(0, 5)
+			gfx.drawText(label2, 3, 4)
 		gfx.popContext()
 		self.orbitSprite = gfx.sprite.new(orbitImage)
-		self.orbitSprite:moveTo(210, 120)
-		self.orbitLeftBound = -((self.orbitSprite.width/2) - 16)
-		self.orbitRightBound = 400 + self.orbitSprite.width/2
-		self.orbitTopBound = orbitSpriteHeight/2 - 16
-		self.orbitBottomBound = 240 - 16
+		self.orbitSprite:moveTo(200, 120)
 		
 		self.lineSprite = gfx.sprite.new()
 		self.lineSprite:moveTo(200, 120)
-		
-		
+				
 		self.showing = false
 end
 
@@ -82,11 +76,13 @@ function OscillatorConfig:show(onCancel, onSetOrbit)
 	local inputHandler = {
 		AButtonDown = function()
 			if not self.isOriginSet then
-				self.originX = self.originSprite.x + (self.originSprite.width/2)
-				self.originY = self.originSprite.y + 16
+				self.originX = self.arrowSprite.x
+				self.originY = self.arrowSprite.y + 16
 				self.isOriginSet = true
-				self.orbitSprite:moveTo(self.originSprite.x + (self.originSprite.width/2) + 25, self.originSprite.y)
+				self.orbitSprite:moveTo(200, self.arrowSprite.y)
+				self.arrowSprite:moveTo(200, self.arrowSprite.y)
 				self.orbitSprite:add()
+				self.arrowSprite:add()
 				self:redrawLine()
 				self.lineSprite:add()
 			elseif not self.isOrbitSet then				
@@ -137,15 +133,16 @@ function OscillatorConfig:show(onCancel, onSetOrbit)
 		end
 	}
 	
+	self.layerSprite:add()
 	self.originSprite:add()
+	self.arrowSprite:add()
 	
 	playdate.inputHandlers.push(inputHandler)
 end
 
 function OscillatorConfig:redrawLine()	
-	self.originX = self.originSprite.x + (self.originSprite.width/2) - 8
-	self.originY = self.originSprite.y + 9
-	self.orbitX = self.orbitSprite.x - (self.orbitSprite.width/2) + 8
+	
+	self.orbitX = self.arrowSprite.x
 	self.orbitY = self.originY
 	
 	local length = math.abs(self.originX - self.orbitX)
@@ -163,34 +160,33 @@ end
 
 function OscillatorConfig:moveBy(x, y)
 	if not self.isOriginSet then
-		self.originSprite:moveBy(x, y)
-
-		if self.originSprite.x < self.orbitOriginLeftBound then
-			self.originSprite:moveTo(self.orbitOriginLeftBound, self.originSprite.y)
-		elseif self.originSprite.x > self.orbitOriginRightBound then
-			self.originSprite:moveTo(self.orbitOriginRightBound, self.originSprite.y)
+		self.arrowSprite:moveBy(x, y)
+		local originLabelWidth = self.originSprite.width
+		local originLabelX = self.arrowSprite.x - (originLabelWidth/2) - 8
+		if originLabelX < originLabelWidth/2 then
+			originLabelX = self.arrowSprite.x + (originLabelWidth/2) + 8
 		end
-		
-		if self.originSprite.y < self.orbitOriginTopBound then
-			self.originSprite:moveTo(self.originSprite.x, self.orbitOriginTopBound)
-		elseif self.originSprite.y > self.orbigOriginBottomBound then
-			self.originSprite:moveTo(self.originSprite.x, self.orbigOriginBottomBound)
-		end
+		self.originSprite:moveTo(originLabelX, self.arrowSprite.y)
 	elseif not self.isOrbitSet then
-		self.orbitSprite:moveBy(x, 0)--no vertical movement for orbit sprite
-		
-		if self.orbitSprite.x < self.orbitLeftBound then
-			self.orbitSprite:moveTo(self.orbitLeftBound, self.orbitSprite.y)
-		elseif self.orbitSprite.x > self.orbitRightBound then
-			self.orbitSprite:moveTo(self.orbitRightBound, self.orbitSprite.y)
+		self.arrowSprite:moveBy(x, 0)
+		local orbitLabelWidth = self.orbitSprite.width
+		local orbitLabelX = self.arrowSprite.x + (orbitLabelWidth/2) + 8
+		if orbitLabelX > 400 - (orbitLabelWidth/2) then
+			orbitLabelX = self.arrowSprite.x - (orbitLabelWidth/2) - 8
 		end
-		
-		if self.orbitSprite.y < self.orbitTopBound then
-			self.orbitSprite:moveTo(self.orbitSprite.x, self.orbitTopBound)
-		elseif self.orbitSprite.y > self.orbitBottomBound then
-			self.orbitSprite:moveTo(self.orbitSprite.x, self.orbitBottomBound)
-		end
+		self.orbitSprite:moveTo(orbitLabelX, self.arrowSprite.y)
 		self:redrawLine()
+	end
+	
+	if self.arrowSprite.x < 0 then 
+		self.arrowSprite:moveTo(0, self.arrowSprite.y) 
+	elseif self.arrowSprite.x > 400 then 
+		self.arrowSprite:moveTo(400, self.arrowSprite.y) 
+	end
+	if self.arrowSprite.y > 240 then 
+		self.arrowSprite:moveTo(self.arrowSprite.x, 240) 
+	elseif self.arrowSprite.y < 0 then 
+		self.arrowSprite:moveTo(self.arrowSprite.x, 0) 
 	end
 end
 
@@ -198,6 +194,8 @@ function OscillatorConfig:dismiss()
 	self.originSprite:remove()
 	self.orbitSprite:remove()
 	self.lineSprite:remove()
+	self.arrowSprite:remove()
+	self.layerSprite:remove()
 	self.showing = false
 	playdate.inputHandlers.pop()
 end
