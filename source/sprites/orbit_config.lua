@@ -8,6 +8,14 @@ class('OrbitConfig').extends()
 
 function OrbitConfig:init()
 		OrbitConfig.super.init(self)	
+		
+		local layerImage = gfx.image.new(400, 240, gfx.kColorClear)
+		gfx.pushContext(layerImage)
+			local black = gfx.image.new(400, 240, gfx.kColorWhite)
+			black:drawFaded(0, 0, 0.85, gfx.image.kDitherTypeDiagonalLine)
+		gfx.popContext()
+		self.layerSprite = gfx.sprite.new(layerImage)
+		self.layerSprite:moveTo(200, 120)
 
 		local originLabelWidth,originLabelHeight = gfx.getTextSizeForMaxWidth("Origin", 200)
 		local oOWidth = originLabelWidth + 6 + 16
@@ -132,6 +140,7 @@ function OrbitConfig:show(onCancel, onSetOrbit)
 		end
 	}
 	
+	self.layerSprite:add()
 	self.originSprite:add()
 	
 	playdate.inputHandlers.push(inputHandler)
@@ -191,6 +200,7 @@ function OrbitConfig:dismiss()
 	self.originSprite:remove()
 	self.orbitSprite:remove()
 	self.circleSprite:remove()
+	self.layerSprite:remove()
 	self.showing = false
 	playdate.inputHandlers.pop()
 end

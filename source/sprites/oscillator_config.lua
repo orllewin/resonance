@@ -17,7 +17,6 @@ function OscillatorConfig:init()
 		self.layerSprite = gfx.sprite.new(layerImage)
 		self.layerSprite:moveTo(200, 120)
 		
-		--focusIndicator:setInverted(true)
 		self.arrowSprite = gfx.sprite.new(focusIndicator)
 		self.arrowSprite:moveTo(200, 120)
 
