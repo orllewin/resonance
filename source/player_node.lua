@@ -229,7 +229,7 @@ function PlayerNode:updateOrbitOrOsc()
 	elseif self.mode == Mode.osc then
 		local x = self.p.x
 		
-		local increment = self:map(self.velocity, 1, maxVelocity, 0.3, 2.0)
+		local increment = self:map(self.velocity, 1, maxVelocity, 0.15, 1.75)
 		if self.oscDirection == 1 then
 			--moving right
 			
