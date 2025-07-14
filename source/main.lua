@@ -72,7 +72,7 @@ gChannel:addEffect(gLowPass)
 gDialogHeight = 240
 gDialogWidth = 200 
 
-maxVelocity = 75
+maxVelocity = 50.0
 
 local introLabelSprite = gfx.sprite.spriteWithText("Resonance", 400, 20)
 

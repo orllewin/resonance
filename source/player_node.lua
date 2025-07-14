@@ -19,7 +19,7 @@ function PlayerNode:init(p, size)
 		
 		--orbit
 		self.orbitPoint = p:copy()
-		self.velocity = 10
+		self.velocity = 6.0
 		self.orbitDirection = 1
 		self.orbitDegree = 320
 		
@@ -172,11 +172,13 @@ function PlayerNode:moveTo(x, y)
 end
 
 function PlayerNode:move(x, y)
-	if self.mode == Mode.orbit then
-		self.orbitOrbitSprite:remove()
-		self.mode = Mode.manual
-	elseif self.mode == Mode.osc then
-		self.mode = Mode.manual
+	if x ~= 0 or y ~= 0 then
+		if self.mode == Mode.orbit then
+			self.orbitOrbitSprite:remove()
+			self.mode = Mode.manual
+		elseif self.mode == Mode.osc then
+			self.mode = Mode.manual
+		end
 	end
 	
 	self.p.x = self.p.x + x

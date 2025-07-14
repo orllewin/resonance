@@ -65,11 +65,11 @@ function VelocityDialog:show(player, onDismiss, onVelocity)
 		
 		cranked = function(change, acceleratedChange)
 			if change > 0 then
-				self.velocity = math.min(self.velocity + 2, maxVelocity)
+				self.velocity = math.min(self.velocity + 2.0, maxVelocity)
 				self:drawVelocity()
 				onVelocity(self.velocity)
 			elseif change < 0 then
-				self.velocity = math.max(self.velocity - 2, 1)
+				self.velocity = math.max(self.velocity - 2.0, 0.25)
 				self:drawVelocity()
 				onVelocity(self.velocity)
 			end
