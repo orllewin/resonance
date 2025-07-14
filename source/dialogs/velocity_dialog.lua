@@ -1,7 +1,3 @@
-import "CoreLibs/sprites"
-import "CoreLibs/graphics"
-import "CoreLibs/ui"
-
 local gfx <const> = playdate.graphics
 
 --[[

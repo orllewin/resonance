@@ -1,6 +1,3 @@
-import "CoreLibs/sprites"
-import "CoreLibs/graphics"
-
 local gfx <const> = playdate.graphics
 
 class('PatchSaveDialog').extends()

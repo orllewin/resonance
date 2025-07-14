@@ -1,6 +1,3 @@
-import "CoreLibs/sprites"
-import "CoreLibs/graphics"
-
 local gfx <const> = playdate.graphics
 local diam = 12
 local selectedDiam = 18

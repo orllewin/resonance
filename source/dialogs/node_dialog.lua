@@ -1,6 +1,3 @@
-import "CoreLibs/sprites"
-import "CoreLibs/graphics"
-import "CoreLibs/ui"
 import 'text_list'
 import 'midi'
 import "CoreLibs/keyboard"

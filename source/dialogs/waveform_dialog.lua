@@ -1,6 +1,3 @@
-import "CoreLibs/sprites"
-import "CoreLibs/graphics"
-import "CoreLibs/ui"
 import 'text_list'
 
 local gfx <const> = playdate.graphics

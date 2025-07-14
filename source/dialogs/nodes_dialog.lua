@@ -1,7 +1,3 @@
-import "CoreLibs/sprites"
-import "CoreLibs/graphics"
-import "CoreLibs/ui"
-
 import 'text_list'
 import "dialogs/waveform_dialog"
 
