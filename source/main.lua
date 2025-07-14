@@ -416,6 +416,9 @@ function loadPatch(patch)
 	introLabelSprite:setScale(1)
 	introLabelSprite:moveTo(355, 10)
 	
+	activePlayerNode = 1
+	playerNodes[1]:setActive(true)
+	
 	setLabelsVisible(true)
 end
 

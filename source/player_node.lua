@@ -84,6 +84,7 @@ function PlayerNode:setActive(isActive)
 		self.activeSprite:remove()
 	end
 	self:crank(0)
+	self:move(0, 0)
 end
 
 function PlayerNode:setActiveOscillator(sX, sY, eX, eY, velocity)
