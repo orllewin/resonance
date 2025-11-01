@@ -5,5 +5,5 @@ bundleID=org.orllewin.resonance
 version=1.0.5
 buildNumber=6
 imagePath=images/
-pdxversion=20703
-buildtime=805833977
+pdxversion=30000
+buildtime=815246036

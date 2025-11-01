@@ -1,4 +1,14 @@
--- 
+--
+
+function getWords(str)
+	local words = {}
+	for word in str:gmatch("%S+") do 
+		table.insert(words, word)
+	end	
+	
+	return words
+end
+ 
 function startswith(str, start)
 	 return str:sub(1, #start) == start
 end

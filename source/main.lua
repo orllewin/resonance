@@ -34,9 +34,101 @@ local stepSize = 3
 resFont = gfx.font.new("parodius_ext")
 gfx.setFont(resFont)
 
-
---delay globals
 gChannel = playdate.sound.channel.new()
+
+-- 1. Delay (Pre) Effect
+gPreDelay = playdate.sound.delayline.new(3.0)
+gPreDelayMax = 3.0
+gPreDelayTap1 = gPreDelay:addTap(gPreDelayMax)
+
+gPreDelayTime = 1.2
+gPreDelayTap1:setDelay(gPreDelayTime)
+
+gPreDelayVolume = 0.0
+gPreDelayTap1:setVolume(gPreDelayVolume)
+gChannel:addSource(gPreDelayTap1)
+gPreDelay:setMix(0.0)
+
+gPreDelayFeedback = 0.2
+gPreDelay:setFeedback(gPreDelayFeedback)
+
+gChannel:addEffect(gPreDelay)
+
+-- 2. Ringmod Effect
+gRingmod = playdate.sound.ringmod.new()
+gRingmodFreq = 120
+gRingmodFreqMin = 20
+gRingmodFreqMax = 4000
+gRingmodMix = 0.0
+gRingmod:setFrequency(gRingmodFreq)
+gRingmod:setMix(gRingmod)
+gChannel:addEffect(gRingmod)
+
+-- 3. Bitcrusher Effect
+gBitcrusher = playdate.sound.bitcrusher.new()
+gBitcrusherAmount = 0.0
+gBitcrusherUndersample = 0.0
+gBitcrusherMix = 0.0
+gBitcrusher:setAmount(gBitcrusherAmount)
+gBitcrusher:setUndersampling(gBitcrusherUndersample)
+gBitcrusher:setMix(gBitcrusherMix)
+gChannel:addEffect(gBitcrusher)
+
+-- 4. Overdrive Effect
+gOverdriveGain = 0.0
+gOverdriveGainMax = 12.0
+gOverdriveLimit = 0.0
+gOverdriveLimitMax = 12.0
+gOverdriveMix = 0.0
+gOverdrive = playdate.sound.overdrive.new()
+gOverdrive:setGain(gOverdriveGain)
+gOverdrive:setLimit(gOverdriveLimit)
+gOverdrive:setMix(gOverdriveMix)
+gChannel:addEffect(gOverdrive)
+
+-- 5. Delay (Mid) Effect
+gMidDelay = playdate.sound.delayline.new(3.0)
+gMidDelayMax = 3.0
+gMidDelayTap1 = gMidDelay:addTap(gMidDelayMax)
+
+gMidDelayTime = 1.2
+gMidDelayTap1:setDelay(gMidDelayTime)
+
+gMidDelayVolume = 0.0
+gMidDelayTap1:setVolume(gMidDelayVolume)
+gChannel:addSource(gMidDelayTap1)
+gMidDelay:setMix(0.0)
+
+gMidDelayFeedback = 0.2
+gMidDelay:setFeedback(gMidDelayFeedback)
+
+gChannel:addEffect(gMidDelay)
+
+-- 6. Low-pass Effect
+gLowPass = playdate.sound.twopolefilter.new(playdate.sound.kFilterLowPass)
+gLowPassFreq = 120
+gLowPassFreqMin = 40
+gLowPassFreqMax = 400
+gLowPassRes = 0.5
+gLowPassMix = 0.0
+gLowPass:setResonance(gLowPassRes)
+gLowPass:setFrequency(gLowPassFreq)
+gLowPass:setMix(gLowPassMix)
+gChannel:addEffect(gLowPass)
+
+-- 7. High-pass Effect
+gHighPass = playdate.sound.twopolefilter.new(playdate.sound.kFilterHighPass)
+gHighPassFreq = 120
+gHighPassFreqMin = 40
+gHighPassFreqMax = 2000
+gHighPassRes = 0.5
+gHighPassMix = 0.0
+gHighPass:setResonance(gHighPassRes)
+gHighPass:setFrequency(gHighPassFreq)
+gHighPass:setMix(gHighPassMix)
+gChannel:addEffect(gHighPass)
+
+-- 8. Delay (Post) Effect
 gDelay = playdate.sound.delayline.new(3.0)
 gDelayMax = 3.0
 gDelayTap1 = gDelay:addTap(gDelayMax)
@@ -54,25 +146,143 @@ gDelay:setFeedback(gDelayFeedback)
 
 gChannel:addEffect(gDelay)
 
---lowpass globals
-gLowPass = playdate.sound.twopolefilter.new(playdate.sound.kFilterLowPass)
-
-gLowPassMix = 0.0
-gLowPass:setMix(gLowPassMix)
-
-gLowPassFreq = 120
-gLowPassFreqMin = 40
-gLowPassFreqMax = 320
-gLowPass:setFrequency(gLowPassFreq)
-
-gLowPassRes = 0.5
-gLowPass:setResonance(gLowPassRes)
-gChannel:addEffect(gLowPass)
+-- End of effects
 
 gDialogHeight = 240
 gDialogWidth = 200 
 
 maxVelocity = 50.0
+
+local serialLog = {"Serial Log"}
+local EFFECT_PRE_DELAY_TIME <const> = "pre-delay-time"
+local EFFECT_PRE_DELAY_FEEDBACK <const> = "pre-delay-feedback"
+local EFFECT_PRE_DELAY_MIX <const> = "pre-delay-mix"
+
+local EFFECT_MID_DELAY_TIME <const> = "mid-delay-time"
+local EFFECT_MID_DELAY_FEEDBACK <const> = "mid-delay-feedback"
+local EFFECT_MID_DELAY_MIX <const> = "mid-delay-mix"
+
+local EFFECT_DELAY_TIME <const> = "delay-time"
+local EFFECT_DELAY_FEEDBACK <const> = "delay-feedback"
+local EFFECT_DELAY_MIX <const> = "delay-mix"
+
+local EFFECT_LOWPASS_FREQ <const> = "lowpass-frequency"
+local EFFECT_LOWPASS_RESONANCE <const> = "lowpass-resonance"
+local EFFECT_LOWPASS_MIX <const> = "lowpass-mix"
+
+local EFFECT_HIGHPASS_FREQ <const> = "highpass-frequency"
+local EFFECT_HIGHPASS_RESONANCE <const> = "highpass-resonance"
+local EFFECT_HIGHPASS_MIX <const> = "highpass-mix"
+
+local EFFECT_OVERDRIVE_GAIN <const> = "overdrive-gain"
+local EFFECT_OVERDRIVE_LIMIT <const> = "overdrive-limit"
+local EFFECT_OVERDRIVE_MIX <const> = "overdrive-mix"
+
+local EFFECT_BITCRUSHER_AMOUNT <const> = "bitcrusher-amount"
+local EFFECT_BITCRUSHER_UNDERSAMPLE <const> = "bitcrusher-undersampling"
+local EFFECT_BITCRUSHER_MIX <const> = "bitcrusher-mix"
+
+local EFFECT_RINGMODE_FREQ <const> = "ringmod-frequency"
+local EFFECT_RINGMODE_MIX <const> = "ringmod-mix"
+
+function playdate.serialMessageReceived(message)
+	print("SERIAL: " .. message)
+	
+	local tokens = getWords(message)
+	local command = tokens[1]
+	local value = tonumber(tokens[2])
+	
+	local EFFECT_PRE_DELAY_TIME <const> = "pre-delay-time"
+	local EFFECT_PRE_DELAY_FEEDBACK <const> = "pre-delay-feedback"
+	local EFFECT_PRE_DELAY_MIX <const> = "pre-delay-mix"
+	
+	local EFFECT_MID_DELAY_TIME <const> = "mid-delay-time"
+	local EFFECT_MID_DELAY_FEEDBACK <const> = "mid-delay-feedback"
+	local EFFECT_MID_DELAY_MIX <const> = "mid-delay-mix"
+	
+	if command == EFFECT_PRE_DELAY_TIME then
+		gPreDelayTime = map(value, 0, 100, 0.0, gPreDelayMax)
+		gPreDelayTap1:setDelay(gPreDelayTime)
+	elseif command == EFFECT_PRE_DELAY_FEEDBACK then
+		gPreDelayFeedback = value/100.0
+		gPreDelay:setFeedback(gPreDelayFeedback)
+	elseif command == EFFECT_PRE_DELAY_MIX then
+		gPreDelayVolume = value/100.0
+		gPreDelayTap1:setVolume(gPreDelayVolume)
+	elseif command == EFFECT_MID_DELAY_TIME then
+		gMidDelayTime = map(value, 0, 100, 0.0, gMidDelayMax)
+		gMidDelayTap1:setDelay(gMidDelayTime)
+	elseif command == EFFECT_MID_DELAY_FEEDBACK then
+		gMidDelayFeedback = value/100.0
+		gMidDelay:setFeedback(gMidDelayFeedback)
+	elseif command == EFFECT_MID_DELAY_MIX then
+		gMidDelayVolume = value/100.0
+		gMidDelayTap1:setVolume(gMidDelayVolume)
+	elseif command == EFFECT_DELAY_TIME then
+		gDelayTime = map(value, 0, 100, 0.0, gDelayMax)
+		gDelayTap1:setDelay(gDelayTime)
+	elseif command == EFFECT_DELAY_FEEDBACK then
+		gDelayFeedback = value/100.0
+		gDelay:setFeedback(gDelayFeedback)
+	elseif command == EFFECT_DELAY_MIX then
+		gDelayVolume = value/100.0
+		gDelayTap1:setVolume(gDelayVolume)
+	elseif command == EFFECT_BITCRUSHER_AMOUNT then
+		gBitcrusherAmount = value/100.0
+		gBitcrusher:setAmount(gBitcrusherAmount)
+	elseif command == EFFECT_BITCRUSHER_UNDERSAMPLE then
+		gBitcrusherUndersample = value/100.0
+		gBitcrusherMix = 0.0
+		gBitcrusher:setUndersampling(gBitcrusherUndersample)
+	elseif command == EFFECT_BITCRUSHER_MIX then
+		gBitcrusherMix = value/100.0
+		gBitcrusher:setMix(gBitcrusherMix)
+	elseif command == EFFECT_LOWPASS_FREQ then
+		gLowPassFreq = map(value, 0, 100, gLowPassFreqMin, gLowPassFreqMax)
+		gLowPass:setFrequency(gLowPassFreq)
+	elseif command == EFFECT_LOWPASS_RESONANCE then
+		gLowPassRes = value/100.0
+		gLowPass:setResonance(gLowPassRes)
+	elseif command == EFFECT_LOWPASS_MIX then
+		gLowPassMix = value/100.0
+		gLowPass:setMix(gLowPassMix)
+	elseif command == EFFECT_HIGHPASS_FREQ then
+		gHighPassFreq = map(value, 0, 100, gHighPassFreqMin, gHighPassFreqMax)
+		gHighPass:setFrequency(gHighPassFreq)
+	elseif command == EFFECT_HIGHPASS_RESONANCE then
+		gHighPassRes = value/100.0
+		gHighPass:setResonance(gHighPassRes)
+	elseif command == EFFECT_HIGHPASS_MIX then
+		gHighPassMix = value/100.0
+		gHighPass:setMix(gHighPassMix)
+	elseif command == EFFECT_OVERDRIVE_GAIN then
+		gOverdriveGain = map(value, 0, 100, 0.0, gOverdriveGainMax)
+		gOverdrive:setGain(gOverdriveGain)
+	elseif command == EFFECT_OVERDRIVE_LIMIT then
+		gOverdriveLimit = map(value, 0, 100, 0.0, gOverdriveLimitMax)
+		gOverdrive:setLimit(gOverdriveLimit)
+	elseif command == EFFECT_OVERDRIVE_MIX then
+		gOverdriveMix = value/100.0
+		gOverdrive:setMix(gOverdriveMix)
+	elseif command == EFFECT_RINGMODE_FREQ then
+		gRingmodFreq = map(value, 0, 100, gRingmodFreqMin, gRingmodFreqMax)
+		gRingmod:setFrequency(gRingmodFreq)
+	elseif command == EFFECT_RINGMODE_MIX then
+		gRingmodMix = value/100.0
+		gRingmod:setMix(gRingmodMix)
+	end
+	
+
+	
+	
+	table.insert(serialLog, message)
+	
+	if #serialLog > 12 then
+		table.remove(serialLog,1)
+	end
+end
+
+-- END OF EFFECTS-------------------------------------------------------------
 
 local introLabelSprite = gfx.sprite.spriteWithText("Resonance", 400, 20)
 
@@ -579,6 +789,13 @@ end
 
 setup()
 
+function map(value, start1, stop1, start2, stop2)
+	return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1))
+end
+
+
+
+
 function playdate.update()
 	gfx.sprite.update()
 	
@@ -635,6 +852,12 @@ function playdate.update()
 				gfx.drawText(activeNodeLabel.text, 5, 230)
 			end
 		end
+	end
+	
+	local serialLogLine = 1
+	for _,message in pairs(serialLog) do
+	 gfx.drawText(message, 5, 8 + (serialLogLine * 16))
+	 serialLogLine += 1
 	end
 end
 
