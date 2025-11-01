@@ -19,6 +19,7 @@ import "dialogs/player_dialog"
 import "dialogs/velocity_dialog"
 import "dialogs/help_dialog"
 import "dialogs/effects_dialog"
+import "dialogs/full_effects_dialog"
 
 import "sprites/active_node"
 
@@ -35,6 +36,8 @@ resFont = gfx.font.new("parodius_ext")
 gfx.setFont(resFont)
 
 gChannel = playdate.sound.channel.new()
+
+gShowSerialLog = false
 
 -- 1. Delay (Pre) Effect
 gPreDelay = playdate.sound.delayline.new(3.0)
@@ -108,7 +111,7 @@ gChannel:addEffect(gMidDelay)
 gLowPass = playdate.sound.twopolefilter.new(playdate.sound.kFilterLowPass)
 gLowPassFreq = 120
 gLowPassFreqMin = 40
-gLowPassFreqMax = 400
+gLowPassFreqMax = 1000
 gLowPassRes = 0.5
 gLowPassMix = 0.0
 gLowPass:setResonance(gLowPassRes)
@@ -274,11 +277,12 @@ function playdate.serialMessageReceived(message)
 	
 
 	
-	
-	table.insert(serialLog, message)
-	
-	if #serialLog > 12 then
-		table.remove(serialLog,1)
+	if gShowSerialLog then
+		table.insert(serialLog, message)
+		
+		if #serialLog > 12 then
+			table.remove(serialLog,1)
+		end
 	end
 end
 
@@ -704,7 +708,14 @@ function showNodesMenu()
 		function()
 			--onEffects
 			showingMenu = true
-			EffectsDialog():show(
+			-- EffectsDialog():show(
+			-- 	function() 
+			-- 		--onDismiss
+			-- 		showingMenu = false 
+			-- 	end
+			-- )
+			
+			FullEffectsDialog():show(
 				function() 
 					--onDismiss
 					showingMenu = false 
@@ -793,9 +804,6 @@ function map(value, start1, stop1, start2, stop2)
 	return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1))
 end
 
-
-
-
 function playdate.update()
 	gfx.sprite.update()
 	
@@ -854,10 +862,12 @@ function playdate.update()
 		end
 	end
 	
-	local serialLogLine = 1
-	for _,message in pairs(serialLog) do
-	 gfx.drawText(message, 5, 8 + (serialLogLine * 16))
-	 serialLogLine += 1
+	if gShowSerialLog then
+		local serialLogLine = 1
+		for _,message in pairs(serialLog) do
+		gfx.drawText(message, 5, 8 + (serialLogLine * 16))
+		serialLogLine += 1
+		end
 	end
 end
 
