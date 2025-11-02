@@ -41,3 +41,7 @@ function Label:update(text, x, y)
   self.sprite:moveTo(x, y)
   
 end
+
+function Label:remove()
+  self.sprite:remove()
+end

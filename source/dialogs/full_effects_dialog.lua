@@ -30,33 +30,35 @@ end
 
 function FullEffectsDialog:show(onDismiss)
   local background = gfx.image.new(effectDialogWidth, 240, gfx.kColorWhite)
+  
   gfx.pushContext(background)
   gfx.setColor(gfx.kColorBlack)
   
+  local arrow = playdate.graphics.image.new("images/chain_arrow")
   local smallResImage = playdate.graphics.image.new("images/small_res")
   smallResImage:setInverted(true)
   local smallerResImage = smallResImage:scaledImage(0.80)
   smallerResImage:drawScaled(300, 162, 0.75)
-  
-  
   gfx.drawRoundRect(0, 0, effectDialogWidth, 240, 12) 
   
   local row1LabelYY = 15
-  gfx.drawText("Delay (Pre)", (col1StartX + leftGroupMargin) - 12, row1LabelYY)
-  gfx.drawText("Ring mod", col2StartX - 12, row1LabelYY)
-  gfx.drawText("Bitcrusher", col3StartX - 12, row1LabelYY)
+  gfx.drawText("1. Delay (Pre)", (col1StartX + leftGroupMargin) - 12, row1LabelYY)
+  arrow:draw(col2StartX - 35, row1LabelYY + 26)
+  gfx.drawText("2. Ring mod", col2StartX - 12, row1LabelYY)
+  arrow:draw(col3StartX - 35, row1LabelYY + 26)
+  gfx.drawText("3. Bitcrusher", col3StartX - 12, row1LabelYY)
   
   local row2LabelYY = 90
-  gfx.drawText("Overdrive", (col1StartX + leftGroupMargin) - 12, row2LabelYY)
-  gfx.drawText("Delay (Mid)", col2StartX - 12, row2LabelYY)
-  gfx.drawText("Low-Pass", col3StartX - 12, row2LabelYY)
+  gfx.drawText("4. Overdrive", (col1StartX + leftGroupMargin) - 12, row2LabelYY)
+  arrow:draw(col2StartX - 35, row2LabelYY + 22)
+  gfx.drawText("5. Delay (Mid)", col2StartX - 12, row2LabelYY)
+  arrow:draw(col3StartX - 35, row2LabelYY + 22)
+  gfx.drawText("6. Low-Pass", col3StartX - 12, row2LabelYY)
   
   local row3LabelYY = 165
-  gfx.drawText("High-pass", (col1StartX + leftGroupMargin) - 12, row3LabelYY)
-  gfx.drawText("Delay (Post)", col2StartX - 12, row3LabelYY)
-  
-  
-  
+  gfx.drawText("7. High-pass", (col1StartX + leftGroupMargin) - 12, row3LabelYY)
+  arrow:draw(col2StartX - 35, row3LabelYY + 22)
+  gfx.drawText("8. Delay (Post)", col2StartX - 12, row3LabelYY)
   
   gfx.popContext()
   
@@ -67,7 +69,6 @@ function FullEffectsDialog:show(onDismiss)
   self.focusedView = nil
   self.focusedRow = 1
   self.focusedColumn = 1
-  
   
   self.label = Label("Time", labelColumn1X, row1LabelY)
 
@@ -97,7 +98,7 @@ function FullEffectsDialog:show(onDismiss)
   
   -- ROW 1 ---------------------------------------------------------------------------------
   -- RING MOD
-  local ringModFreqValue = self:map(gDelayTime, 0.0, gDelayMax, 0.0, 100.0)
+  local ringModFreqValue = self:map(gDelayTime, 0.0, gRingmodFreqMax, 0.0, 100.0)
   self.ringmodFreqEncoder = SmallEncoder(166.66, row1EncoderY, ringModFreqValue,
     function(value) 
       gRingmodFreq = self:map(value, 0.0, 100.0, gRingmodFreqMin, gRingmodFreqMax)
@@ -107,7 +108,7 @@ function FullEffectsDialog:show(onDismiss)
   self.ringmodMixEncoder = SmallEncoder(200.00, row1EncoderY, gRingmodMix * 100.0, 
     function(value) 
       gRingmodMix = value/100.0
-      gRingmod:setFeedback(gDelayFeedback)
+      gRingmod:setMix(gRingmodMix)
     end
   )
   
@@ -134,20 +135,22 @@ function FullEffectsDialog:show(onDismiss)
   
   -- ROW 2 ---------------------------------------------------------------------------------
   -- OVERDRIVE
-  local overdriveGain = self:map(gOverdriveGain, 0.0, 1.0, 0.0, 100.0)
-  self.overdriveGainEncoder = SmallEncoder(33.33 + leftGroupMargin, row2EncoderY, overdriveGain,
+  local gOverdriveGainValue = self:map(gOverdriveGain, 0.0, gOverdriveGainMax, 0.0, 100.0)
+  self.overdriveGainEncoder = SmallEncoder(33.33 + leftGroupMargin, row2EncoderY, gOverdriveGain,
     function(value) 
-      gOverdriveGain = value/100.0
+      gOverdriveGain = self:map(value, 0.0, 100.0, 0.0, gOverdriveGainMax)
       gOverdrive:setGain(gOverdriveGain)
     end
   )
-  self.overdriveLimitEncoder = SmallEncoder(66.66 + leftGroupMargin, row2EncoderY, gDelayFeedback * 100.0, 
+  
+  local overdriveLimitValue = self:map(gOverdriveLimit, 0.0, gOverdriveLimitMax, 0.0, 100.0)
+  self.overdriveLimitEncoder = SmallEncoder(66.66 + leftGroupMargin, row2EncoderY, overdriveLimitValue, 
     function(value) 
-      gOverdriveLimit = map(value, 0.0, 100.0, 0.0, gOverdriveLimitMax)
+      gOverdriveLimit = self:map(value, 0.0, 100.0, 0.0, gOverdriveLimitMax)
       gOverdrive:setLimit(gOverdriveLimit)
     end
   )
-  self.overdriveMixEncoder = SmallEncoder(100.00 + leftGroupMargin, row2EncoderY, gDelayVolume * 100.0,
+  self.overdriveMixEncoder = SmallEncoder(100.00 + leftGroupMargin, row2EncoderY, gOverdriveMix * 100.0,
     function(value) 
       gOverdriveMix = value/100.0
       gOverdrive:setMix(gOverdriveMix)
@@ -165,13 +168,13 @@ function FullEffectsDialog:show(onDismiss)
   self.delayMidFeedbackEncoder = SmallEncoder(200.00, row2EncoderY, gMidDelayFeedback * 100.0, 
     function(value) 
       gMidDelayFeedback = value/100.0
-      gMidDelayTap1:setFeedback(gMidDelayFeedback)
+      gMidDelay:setFeedback(gMidDelayFeedback)
     end
   )
   self.delayMidMixEncoder = SmallEncoder(233.33, row2EncoderY, gMidDelayVolume * 100.0, 
     function(value) 
       gMidDelayVolume = value/100.0
-      gMidDelayTap1:setFeedback(gMidDelayVolume)
+      gMidDelayTap1:setVolume(gMidDelayVolume)
     end
   )
   -- ROW 2 ---------------------------------------------------------------------------------
@@ -230,13 +233,13 @@ function FullEffectsDialog:show(onDismiss)
   self.delayPostFeedbackEncoder = SmallEncoder(200.00, row3EncoderY, gDelayFeedback * 100.0, 
     function(value) 
       gDelayFeedback = value/100.0
-      gDelayTap1:setFeedback(gDelayFeedback)
+      gDelay:setFeedback(gDelayFeedback)
     end
   )
   self.delayPostMixEncoder = SmallEncoder(233.33, row3EncoderY, gDelayVolume * 100.0, 
     function(value) 
       gDelayVolume = value/100.0
-      gDelayTap1:setFeedback(gDelayVolume)
+      gDelayTap1:setVolume(gDelayVolume)
     end
   )
   
@@ -425,5 +428,7 @@ function FullEffectsDialog:dismiss()
   self.delayPostTimeEncoder:remove()
   self.delayPostFeedbackEncoder:remove()
   self.delayPostMixEncoder:remove()
+  
+  self.label:remove()
 
 end

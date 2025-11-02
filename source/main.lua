@@ -78,10 +78,10 @@ gBitcrusher:setMix(gBitcrusherMix)
 gChannel:addEffect(gBitcrusher)
 
 -- 4. Overdrive Effect
-gOverdriveGain = 0.0
-gOverdriveGainMax = 12.0
-gOverdriveLimit = 0.0
-gOverdriveLimitMax = 12.0
+gOverdriveGain = 24.0
+gOverdriveGainMax = 64.0
+gOverdriveLimit = 48.0
+gOverdriveLimitMax = 64.0
 gOverdriveMix = 0.0
 gOverdrive = playdate.sound.overdrive.new()
 gOverdrive:setGain(gOverdriveGain)

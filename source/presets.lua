@@ -39,6 +39,7 @@ function Presets:sequencers()
 		self:popolVuh(),
 		self:pentatonic1(),
 		self:rhubarb(),
+		self:olsenish()
 	}
 end
 
@@ -92,6 +93,45 @@ function Presets:origin()
 					y = 174,
 					size = 70
 				}
+		}
+	}
+end
+
+function Presets:olsenish()
+	return {
+		name = "Olsenish",
+		waveform = "Triangle",
+		nodes = {
+			{ midiNote = 52, x = 19, y = 113 },--E3
+			{ midiNote = 56, x = 34, y = 105 },--Ab3
+			{ midiNote = 59, x = 22, y = 92 },--B3
+			
+			{ midiNote = 54 , x = 165, y = 38 },
+			{ midiNote = 58 , x = 152, y = 49 },
+			{ midiNote = 61 , x = 172, y = 60 },
+			
+			{ midiNote = 49 , x = 199, y = 105 },
+			{ midiNote = 53 , x = 187, y = 120 },
+			{ midiNote = 56 , x = 199, y = 133 },
+			{ midiNote = 61 , x = 185, y = 143 },
+			
+			{ midiNote = 49 , x = 122, y = 173 },
+			{ midiNote = 53 , x = 133, y = 185 },
+			{ midiNote = 56 , x = 122, y = 198 },
+			{ midiNote = 61 , x = 133, y = 209 },
+			
+		},
+		players = {
+			{
+				x = 33,
+				y = 120,
+				size = 84,
+				mode = 1,
+				orbitX = 120,
+				orbitY = 114,
+				velocity = 11,
+				orbitStartAngle = 1.5708
+			}
 		}
 	}
 end
