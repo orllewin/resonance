@@ -78,6 +78,7 @@ function Node:labelVisible(visible)
 end
 
 function Node:setWaveform(waveform)
+	print("Node:setWaveform(): " .. waveform)
 	self.waveform = waveform
 	if waveform == "Sine" or waveform == "sine" then
 		self.synth:setWaveform(playdate.sound.kWaveSine)
@@ -153,15 +154,13 @@ function Node:checkPlayers(players)
 end
 
 function Node:setSynthParam1 (value)
-	if self.waveform == "Vosim" or self.waveform == "Phase" or self.waveform == "Digital" then
+		print("setSynthParam1: " .. value)
 		self.synth:setParameter(1, value/100.0)
-	end
 end
 
 function Node:setSynthParam2 (value)
-	if self.waveform == "Vosim" or self.waveform == "Phase" or self.waveform == "Digital" then
+	print("setSynthParam2: " .. value)
 		self.synth:setParameter(2, value/100.0)
-	end
 end
 
 function Node:map(value, start1, stop1, start2, stop2)

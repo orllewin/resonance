@@ -199,13 +199,14 @@
 		}
 		
 		async function waveformSelect(waveform){
-			console.log("Waveform: " + waveform)
+			
 			if(waveform === "phase" || waveform === "digital" || waveform === "vosim"){
 				document.getElementById("synth_param_container").style.visibility = 'visible';
 			}else{
 				document.getElementById("synth_param_container").style.visibility = 'hidden';
 			}
 			const message = "msg wf " + waveform + "\n"
+			console.log("Waveform: message: " + message)
 			await sendToPlaydate(message)
 		}
 		

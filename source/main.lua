@@ -30,6 +30,11 @@ local geom <const> = playdate.geometry
 
 local stepSize = 3
 
+local nodes = {}
+nodeCount = 0
+local playerNodes = {}
+local synths = {}
+
 --globals
 resFont = gfx.font.new("parodius_ext")
 gfx.setFont(resFont)
@@ -198,92 +203,94 @@ function playdate.serialMessageReceived(message)
 	
 	local tokens = getWords(message)
 	local command = tokens[1]
-	local value = tonumber(tokens[2])
+	local valueStr = tokens[2]
+	local valueNumber = tonumber(valueStr)
 		
 	if command == WAVEFORM_SELECT then
+		print("WAVEFORM_SELECT: " ..  valueStr)
 		local nodeCount = #nodes
 		for n = 1,nodeCount,1 do
-			nodes[n]:setWaveform(value)
+			nodes[n]:setWaveform(valueStr)
 		end
 	elseif command == WAVEFORM_PARAM_1 then
 		local nodeCount = #nodes
 		for n = 1,nodeCount,1 do
-			nodes[n]:setSynthParam1(value)
+			nodes[n]:setSynthParam1(valueNumber)
 		end
 	elseif command == WAVEFORM_PARAM_2 then
 		local nodeCount = #nodes
 		for n = 1,nodeCount,1 do
-			nodes[n]:setSynthParam2(value)
+			nodes[n]:setSynthParam2(valueNumber)
 		end
 	elseif command == EFFECT_PRE_DELAY_TIME then
-		gPreDelayTime = map(value, 0, 100, 0.0, gPreDelayMax)
+		gPreDelayTime = map(valueNumber, 0, 100, 0.0, gPreDelayMax)
 		gPreDelayTap1:setDelay(gPreDelayTime)
 	elseif command == EFFECT_PRE_DELAY_FEEDBACK then
-		gPreDelayFeedback = value/100.0
+		gPreDelayFeedback = valueNumber/100.0
 		gPreDelay:setFeedback(gPreDelayFeedback)
 	elseif command == EFFECT_PRE_DELAY_MIX then
-		gPreDelayVolume = value/100.0
+		gPreDelayVolume = valueNumber/100.0
 		gPreDelayTap1:setVolume(gPreDelayVolume)
 	elseif command == EFFECT_MID_DELAY_TIME then
-		gMidDelayTime = map(value, 0, 100, 0.0, gMidDelayMax)
+		gMidDelayTime = map(valueNumber, 0, 100, 0.0, gMidDelayMax)
 		gMidDelayTap1:setDelay(gMidDelayTime)
 	elseif command == EFFECT_MID_DELAY_FEEDBACK then
-		gMidDelayFeedback = value/100.0
+		gMidDelayFeedback = valueNumber/100.0
 		gMidDelay:setFeedback(gMidDelayFeedback)
 	elseif command == EFFECT_MID_DELAY_MIX then
-		gMidDelayVolume = value/100.0
+		gMidDelayVolume = valueNumber/100.0
 		gMidDelayTap1:setVolume(gMidDelayVolume)
 	elseif command == EFFECT_DELAY_TIME then
-		gDelayTime = map(value, 0, 100, 0.0, gDelayMax)
+		gDelayTime = map(valueNumber, 0, 100, 0.0, gDelayMax)
 		gDelayTap1:setDelay(gDelayTime)
 	elseif command == EFFECT_DELAY_FEEDBACK then
-		gDelayFeedback = value/100.0
+		gDelayFeedback = valueNumber/100.0
 		gDelay:setFeedback(gDelayFeedback)
 	elseif command == EFFECT_DELAY_MIX then
-		gDelayVolume = value/100.0
+		gDelayVolume = valueNumber/100.0
 		gDelayTap1:setVolume(gDelayVolume)
 	elseif command == EFFECT_BITCRUSHER_AMOUNT then
-		gBitcrusherAmount = value/100.0
+		gBitcrusherAmount = valueNumber/100.0
 		gBitcrusher:setAmount(gBitcrusherAmount)
 	elseif command == EFFECT_BITCRUSHER_UNDERSAMPLE then
-		gBitcrusherUndersample = value/100.0
+		gBitcrusherUndersample = valueNumber/100.0
 		gBitcrusherMix = 0.0
 		gBitcrusher:setUndersampling(gBitcrusherUndersample)
 	elseif command == EFFECT_BITCRUSHER_MIX then
-		gBitcrusherMix = value/100.0
+		gBitcrusherMix = valueNumber/100.0
 		gBitcrusher:setMix(gBitcrusherMix)
 	elseif command == EFFECT_LOWPASS_FREQ then
-		gLowPassFreq = map(value, 0, 100, gLowPassFreqMin, gLowPassFreqMax)
+		gLowPassFreq = map(valueNumber, 0, 100, gLowPassFreqMin, gLowPassFreqMax)
 		gLowPass:setFrequency(gLowPassFreq)
 	elseif command == EFFECT_LOWPASS_RESONANCE then
-		gLowPassRes = value/100.0
+		gLowPassRes = valueNumber/100.0
 		gLowPass:setResonance(gLowPassRes)
 	elseif command == EFFECT_LOWPASS_MIX then
-		gLowPassMix = value/100.0
+		gLowPassMix = valueNumber/100.0
 		gLowPass:setMix(gLowPassMix)
 	elseif command == EFFECT_HIGHPASS_FREQ then
-		gHighPassFreq = map(value, 0, 100, gHighPassFreqMin, gHighPassFreqMax)
+		gHighPassFreq = map(valueNumber, 0, 100, gHighPassFreqMin, gHighPassFreqMax)
 		gHighPass:setFrequency(gHighPassFreq)
 	elseif command == EFFECT_HIGHPASS_RESONANCE then
-		gHighPassRes = value/100.0
+		gHighPassRes = valueNumber/100.0
 		gHighPass:setResonance(gHighPassRes)
 	elseif command == EFFECT_HIGHPASS_MIX then
-		gHighPassMix = value/100.0
+		gHighPassMix = valueNumber/100.0
 		gHighPass:setMix(gHighPassMix)
 	elseif command == EFFECT_OVERDRIVE_GAIN then
-		gOverdriveGain = map(value, 0, 100, 0.0, gOverdriveGainMax)
+		gOverdriveGain = map(valueNumber, 0, 100, 0.0, gOverdriveGainMax)
 		gOverdrive:setGain(gOverdriveGain)
 	elseif command == EFFECT_OVERDRIVE_LIMIT then
-		gOverdriveLimit = map(value, 0, 100, 0.0, gOverdriveLimitMax)
+		gOverdriveLimit = map(valueNumber, 0, 100, 0.0, gOverdriveLimitMax)
 		gOverdrive:setLimit(gOverdriveLimit)
 	elseif command == EFFECT_OVERDRIVE_MIX then
-		gOverdriveMix = value/100.0
+		gOverdriveMix = valueNumber/100.0
 		gOverdrive:setMix(gOverdriveMix)
 	elseif command == EFFECT_RINGMODE_FREQ then
-		gRingmodFreq = map(value, 0, 100, gRingmodFreqMin, gRingmodFreqMax)
+		gRingmodFreq = map(valueNumber, 0, 100, gRingmodFreqMin, gRingmodFreqMax)
 		gRingmod:setFrequency(gRingmodFreq)
 	elseif command == EFFECT_RINGMODE_MIX then
-		gRingmodMix = value/100.0
+		gRingmodMix = valueNumber/100.0
 		gRingmod:setMix(gRingmodMix)
 	end
 	
@@ -302,10 +309,7 @@ end
 
 local introLabelSprite = gfx.sprite.spriteWithText("Resonance", 400, 20)
 
-local nodes = {}
-nodeCount = 0
-local playerNodes = {}
-local synths = {}
+
 
 local leftDown = false
 local rightDown = false
