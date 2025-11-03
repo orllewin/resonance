@@ -10,6 +10,10 @@
 			font-family: sans-serif;
 			margin: 4px;
 			background: black;
+			color: ghostwhite;
+		}
+		fieldset{
+			border-radius: 5px;
 		}
 		#screen_title_container{
 			cursor: pointer;
@@ -74,6 +78,11 @@
 		.collapse_svg{
 			padding-right: 8px;
 			padding-bottom: 6px;
+		}
+		.waveform_select_container {
+			float:left;
+			width: 125px;
+			padding-bottom: 5px;
 		}
 		.knob_container{
 			float: left;
@@ -189,6 +198,29 @@
 			document.getElementById("tooltip").textContent="";
 		}
 		
+		async function waveformSelect(waveform){
+			console.log("Waveform: " + waveform)
+			if(waveform === "phase" || waveform === "digital" || waveform === "vosim"){
+				document.getElementById("synth_param_container").style.visibility = 'visible';
+			}else{
+				document.getElementById("synth_param_container").style.visibility = 'hidden';
+			}
+			const message = "msg wf " + waveform + "\n"
+			await sendToPlaydate(message)
+		}
+		
+		async function waveformParam1(value){
+			console.log("param1: " + value)
+			const message = "msg wfp1 " + value + "\n"
+			await sendToPlaydate(message)
+		}
+		
+		async function waveformParam2(value){
+			console.log("param2: " + value)
+			const message = "msg wfp2 " + value + "\n"
+			await sendToPlaydate(message)
+		}
+		
 		async function setParam(target, value){
 			document.getElementById("tooltip").textContent="" + target + ": " + value;
 			const message = "msg " + target + " " + value + "\n"
@@ -211,9 +243,7 @@
 	<span id="screen_subtitle">Playdate Serial Interface</span>
 	<button id="request_usb_button" type="button" onclick="requestUsbAccess()">Request USB Access</button>
 	</div>
-	
-	
-	
+
 	<div id="controls_container">
 		<!-- 1 -->
 		<!-- Pre-Delay -->
@@ -302,6 +332,59 @@
 			<div class="knob_container" id="delay_feedback_container"></div>
 			<div class="knob_container" id="delay_mix_container"></div>
 		</div>
+		
+		<div class="effect_container" style="width: 250px;">
+			<div class="effect_title_container">
+				<div class="effect_title">Waveform</div>
+			</div>
+			<div class="waveform_select_container" id="waveform_container1">
+				<div>
+					<input type="radio" id="sine" name="waveform" value="sine" onchange="waveformSelect(this.value)" checked />
+					<label for="sine">Sine</label>
+				</div>
+				<div>
+					<input type="radio" id="square" name="waveform" value="square" onchange="waveformSelect(this.value)"/>
+					<label for="square">Square</label>
+				</div>
+				<div>
+					<input type="radio" id="sawtooth" name="waveform" value="sawtooth" onchange="waveformSelect(this.value)" />
+					<label for="sawtooth">Sawtooth</label>
+				</div>
+				<div>
+					<input type="radio" id="triangle" name="waveform" value="triangle" onchange="waveformSelect(this.value)" />
+					<label for="triangle">Triangle</label>
+				</div>
+			</div>
+			<div class="waveform_select_container" id="waveform_container2">
+				<div>
+					<input type="radio" id="phase" name="waveform" value="phase" onchange="waveformSelect(this.value)" />
+					<label for="phase">Phase</label>
+				</div>
+				<div>
+					<input type="radio" id="digital" name="waveform" value="digital" onchange="waveformSelect(this.value)" />
+					<label for="digital">Digital</label>
+				</div>
+				<div>
+					<input type="radio" id="vosim" name="waveform" value="vosim" onchange="waveformSelect(this.value)" />
+					<label for="vosim">Vosim</label>
+				</div>
+				<div>
+					<input type="radio" id="noise" name="waveform" value="noise" onchange="waveformSelect(this.value)" />
+					<label for="noise">Noise</label>
+				</div>
+			</div>
+		</div>
+		
+		<div class="effect_container" id="synth_param_container" style="visibility: hidden;">
+			<div class="effect_title_container">
+				<div class="effect_title">Synth Parameters</div>
+			</div>
+			<div class="knob_container" id="synth_param1_container"></div>
+			<div class="knob_container" id="synth_param2_container"></div>
+			<div class="knob_container" style="width: 75px;" id="param_blank_container"></div>
+			</div>
+		</div>
+		
 	</div>
 	<div id="tooltip_container">
 		<span id="tooltip">©2025 orllewin.uk</span>

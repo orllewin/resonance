@@ -100,7 +100,7 @@ end
 function Presets:olsenish()
 	return {
 		name = "Olsenish",
-		waveform = "Triangle",
+		waveform = "Digital",
 		nodes = {
 			{ midiNote = 52, x = 19, y = 113 },--E3
 			{ midiNote = 56, x = 34, y = 105 },--Ab3
@@ -115,10 +115,20 @@ function Presets:olsenish()
 			{ midiNote = 56 , x = 199, y = 133 },
 			{ midiNote = 61 , x = 185, y = 143 },
 			
-			{ midiNote = 49 , x = 122, y = 173 },
-			{ midiNote = 53 , x = 133, y = 185 },
-			{ midiNote = 56 , x = 122, y = 198 },
-			{ midiNote = 61 , x = 133, y = 209 },
+			-- { midiNote = 49 , x = 122, y = 173 },
+			-- { midiNote = 53 , x = 133, y = 185 },
+			-- { midiNote = 56 , x = 122, y = 198 },
+			-- { midiNote = 61 , x = 133, y = 209 },
+			-- 
+			-- { midiNote = 73 , x = 289, y = 68 },
+			-- { midiNote = 75 , x = 305, y = 61 },
+			-- { midiNote = 78 , x = 323, y = 73 },
+			-- 
+			-- { midiNote = 73 , x = 326, y = 140 },
+			-- { midiNote = 75 , x = 316, y = 153 },
+			-- { midiNote = 73 , x = 298, y = 155 },
+			-- 
+			-- { midiNote = 73 , x = 263, y = 127 },
 			
 		},
 		players = {
@@ -131,7 +141,17 @@ function Presets:olsenish()
 				orbitY = 114,
 				velocity = 11,
 				orbitStartAngle = 1.5708
-			}
+			},
+			{
+				x = 255,
+				y = 120,
+				size = 24,
+				mode = 1,
+				orbitX = 300,
+				orbitY = 114,
+				velocity = 12,
+				orbitStartAngle = 1.5708
+			},
 		}
 	}
 end

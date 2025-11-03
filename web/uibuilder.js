@@ -23,7 +23,7 @@ function addPreDelay(){
   const preDelayTime = addKnob('Time', 'pre_delay_time_container', 25);
   const preDelayTimeListener = function(knob, value) {
     console.log(value);
-    setParam('pre-delay-time', value);
+    setParam('pdt', value);
   };
   preDelayTime.addListener(preDelayTimeListener);
   
@@ -31,7 +31,7 @@ function addPreDelay(){
   const preDelayFeedback = addKnob('Feedback', 'pre_delay_feedback_container', 25); 
   const preDelayFeedbackListener = function(knob, value) {
     console.log(value);
-    setParam('pre-delay-feedback', value);
+    setParam('pdf', value);
   };
   preDelayFeedback.addListener(preDelayFeedbackListener)
   
@@ -39,7 +39,7 @@ function addPreDelay(){
   const preDelayMix = addKnob('Mix', 'pre_delay_mix_container', 0);
   const preDelayMixListener = function(knob, value) {
     console.log(value);
-    setParam('pre-delay-mix', value);
+    setParam('pdm', value);
   };
   preDelayMix.addListener(preDelayMixListener);
 }
@@ -127,7 +127,7 @@ function addMidDelay(){
   const midDelayTime = addKnob('Time', 'mid_delay_time_container', 25);
   const midDelayTimeListener = function(knob, value) {
     console.log(value);
-    setParam('mid-delay-time', value);
+    setParam('mdt', value);
   };
   midDelayTime.addListener(midDelayTimeListener);
   
@@ -135,7 +135,7 @@ function addMidDelay(){
   const midDelayFeedback = addKnob('Feedback', 'mid_delay_feedback_container', 25); 
   const midDelayFeedbackListener = function(knob, value) {
     console.log(value);
-    setParam('mid-delay-feedback', value);
+    setParam('mdf', value);
   };
   midDelayFeedback.addListener(midDelayFeedbackListener)
   
@@ -143,7 +143,7 @@ function addMidDelay(){
   const midDelayMix = addKnob('Mix', 'mid_delay_mix_container', 0);
   const midDelayMixListener = function(knob, value) {
     console.log(value);
-    setParam('mid-delay-mix', value);
+    setParam('mdm', value);
   };
   midDelayMix.addListener(midDelayMixListener);
 }
@@ -153,7 +153,7 @@ function addLowPass(){
   const lowpassFreq = addKnob('Frequency', 'lowpass_freq_container', 50);    
   const lowpassFreqListener = function(knob, value) {
     console.log(value);
-    setParam('lowpass-frequency', value);
+    setParam('lpf', value);
   };
   
   lowpassFreq.addListener(lowpassFreqListener);
@@ -162,7 +162,7 @@ function addLowPass(){
   const lowpassRes = addKnob('Resonance', 'lowpass_res_container',50);    
   const lowpassResListener = function(knob, value) {
     console.log(value);
-    setParam('lowpass-resonance', value);
+    setParam('lpr', value);
   };
   
   lowpassRes.addListener(lowpassResListener);
@@ -171,7 +171,7 @@ function addLowPass(){
   const lowpassMix = addKnob('Mix', 'lowpass_mix_container', 0);     
   const lowpassMixListener = function(knob, value) {
     console.log(value);
-    setParam('lowpass-mix', value);
+    setParam('lpm', value);
   };
   
   lowpassMix.addListener(lowpassMixListener);
@@ -182,7 +182,7 @@ function addHighPass(){
   const highpassFreq = addKnob('Frequency', 'highpass_freq_container', 50);      
   const highpassFreqListener = function(knob, value) {
     console.log(value);
-    setParam('highpass-frequency', value);
+    setParam('hpf', value);
   };
   
   highpassFreq.addListener(highpassFreqListener);
@@ -191,7 +191,7 @@ function addHighPass(){
   const highpassRes = addKnob('Resonance', 'highpass_res_container', 50);      
   const highpassResListener = function(knob, value) {
     console.log(value);
-    setParam('highpass-resonance', value);
+    setParam('hpr', value);
   };
   
   highpassRes.addListener(highpassResListener);
@@ -200,7 +200,7 @@ function addHighPass(){
   const highpassMix = addKnob('Mix', 'highpass_mix_container', 0);        
   const highpassMixListener = function(knob, value) {
     console.log(value);
-    setParam('highpass-mix', value);
+    setParam('hpm', value);
   };
   
   highpassMix.addListener(highpassMixListener);
@@ -211,7 +211,7 @@ function addPostDelay(){
   const delayTime = addKnob('Time', 'delay_time_container', 25);
   const delayTimeListener = function(knob, value) {
     console.log(value);
-    setParam('delay-time', value);
+    setParam('psdt', value);
   };
   delayTime.addListener(delayTimeListener);
   
@@ -219,7 +219,7 @@ function addPostDelay(){
   const delayFeedback = addKnob('Feedback', 'delay_feedback_container', 25); 
   const delayFeedbackListener = function(knob, value) {
     console.log(value);
-    setParam('delay-feedback', value);
+    setParam('psdf', value);
   };
   delayFeedback.addListener(delayFeedbackListener)
   
@@ -227,9 +227,25 @@ function addPostDelay(){
   const delayMix = addKnob('Mix', 'delay_mix_container', 0);
   const delayMixListener = function(knob, value) {
     console.log(value);
-    setParam('delay-mix', value);
+    setParam('psdm', value);
   };
   delayMix.addListener(delayMixListener);
+}
+
+function addSynthParams(){
+  //Synth param 1
+  const synthParam1 = addKnob('Parameter 1', 'synth_param1_container', 0);
+  const synthParam1Listener = function(knob, value) {
+    waveformParam1(value);
+  };
+  synthParam1.addListener(synthParam1Listener);
+  
+  //Synth param 2
+  const synthParam2 = addKnob('Parameter 2', 'synth_param2_container', 0);
+  const synthParam2Listener = function(knob, value) {
+    waveformParam2(value);
+  };
+  synthParam2.addListener(synthParam2Listener);
 }
 
 function buildUI(){	
@@ -240,5 +256,6 @@ function buildUI(){
   addMidDelay();
   addLowPass();
   addHighPass();
-  addPostDelay()
+  addPostDelay();
+  addSynthParams();
 }

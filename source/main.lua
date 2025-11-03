@@ -25,7 +25,6 @@ import "sprites/active_node"
 
 import "presets"
 
-
 local gfx <const> = playdate.graphics
 local geom <const> = playdate.geometry
 
@@ -38,6 +37,7 @@ gfx.setFont(resFont)
 gChannel = playdate.sound.channel.new()
 
 gShowSerialLog = false
+gAccelerometerActive = false
 
 -- 1. Delay (Pre) Effect
 gPreDelay = playdate.sound.delayline.new(3.0)
@@ -157,25 +157,30 @@ gDialogWidth = 200
 maxVelocity = 50.0
 
 local serialLog = {"Serial Log"}
-local EFFECT_PRE_DELAY_TIME <const> = "pre-delay-time"
-local EFFECT_PRE_DELAY_FEEDBACK <const> = "pre-delay-feedback"
-local EFFECT_PRE_DELAY_MIX <const> = "pre-delay-mix"
 
-local EFFECT_MID_DELAY_TIME <const> = "mid-delay-time"
-local EFFECT_MID_DELAY_FEEDBACK <const> = "mid-delay-feedback"
-local EFFECT_MID_DELAY_MIX <const> = "mid-delay-mix"
+local WAVEFORM_SELECT <const> = "wf"
+local WAVEFORM_PARAM_1 <const> = "wfp1"
+local WAVEFORM_PARAM_2 <const> = "wfp2"
 
-local EFFECT_DELAY_TIME <const> = "delay-time"
-local EFFECT_DELAY_FEEDBACK <const> = "delay-feedback"
-local EFFECT_DELAY_MIX <const> = "delay-mix"
+local EFFECT_PRE_DELAY_TIME <const> = "pdt"
+local EFFECT_PRE_DELAY_FEEDBACK <const> = "pdf"
+local EFFECT_PRE_DELAY_MIX <const> = "pdm"
 
-local EFFECT_LOWPASS_FREQ <const> = "lowpass-frequency"
-local EFFECT_LOWPASS_RESONANCE <const> = "lowpass-resonance"
-local EFFECT_LOWPASS_MIX <const> = "lowpass-mix"
+local EFFECT_MID_DELAY_TIME <const> = "mdt"
+local EFFECT_MID_DELAY_FEEDBACK <const> = "mdf"
+local EFFECT_MID_DELAY_MIX <const> = "mdm"
 
-local EFFECT_HIGHPASS_FREQ <const> = "highpass-frequency"
-local EFFECT_HIGHPASS_RESONANCE <const> = "highpass-resonance"
-local EFFECT_HIGHPASS_MIX <const> = "highpass-mix"
+local EFFECT_DELAY_TIME <const> = "psdt"
+local EFFECT_DELAY_FEEDBACK <const> = "psdf"
+local EFFECT_DELAY_MIX <const> = "psdm"
+
+local EFFECT_LOWPASS_FREQ <const> = "lpf"
+local EFFECT_LOWPASS_RESONANCE <const> = "lpr"
+local EFFECT_LOWPASS_MIX <const> = "lpm"
+
+local EFFECT_HIGHPASS_FREQ <const> = "hpf"
+local EFFECT_HIGHPASS_RESONANCE <const> = "hpr"
+local EFFECT_HIGHPASS_MIX <const> = "hpm"
 
 local EFFECT_OVERDRIVE_GAIN <const> = "overdrive-gain"
 local EFFECT_OVERDRIVE_LIMIT <const> = "overdrive-limit"
@@ -194,16 +199,23 @@ function playdate.serialMessageReceived(message)
 	local tokens = getWords(message)
 	local command = tokens[1]
 	local value = tonumber(tokens[2])
-	
-	local EFFECT_PRE_DELAY_TIME <const> = "pre-delay-time"
-	local EFFECT_PRE_DELAY_FEEDBACK <const> = "pre-delay-feedback"
-	local EFFECT_PRE_DELAY_MIX <const> = "pre-delay-mix"
-	
-	local EFFECT_MID_DELAY_TIME <const> = "mid-delay-time"
-	local EFFECT_MID_DELAY_FEEDBACK <const> = "mid-delay-feedback"
-	local EFFECT_MID_DELAY_MIX <const> = "mid-delay-mix"
-	
-	if command == EFFECT_PRE_DELAY_TIME then
+		
+	if command == WAVEFORM_SELECT then
+		local nodeCount = #nodes
+		for n = 1,nodeCount,1 do
+			nodes[n]:setWaveform(value)
+		end
+	elseif command == WAVEFORM_PARAM_1 then
+		local nodeCount = #nodes
+		for n = 1,nodeCount,1 do
+			nodes[n]:setSynthParam1(value)
+		end
+	elseif command == WAVEFORM_PARAM_2 then
+		local nodeCount = #nodes
+		for n = 1,nodeCount,1 do
+			nodes[n]:setSynthParam2(value)
+		end
+	elseif command == EFFECT_PRE_DELAY_TIME then
 		gPreDelayTime = map(value, 0, 100, 0.0, gPreDelayMax)
 		gPreDelayTap1:setDelay(gPreDelayTime)
 	elseif command == EFFECT_PRE_DELAY_FEEDBACK then

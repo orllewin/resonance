@@ -79,21 +79,21 @@ end
 
 function Node:setWaveform(waveform)
 	self.waveform = waveform
-	if waveform == "Sine" then
+	if waveform == "Sine" or waveform == "sine" then
 		self.synth:setWaveform(playdate.sound.kWaveSine)
-	elseif waveform == "Square" then
+	elseif waveform == "Square" or waveform == "square" then
 		self.synth:setWaveform(playdate.sound.kWaveSquare)
-	elseif waveform == "Sawtooth" then
+	elseif waveform == "Sawtooth" or waveform == "sawtooth" then
 		self.synth:setWaveform(playdate.sound.kWaveSawtooth)
-	elseif waveform == "Triangle" then
+	elseif waveform == "Triangle" or waveform == "triangle" then
 		self.synth:setWaveform(playdate.sound.kWaveTriangle)	
-	elseif waveform == "Phase" then
+	elseif waveform == "Phase" or waveform == "phase" then
 		self.synth:setWaveform(playdate.sound.kWavePOPhase)		
-	elseif waveform == "Digital" then
+	elseif waveform == "Digital" or waveform == "digital" then
 		self.synth:setWaveform(playdate.sound.kWavePODigital)			
-	elseif waveform == "Vosim" then
+	elseif waveform == "Vosim" or waveform == "vosim" then
 		self.synth:setWaveform(playdate.sound.kWavePOVosim)
-	elseif waveform == "Noise" then
+	elseif waveform == "Noise" or waveform == "noise" then
 		self.synth:setWaveform(playdate.sound.kWaveNoise)				
 	end	
 end
@@ -142,11 +142,25 @@ function Node:checkPlayers(players)
 		end
 		
 		--Accelerometer
-		if self.waveform == "Vosim" or self.waveform == "Phase" or self.waveform == "Digital" then
-			local x, y, _z = playdate.readAccelerometer()
-			self.synth:setParameter(1, self:map(x, -1.0, 1.0, 0.0, 1.0))
-			self.synth:setParameter(2, self:map(y, -1.0, 1.0, 0.0, 1.0))
+		if gAccelerometerActive then
+			if self.waveform == "Vosim" or self.waveform == "Phase" or self.waveform == "Digital" then
+				local x, y, _z = playdate.readAccelerometer()
+				self.synth:setParameter(1, self:map(x, -1.0, 1.0, 0.0, 1.0))
+				self.synth:setParameter(2, self:map(y, -1.0, 1.0, 0.0, 1.0))
+			end
 		end
+	end
+end
+
+function Node:setSynthParam1 (value)
+	if self.waveform == "Vosim" or self.waveform == "Phase" or self.waveform == "Digital" then
+		self.synth:setParameter(1, value/100.0)
+	end
+end
+
+function Node:setSynthParam2 (value)
+	if self.waveform == "Vosim" or self.waveform == "Phase" or self.waveform == "Digital" then
+		self.synth:setParameter(2, value/100.0)
 	end
 end
 
