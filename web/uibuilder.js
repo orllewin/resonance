@@ -49,7 +49,7 @@ function addRingMod(){
   const ringmodFreq = addKnob('Frequency', 'ringmod_freq_container', 25);        
   const ringmodFreqListener = function(knob, value) {
     console.log(value);
-    setParam('ringmod-frequency', value);
+    setParam('rmf', value);
   };
   
   ringmodFreq.addListener(ringmodFreqListener);
@@ -58,7 +58,7 @@ function addRingMod(){
   const ringmodMix = addKnob('Mix', 'ringmod_mix_container', 0);        
   const ringmodMixListener = function(knob, value) {
     console.log(value);
-    setParam('ringmod-mix', value);
+    setParam('rmm', value);
   };
   
   ringmodMix.addListener(ringmodMixListener);
@@ -69,7 +69,7 @@ function addBitcrusher(){
   const bitcrusherAmount = addKnob('Amount', 'bitcrusher_amount_container', 10);
   const bitcrusherAmountListener = function(knob, value) {
     console.log(value);
-    setParam('bitcrusher-amount', value);
+    setParam('bca', value);
   };
   
   bitcrusherAmount.addListener(bitcrusherAmountListener);
@@ -78,7 +78,7 @@ function addBitcrusher(){
   const bitcrusherUndersample = addKnob('Undersample', 'bitcrusher_undersampling_container', 25);   
   const bitcrusherUndersamplingListener = function(knob, value) {
     console.log(value);
-    setParam('bitcrusher-undersampling', value);
+    setParam('bcu', value);
   };
   
   bitcrusherUndersample.addListener(bitcrusherUndersamplingListener);
@@ -87,7 +87,7 @@ function addBitcrusher(){
   const bitcrusherMix = addKnob('Mix', 'bitcrusher_mix_container', 0);  
   const bitcrusherMixListener = function(knob, value) {
     console.log(value);
-    setParam('bitcrusher-mix', value);
+    setParam('bcm', value);
   };
   
   bitcrusherMix.addListener(bitcrusherMixListener);
@@ -98,7 +98,7 @@ function addOverdrive(){
   const overdriveGain = addKnob('Gain', 'overdrive_gain_container', 50);        
   const overdriveGainListener = function(knob, value) {
     console.log(value);
-    setParam('overdrive-gain', value);
+    setParam('odg', value);
   };
   
   overdriveGain.addListener(overdriveGainListener);
@@ -107,7 +107,7 @@ function addOverdrive(){
   const overdriveLimit = addKnob('Limit', 'overdrive_limit_container', 50);        
   const overdriveLimitListener = function(knob, value) {
     console.log(value);
-    setParam('overdrive-limit', value);
+    setParam('odl', value);
   };
   
   overdriveLimit.addListener(overdriveLimitListener);
@@ -116,7 +116,7 @@ function addOverdrive(){
   const overdriveMix = addKnob('Mix', 'overdrive_mix_container', 0);        
   const overdriveMixListener = function(knob, value) {
     console.log(value);
-    setParam('overdrive-mix', value);
+    setParam('odm', value);
   };
   
   overdriveMix.addListener(overdriveMixListener);

@@ -182,16 +182,16 @@ local EFFECT_HIGHPASS_FREQ <const> = "hpf"
 local EFFECT_HIGHPASS_RESONANCE <const> = "hpr"
 local EFFECT_HIGHPASS_MIX <const> = "hpm"
 
-local EFFECT_OVERDRIVE_GAIN <const> = "overdrive-gain"
-local EFFECT_OVERDRIVE_LIMIT <const> = "overdrive-limit"
-local EFFECT_OVERDRIVE_MIX <const> = "overdrive-mix"
+local EFFECT_OVERDRIVE_GAIN <const> = "odg"
+local EFFECT_OVERDRIVE_LIMIT <const> = "odl"
+local EFFECT_OVERDRIVE_MIX <const> = "odm"
 
-local EFFECT_BITCRUSHER_AMOUNT <const> = "bitcrusher-amount"
-local EFFECT_BITCRUSHER_UNDERSAMPLE <const> = "bitcrusher-undersampling"
-local EFFECT_BITCRUSHER_MIX <const> = "bitcrusher-mix"
+local EFFECT_BITCRUSHER_AMOUNT <const> = "bca"
+local EFFECT_BITCRUSHER_UNDERSAMPLE <const> = "bcu"
+local EFFECT_BITCRUSHER_MIX <const> = "bcm"
 
-local EFFECT_RINGMODE_FREQ <const> = "ringmod-frequency"
-local EFFECT_RINGMODE_MIX <const> = "ringmod-mix"
+local EFFECT_RINGMODE_FREQ <const> = "rmf"
+local EFFECT_RINGMODE_MIX <const> = "rmm"
 
 function playdate.serialMessageReceived(message)
 	print("SERIAL: " .. message)
