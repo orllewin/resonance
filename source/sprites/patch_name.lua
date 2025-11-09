@@ -11,6 +11,7 @@ function PatchName:init()
 end
 
 function PatchName:update(text)
+	print(">>>>> new patch sprite with name: " .. text)
 	local image = gfx.imageWithText(text, 400, 24)
 	self.label:setImage(image)
 	self.label:moveTo(image.width/2 + 5, 10)

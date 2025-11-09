@@ -1,0 +1,159 @@
+body{
+  font-family: sans-serif;
+  margin: 4px;
+  background: black;
+  color: ghostwhite;
+}
+a:link {
+  color: antiquewhite;
+}
+a:visited {
+  color: antiquewhite;
+}
+a:hover {
+  color: black;
+  background: antiquewhite
+}
+a:active {
+  color: antiquewhite;
+} 
+input[type='range']{ accent-color: #2f2d27; }
+legend{
+  font-size: 12px;
+}
+.small_fieldset{
+  height: 32px;
+}
+#editor_container{
+ padding: 16px;
+ background: #febf31;
+ border-radius: 13px;
+ width: 400px;
+ margin-top: 24px;
+ margin-bottom: 24px;
+ margin-left: auto;
+ margin-right: auto;
+}
+#resonance_controls_container{
+  vertical-align: middle;
+}
+.control_button{
+  margin-left: 4px;
+  margin-bottom: 8px;
+  height: 24px;
+  padding-inline: 8px;
+}
+#resonance_canvas {
+  border: 1px solid black;
+  border-radius: 5px;
+  background: #2f2d27;
+  width: 400px;
+  height: 240px;
+}
+
+fieldset{
+  border-radius: 5px;
+}
+#screen_title_container{
+  cursor: pointer;
+}
+#screen_title{
+  display: block;
+  font-size: 16px;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding-top: 8px;
+  padding-left: 8px;	 
+  color: antiquewhite;
+}
+#screen_subtitle{
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  padding-left: 8px;	
+  padding-bottom: 8px;
+  color: antiquewhite;
+}
+#request_usb_button{
+  margin-top: 16px;
+  padding: 8px;
+  margin-left: 8px;
+}
+#controls_container{
+  display: none;
+}
+#tooltip_container{
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  padding: 8px;
+}
+.effect_container{
+  float: left;
+  border-radius: 5px;
+  background: #2f2d27;
+  padding: 8px;
+  flex-direction: row;
+  margin: 4px;
+}
+.effect_title_container{
+  width:100%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-bottom: 8px;
+}
+.effect_title{
+  display: contents;
+  vertical-align: middle;
+  font-size: 14px;
+  font-weight: 400;
+  color: antiquewhite;
+}
+.collapse_icon{
+  float: right;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.collapse_svg{
+  padding-right: 8px;
+  padding-bottom: 6px;
+}
+.waveform_select_container {
+  float:left;
+  width: 125px;
+  padding-bottom: 5px;
+}
+.knob_container{
+  float: left;
+  border-radius: 5px;
+  display: flex; 
+  flex-direction: row;
+  padding: 4px;
+}
+.sliders_container{
+  float: left;
+  border-radius: 5px;
+  display: flex; 
+  flex-direction: row;
+}
+.slider_container{
+  border-radius: 5px;
+  background: #303030;
+  width: 44px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin-left: 4px;
+  margin-right: 4px;	
+}
+
+.slider_label{
+  text-align: center;
+  margin-block-start: 8px;
+  margin-block-end: 0px;
+  font-weight: 400;
+  cursor: pointer;  
+}
+#tooltip{
+  font-size: small;
+  color: antiquewhite;
+}

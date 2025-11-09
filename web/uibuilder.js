@@ -8,7 +8,7 @@ function setKnobConfig(knob, label, elementId, value){
   knob.setProperty('label', label);
   knob.setProperty('angleStart', -0.75 * Math.PI);
   knob.setProperty('angleEnd', 0.75 * Math.PI);
-  knob.setProperty('colorFG', '#88ff88');
+  knob.setProperty('colorFG', '#f5c251');
   knob.setProperty('trackWidth', 0.4);
   knob.setProperty('valMin', 0);
   knob.setProperty('valMax', 100);
@@ -249,6 +249,7 @@ function addSynthParams(){
 }
 
 function buildUI(){	
+  populateNotesDropdown();
   addPreDelay();
   addRingMod();
   addBitcrusher();
@@ -258,4 +259,88 @@ function buildUI(){
   addHighPass();
   addPostDelay();
   addSynthParams();
+}
+
+const noteNames = [
+  "C#",		//13
+  "D",		//14
+  "Eb",		//15
+  "E",		//16
+  "F",		//17
+  "F#",		//18
+  "G",		//19
+  "Ab", 	//20
+  "A0",		//21
+  "Bb0",	//22
+  "B0",		//23
+  "C1",		//24
+  "C#1",	//25
+  "D1",		//26
+  "Eb1",	//27
+  "E1",		//28
+  "F1",		//29
+  "F#1",	//30
+  "G1",		//31
+  "Ab1",	//32
+  "A1",		//33
+  "Bb1",	//34
+  "B1",		//35
+  "C2",		//36
+  "C#2",	//37
+  "D2",		//38
+  "Eb2",	//39
+  "E2",		//40
+  "F2",		//41
+  "F#2",	//42
+  "G2",		//43
+  "Ab2",	//44
+  "A2",		//45
+  "Bb2", 	//46
+  "B2",		//47
+  "C3",		//48
+  "C#3",	//49
+  "D3",		//50
+  "Eb3", 	//51
+  "E3",		//52
+  "F3",		//53
+  "F#3",	//54
+  "G3",		//55
+  "Ab3",	//56
+  "A3",		//57
+  "Bb3",	//58
+  "B3",		//59
+  "C4",   //60
+  "C#4",  //61 
+  "D4",		//62
+  "Eb",		//63
+  "E4",		//64 
+  "F4", 	//65
+  "F#4", 	//66
+  "G4", 	//67
+  "Ab4", 	//68
+  "A4", 	//69
+  "Bb4", 	//70
+  "B4", 	//71 	 
+  "C5", 	//72
+  "C#5", 	//73
+  "D5", 	//74
+  "Eb5", 	//75
+  "E5", 	//76
+  "F5", 	//77
+  "F#5", 	//78
+  "G5", 	//79
+  "Ab5", 	//80
+  "A5", 	//81
+  "Bb5", 	//82
+  "B5", 	//83
+];
+
+function populateNotesDropdown(){
+  const notesDropdown = document.getElementById('notes_dropdown');
+  noteNames.forEach(function (item, index) {
+    var option = document.createElement('option');
+    option.value = item;
+    option.innerHTML = item;
+    notesDropdown.appendChild(option);
+  });
 }

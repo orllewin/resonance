@@ -166,6 +166,13 @@ local serialLog = {"Serial Log"}
 local WAVEFORM_SELECT <const> = "wf"
 local WAVEFORM_PARAM_1 <const> = "wfp1"
 local WAVEFORM_PARAM_2 <const> = "wfp2"
+local LOAD_PATCH <const> = "patch"
+local CLEAR_PATCH <const> = "clr"
+local ADD_NOTE <const> = "note"
+local ADD_PLAYER <const> = "plyr"
+local OCT_UP <const> = "octu"
+local OCT_DOWN <const> = "octd"
+local PATCH_REQUEST <const> = "prq"
 
 local EFFECT_PRE_DELAY_TIME <const> = "pdt"
 local EFFECT_PRE_DELAY_FEEDBACK <const> = "pdf"
@@ -205,8 +212,39 @@ function playdate.serialMessageReceived(message)
 	local command = tokens[1]
 	local valueStr = tokens[2]
 	local valueNumber = tonumber(valueStr)
-		
-	if command == WAVEFORM_SELECT then
+	
+	if command == PATCH_REQUEST then
+		serialPatchSend()
+	elseif command == ADD_NOTE then
+		local x = tonumber(tokens[2])
+		local y = tonumber(tokens[3])
+		local midiNote = tonumber(tokens[4])
+		local newIndex = #nodes + 1
+		nodes[newIndex] = Node(geom.point.new(x, y), midiNote)--table.insert duh
+		nodeCount = #nodes
+	elseif command == ADD_PLAYER then
+		local x = tonumber(tokens[2])
+		local y = tonumber(tokens[3])
+		local size = tonumber(tokens[4])
+		local playerNode = PlayerNode(geom.point.new(x, y), size * 2, nil, nil, 1)
+		table.insert(playerNodes, playerNode)
+	elseif command == OCT_UP then
+		local nodeCount = #nodes
+		for n = 1,nodeCount,1 do
+			nodes[n]:octaveUp()
+		end
+	elseif command == OCT_DOWN then
+		local nodeCount = #nodes
+		for n = 1,nodeCount,1 do
+			nodes[n]:octaveDown()
+		end
+	elseif command == CLEAR_PATCH then
+		print("CLEAR_PATCH")
+		local patchStr = "{\"name\": \"Serial\", \"waveform\": \"sine\", \"nodes\": [],\"players\": [{ \"size\": 64, \"x\": 200, \"y\": 120 }]}"
+		local clearPatchTable = json.decode(patchStr)
+		printTable(clearPatchTable)
+		loadPatch(clearPatchTable)
+	elseif command == WAVEFORM_SELECT then
 		print("WAVEFORM_SELECT: " ..  valueStr)
 		local nodeCount = #nodes
 		for n = 1,nodeCount,1 do
@@ -543,7 +581,7 @@ local mainInputHandler = {
 			nodes[activeNode]:crank(change)
 			activeNodeLabel:updateNode(nodes[activeNode])
 		else
-			playerNodes[activePlayerNode]:crank(change)
+			if #playerNodes > 0 then playerNodes[activePlayerNode]:crank(change) end
 			updateNodes()
 		end
 	end,
@@ -646,8 +684,12 @@ function loadPatch(patch)
 	introLabelSprite:setScale(1)
 	introLabelSprite:moveTo(355, 10)
 	
-	activePlayerNode = 1
-	playerNodes[1]:setActive(true)
+	if #playerNodes > 0 then
+		activePlayerNode = 1
+		playerNodes[1]:setActive(true)
+	else
+
+	end
 	
 	setLabelsVisible(true)
 end
@@ -737,8 +779,63 @@ function showNodesMenu()
 					showingMenu = false 
 				end
 			)
+		end,
+		function()
+			--onSerialPatchSend
+			showingMenu = false 
+			serialPatchSend()
 		end
 	)
+end
+
+local patchResetSent = false 
+local serialPlayerIndex = 0
+local serialNoteIndex = 0
+local serialPatchDelayMs = 125
+function serialPatchSend()
+	if not patchResetSent then
+		print("< " .. LOAD_PATCH)
+		patchResetSent = true
+		serialPlayerIndex = 0
+		serialNoteIndex = 0
+		playdate.timer.performAfterDelay(serialPatchDelayMs, function() 
+			serialPatchSend()
+		 end)
+	elseif serialPlayerIndex < #playerNodes then
+		serialPlayerIndex += 1
+		local player = playerNodes[serialPlayerIndex]
+		print("< " .. ADD_PLAYER .. " " .. player.p.x .. " " .. player.p.y .. " " .. (player.size/4))
+		playdate.timer.performAfterDelay(serialPatchDelayMs, function() 
+			serialPatchSend()
+		 end)
+	elseif serialNoteIndex < #nodes then
+		serialNoteIndex += 1
+		local node = nodes[serialNoteIndex]
+		print("< " .. ADD_NOTE .. " " .. node.p.x .. " " .. node.p.y .. " " .. node.midiNote)
+		playdate.timer.performAfterDelay(serialPatchDelayMs, function() 
+			serialPatchSend()
+		 end)
+	else
+		patchResetSent = false
+		serialPlayerIndex = 0
+		serialNoteIndex = 0
+	end
+	
+	-- print("")
+	-- local playerCount = #playerNodes
+	-- local playersMessage = ""
+	-- for p = 1, playerCount, 1 do 
+	-- 	local player = playerNodes[p]
+	-- 	playersMessage += "< " .. ADD_PLAYER .. " " .. player.p.x .. " " .. player.p.y .. " " .. (player.size/4)
+	-- end
+	-- print(playersMessage)
+	-- local nodeCount = #nodes
+	-- local nodesMessage = ""
+	-- for i = 1,nodeCount,1 do 
+	-- 	local node = nodes[i]
+	-- 	nodesMessage .. "< " .. ADD_NOTE .. " " .. node.p.x .. " " .. node.p.y .. " " .. node.midiNote
+	-- 	print("")
+	-- end
 end
 
 function setup()

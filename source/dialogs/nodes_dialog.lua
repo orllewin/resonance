@@ -10,14 +10,18 @@ local gfx <const> = playdate.graphics
 ]]
 class('NodesDialog').extends()
 
-local menuOptionAddNoteNode = "New note node"
-local menuOptionAddPlayerNode = "New player node"
+
 local menuOptionSetWaveform = "Waveform"
 local menuOptionEffects = "Effects"
 local menuOptionOctaveUp = "Octave up"
 local menuOptionOctaveDown = "Octave down"
 local menuOptionRndPositions = "Random positions"
 local menuOptionRndNotes = "Random notes"
+
+local menuOptionAddNoteNode = "New note node"
+local menuOptionAddPlayerNode = "New player node"
+
+local menuOptionSerialSendPatch = "Send patch"
 
 local menuItems = {
 	{label = "Global:::", type = "category_title"},
@@ -31,6 +35,9 @@ local menuItems = {
 	{label = "Nodes:::", type = "category_title"},
 	{label = menuOptionAddNoteNode},
 	{label = menuOptionAddPlayerNode},
+	{type = "divider"},
+	{label = "Serial interface:::", type = "category_title"},
+	{label = menuOptionSerialSendPatch}
 }
 
 function NodesDialog:init()
@@ -47,7 +54,8 @@ function NodesDialog:show(
 	onAddNoteNode,
 	onOctaveUp,
 	onOctaveDown,
-	onEffects
+	onEffects,
+	onSerialPatchSend
 )
 	
 	self.onDismiss = onDismiss
@@ -86,6 +94,9 @@ function NodesDialog:show(
 		elseif item.label == menuOptionEffects then
 			self:dismiss()
 			onEffects()
+		elseif item.label == menuOptionSerialSendPatch then
+			self:dismiss()
+			onSerialPatchSend()
 		end
 	end, 29000)
 	
