@@ -190,12 +190,12 @@
 					<tr>
 						<td align="left" style="height: 48px;vertical-align: centre;">
 							<input type="range" id="visitor_radius" name="visitor_radius" min="0" max="60" style="margin-top:0px;margin-right: 4px;width:96px;" onchange="setVisitorSize(this.value)"></input>
-							<button type="button" onclick="newVisitorNode()">○</button>
+							<button type="button" onclick="newVisitorNode()">&#x25CB;</button>
 						</td>
 						<td  style="height: 48px;vvertical-align: centre;">
 							<select name="notes_dropdown" id="notes_dropdown" oninput="setNote(this.value)" style="margin-right: 4px;width:100px;">
 							</select>
-							<button type="button" onclick="newNoteNode()">●</button>
+							<button type="button" onclick="newNoteNode()">&#x25CF</button>
 						</td>
 						<td align="right"  style="height: 48px;vertical-align: centre;">
 							<button class="control_button" type="button" onclick="clearAll()" style="height: 22px;font-size: 12px;margin-top:8px;">Clear all</button> 
@@ -206,7 +206,7 @@
 					<table style="width: 400px;">
 						<tr>
 							<td align="left" style="height: 24px;vertical-align: centre;">
-								<button class="control_button" type="button" onclick="octUp()" style="height: 22px;font-size: 12px;margin-top:0px;">Oct ↑</button> <button class="control_button" type="button" onclick="octDown()" style="height: 22px;font-size: 12px;margin-top:0px;">Oct ↓</button> <button class="control_button" type="button" onclick="startListening()" style="height: 22px;font-size: 12px;margin-top:0px;">Listen</button> 
+								<button class="control_button" type="button" onclick="octUp()" style="height: 22px;font-size: 12px;margin-top:0px;">Oct &#x2191;</button> <button class="control_button" type="button" onclick="octDown()" style="height: 22px;font-size: 12px;margin-top:0px;">Oct &#x2193;</button> <button class="control_button" type="button" onclick="startListening()" style="height: 22px;font-size: 12px;margin-top:0px;">Listen</button> 
 							</td>
 							<td  style="height: 24px;vvertical-align: centre;">
 							
@@ -362,7 +362,7 @@
 		
 	</div>
 	<div id="tooltip_container">
-		<span id="tooltip">©2025 orllewin.uk&nbsp;<a href="javascript:null" onClick="javascript:toggleEditor()">toggle editor</a></span>
+		<span id="tooltip">&#xA9;2025 orllewin.uk&nbsp;<a href="javascript:null" onClick="javascript:toggleEditor()">toggle editor</a></span>
 	</div>
 </body>
 </html>

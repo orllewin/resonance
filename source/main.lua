@@ -798,7 +798,7 @@ end
 local patchResetSent = false 
 local serialPlayerIndex = 0
 local serialNoteIndex = 0
-local serialPatchDelayMs = 125
+local serialPatchDelayMs = 155
 function serialPatchSend()
 	if not patchResetSent then
 		print("< " .. LOAD_PATCH)
