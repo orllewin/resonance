@@ -5,6 +5,15 @@ Buy on [itch.io](https://orllewin.itch.io/resonance)
 
 ![Screenshot](./resonance_screenshot1.png)
 
+## Effects Control Website
+
+* Connect Playdate to your computer via USB-C (this wont work on mobile (yet))
+* Open [orllewin.uk/resonance/](https://orllewin.uk/resonance/) in Chrome
+* Toggle the Playdate screen off and on again (hardware button on top of the device), this enables the serial interface
+* Click 'Request USB Access' from the webpage.
+
+If successful you should now be able to control the audio effects from the web browser. 
+
 ## Serial API
 
 Terminate all commands with a newline char: `\n`. All numeric arguments should be integers in range 0 to 100, they're normalised internally to suitable values. 
