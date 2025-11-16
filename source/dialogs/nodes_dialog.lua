@@ -21,6 +21,7 @@ local menuOptionRndNotes = "Random notes"
 local menuOptionAddNoteNode = "New note node"
 local menuOptionAddPlayerNode = "New player node"
 
+local menuOptionSerialLogToggle = "Toggle log"
 local menuOptionSerialSendPatch = "Send patch"
 
 local menuItems = {
@@ -37,6 +38,7 @@ local menuItems = {
 	{label = menuOptionAddPlayerNode},
 	{type = "divider"},
 	{label = "Serial interface:::", type = "category_title"},
+	{label = menuOptionSerialLogToggle},
 	{label = menuOptionSerialSendPatch}
 }
 
@@ -55,6 +57,7 @@ function NodesDialog:show(
 	onOctaveUp,
 	onOctaveDown,
 	onEffects,
+	onSerialLogToggle,
 	onSerialPatchSend
 )
 	
@@ -94,6 +97,9 @@ function NodesDialog:show(
 		elseif item.label == menuOptionEffects then
 			self:dismiss()
 			onEffects()
+		elseif item.label == menuOptionSerialLogToggle then
+			self:dismiss()
+			onSerialLogToggle()
 		elseif item.label == menuOptionSerialSendPatch then
 			self:dismiss()
 			onSerialPatchSend()

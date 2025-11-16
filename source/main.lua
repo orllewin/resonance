@@ -332,8 +332,6 @@ function playdate.serialMessageReceived(message)
 		gRingmod:setMix(gRingmodMix)
 	end
 	
-
-	
 	if gShowSerialLog then
 		table.insert(serialLog, message)
 		
@@ -779,6 +777,10 @@ function showNodesMenu()
 					showingMenu = false 
 				end
 			)
+		end,
+		function()
+			--onSerialLogToggle
+			gShowSerialLog = not gShowSerialLog
 		end,
 		function()
 			--onSerialPatchSend
