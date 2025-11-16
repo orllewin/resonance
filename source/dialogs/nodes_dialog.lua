@@ -17,6 +17,7 @@ local menuOptionOctaveUp = "Octave up"
 local menuOptionOctaveDown = "Octave down"
 local menuOptionRndPositions = "Random positions"
 local menuOptionRndNotes = "Random notes"
+local menuOptionToggleAccelerometer = "Toggle accelerometer"
 
 local menuOptionAddNoteNode = "New note node"
 local menuOptionAddPlayerNode = "New player node"
@@ -32,6 +33,7 @@ local menuItems = {
 	{label = menuOptionOctaveDown},
 	{label = menuOptionRndPositions},
 	{label = menuOptionRndNotes},
+	{label = menuOptionToggleAccelerometer},
 	{type = "divider"},
 	{label = "Nodes:::", type = "category_title"},
 	{label = menuOptionAddNoteNode},
@@ -58,7 +60,8 @@ function NodesDialog:show(
 	onOctaveDown,
 	onEffects,
 	onSerialLogToggle,
-	onSerialPatchSend
+	onSerialPatchSend,
+	onToggleAccelerometer
 )
 	
 	self.onDismiss = onDismiss
@@ -103,6 +106,9 @@ function NodesDialog:show(
 		elseif item.label == menuOptionSerialSendPatch then
 			self:dismiss()
 			onSerialPatchSend()
+		elseif item.label == menuOptionToggleAccelerometer then
+			self:dismiss()
+			onToggleAccelerometer()
 		end
 	end, 29000)
 	

@@ -786,7 +786,11 @@ function showNodesMenu()
 			--onSerialPatchSend
 			showingMenu = false 
 			serialPatchSend()
-		end
+		end,
+		function()
+			--onToggleAccelerometer
+			showingMenu = false 
+			gAccelerometerActive = not gAccelerometerActive
 	)
 end
 
