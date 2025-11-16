@@ -228,7 +228,7 @@ function playdate.serialMessageReceived(message)
 		local size = tonumber(tokens[4])
 		local playerNode = PlayerNode(geom.point.new(x, y), size * 2, nil, nil, 1)
 		table.insert(playerNodes, playerNode)
-	elseif command == OCT_UP then
+	elseif command == OCT_UP then		
 		local nodeCount = #nodes
 		for n = 1,nodeCount,1 do
 			nodes[n]:octaveUp()
