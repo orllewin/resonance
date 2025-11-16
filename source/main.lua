@@ -791,6 +791,7 @@ function showNodesMenu()
 			--onToggleAccelerometer
 			showingMenu = false 
 			gAccelerometerActive = not gAccelerometerActive
+		end
 	)
 end
 
