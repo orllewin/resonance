@@ -76,7 +76,8 @@ function addPlayerFromSerial(x, y, size){
 
 function addNoteFromSerial(x, y, midiNote){
   console.log("Adding note from serial: x: " + x + " y: " + y + " midiNote: " + midiNote)
-  notes.push(new NoteNode(x, y, midiNote));
+  const noteLabel = noteNames[midiNote - 12]
+  notes.push(new NoteNode(x, y, noteLabel));
   state = STATE_IDLE;
   drawAll();
 }

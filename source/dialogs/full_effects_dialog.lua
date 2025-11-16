@@ -91,7 +91,7 @@ function FullEffectsDialog:show(onDismiss)
   )
   self.delayVolumeEncoder = SmallEncoder(100.00 + leftGroupMargin, row1EncoderY, gPreDelayVolume * 100.0,
     function(value) 
-      gPreDelayVolume = value/100.0
+      gPreDelayVolume = value/200.0--max 0.5 delay volume
       gPreDelayTap1:setVolume(gPreDelayVolume)
     end
   )
@@ -173,7 +173,7 @@ function FullEffectsDialog:show(onDismiss)
   )
   self.delayMidMixEncoder = SmallEncoder(233.33, row2EncoderY, gMidDelayVolume * 100.0, 
     function(value) 
-      gMidDelayVolume = value/100.0
+      gMidDelayVolume = value/200.0--max 0.5 delay volume
       gMidDelayTap1:setVolume(gMidDelayVolume)
     end
   )
@@ -238,7 +238,7 @@ function FullEffectsDialog:show(onDismiss)
   )
   self.delayPostMixEncoder = SmallEncoder(233.33, row3EncoderY, gDelayVolume * 100.0, 
     function(value) 
-      gDelayVolume = value/100.0
+      gDelayVolume = value/200.0--max 0.5 delay volume
       gDelayTap1:setVolume(gDelayVolume)
     end
   )

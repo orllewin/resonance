@@ -60,6 +60,10 @@
 				{ usbVendorId: 0x1331, usbProductId: 0x5740 },
 				{ usbVendorId: 0x4913, usbProductId: 0x22336 }
 			];
+			
+			document.getElementById("controls_container").style.display = "block";
+			document.getElementById("request_usb_button").style.display = "none";
+			buildUI()
 
 			//port = await navigator.serial.requestPort({ playdateFilters });
 			
@@ -71,9 +75,9 @@
 				console.log("::: usbProductId: " + usbProductId);
 				console.log("::: usbVendorId: " + usbVendorId);
 				port.open({ baudRate: 115200 })
-				document.getElementById("controls_container").style.display = "block";
-				document.getElementById("request_usb_button").style.display = "none";
-				buildUI()
+				// document.getElementById("controls_container").style.display = "block";
+				// document.getElementById("request_usb_button").style.display = "none";
+				// buildUI()
 			})
 			.catch((e) => {
 				console.log("NO PORT SELECTED")
@@ -214,11 +218,7 @@
 					</table> 
 				</div>
 			</div>
-			
 		</div>
-
-		
-		
 		
 		<!-- 1 -->
 		<!-- Pre-Delay -->

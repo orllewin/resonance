@@ -202,8 +202,8 @@ local EFFECT_BITCRUSHER_AMOUNT <const> = "bca"
 local EFFECT_BITCRUSHER_UNDERSAMPLE <const> = "bcu"
 local EFFECT_BITCRUSHER_MIX <const> = "bcm"
 
-local EFFECT_RINGMODE_FREQ <const> = "rmf"
-local EFFECT_RINGMODE_MIX <const> = "rmm"
+local EFFECT_RINGMOD_FREQ <const> = "rmf"
+local EFFECT_RINGMOD_MIX <const> = "rmm"
 
 function playdate.serialMessageReceived(message)
 	print("SERIAL: " .. message)
@@ -267,7 +267,7 @@ function playdate.serialMessageReceived(message)
 		gPreDelayFeedback = valueNumber/100.0
 		gPreDelay:setFeedback(gPreDelayFeedback)
 	elseif command == EFFECT_PRE_DELAY_MIX then
-		gPreDelayVolume = valueNumber/100.0
+		gPreDelayVolume = valueNumber/200.0--max 0.5 delay volume
 		gPreDelayTap1:setVolume(gPreDelayVolume)
 	elseif command == EFFECT_MID_DELAY_TIME then
 		gMidDelayTime = map(valueNumber, 0, 100, 0.0, gMidDelayMax)
@@ -276,7 +276,7 @@ function playdate.serialMessageReceived(message)
 		gMidDelayFeedback = valueNumber/100.0
 		gMidDelay:setFeedback(gMidDelayFeedback)
 	elseif command == EFFECT_MID_DELAY_MIX then
-		gMidDelayVolume = valueNumber/100.0
+		gMidDelayVolume = valueNumber/200.0--max 0.5 delay volume
 		gMidDelayTap1:setVolume(gMidDelayVolume)
 	elseif command == EFFECT_DELAY_TIME then
 		gDelayTime = map(valueNumber, 0, 100, 0.0, gDelayMax)
@@ -285,7 +285,7 @@ function playdate.serialMessageReceived(message)
 		gDelayFeedback = valueNumber/100.0
 		gDelay:setFeedback(gDelayFeedback)
 	elseif command == EFFECT_DELAY_MIX then
-		gDelayVolume = valueNumber/100.0
+		gDelayVolume = valueNumber/200.0--max 0.5 delay volume
 		gDelayTap1:setVolume(gDelayVolume)
 	elseif command == EFFECT_BITCRUSHER_AMOUNT then
 		gBitcrusherAmount = valueNumber/100.0
@@ -324,10 +324,10 @@ function playdate.serialMessageReceived(message)
 	elseif command == EFFECT_OVERDRIVE_MIX then
 		gOverdriveMix = valueNumber/100.0
 		gOverdrive:setMix(gOverdriveMix)
-	elseif command == EFFECT_RINGMODE_FREQ then
+	elseif command == EFFECT_RINGMOD_FREQ then
 		gRingmodFreq = map(valueNumber, 0, 100, gRingmodFreqMin, gRingmodFreqMax)
 		gRingmod:setFrequency(gRingmodFreq)
-	elseif command == EFFECT_RINGMODE_MIX then
+	elseif command == EFFECT_RINGMOD_MIX then
 		gRingmodMix = valueNumber/100.0
 		gRingmod:setMix(gRingmodMix)
 	end
@@ -800,7 +800,8 @@ function serialPatchSend()
 		serialNoteIndex = 0
 		playdate.timer.performAfterDelay(serialPatchDelayMs, function() 
 			serialPatchSend()
-		 end)
+		 end
+	  )
 	elseif serialPlayerIndex < #playerNodes then
 		serialPlayerIndex += 1
 		local player = playerNodes[serialPlayerIndex]
@@ -820,22 +821,6 @@ function serialPatchSend()
 		serialPlayerIndex = 0
 		serialNoteIndex = 0
 	end
-	
-	-- print("")
-	-- local playerCount = #playerNodes
-	-- local playersMessage = ""
-	-- for p = 1, playerCount, 1 do 
-	-- 	local player = playerNodes[p]
-	-- 	playersMessage += "< " .. ADD_PLAYER .. " " .. player.p.x .. " " .. player.p.y .. " " .. (player.size/4)
-	-- end
-	-- print(playersMessage)
-	-- local nodeCount = #nodes
-	-- local nodesMessage = ""
-	-- for i = 1,nodeCount,1 do 
-	-- 	local node = nodes[i]
-	-- 	nodesMessage .. "< " .. ADD_NOTE .. " " .. node.p.x .. " " .. node.p.y .. " " .. node.midiNote
-	-- 	print("")
-	-- end
 end
 
 function setup()
